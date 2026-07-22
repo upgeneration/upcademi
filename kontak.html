@@ -79,48 +79,11 @@
             background: var(--navy-light);
             transform: translateY(-2px);
         }
-        .social-icons {
-            display: flex;
-            gap: 16px;
-            margin-top: 8px;
-        }
-        .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: 0.3s;
-            text-decoration: none;
-        }
-        .social-icons .wa {
-            background: #25D366;
-            color: white;
-        }
-        .social-icons .wa:hover {
-            background: #1DA851;
-            transform: scale(1.05);
-        }
-        .social-icons .tt {
-            background: #000000;
-            color: white;
-        }
-        .social-icons .tt:hover {
-            background: #333;
-            transform: scale(1.05);
-        }
         @media (max-width: 480px) {
             .kontak-card {
                 flex-direction: column;
                 text-align: center;
                 padding: 20px;
-            }
-            .social-icons {
-                flex-direction: column;
-            }
-            .social-icons a {
-                justify-content: center;
             }
         }
     </style>
@@ -143,8 +106,9 @@
                 <a href="index.html">Beranda</a>
                 <a href="packages.html">Paket</a>
                 <a href="leaderboard.html">Peringkat</a>
-                <a href="register.html" class="btn-register">Daftar</a>
-                <a href="login.html" class="btn-login">Login</a>
+                <div id="navbarLogin">
+                    <!-- Diisi oleh JavaScript -->
+                </div>
             </div>
         </div>
     </nav>
@@ -155,7 +119,6 @@
             <h1>📞 Kontak Kami</h1>
             <p class="subtitle">Hubungi kami melalui WhatsApp atau media sosial di bawah ini.</p>
 
-            <!-- WhatsApp -->
             <div class="kontak-card">
                 <div class="icon">💬</div>
                 <div class="info">
@@ -168,7 +131,6 @@
                 </div>
             </div>
 
-            <!-- TikTok -->
             <div class="kontak-card">
                 <div class="icon">🎵</div>
                 <div class="info">
@@ -181,15 +143,14 @@
                 </div>
             </div>
 
-<!-- Tombol Akses Cepat -->
-<div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
-    <a href="https://wa.me/628123355227?text=Halo%20UPCADEMI%2C%20saya%20mau%20tanya%20tentang%20tryout" target="_blank" style="padding:12px 32px; border-radius:8px; background:#25D366; color:white; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; transition:0.3s;">
-        💬 Chat WhatsApp
-    </a>
-    <a href="https://www.tiktok.com/@upcademi" target="_blank" style="padding:12px 32px; border-radius:8px; background:#000000; color:white; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; transition:0.3s;">
-        🎵 Kunjungi TikTok
-    </a>
-</div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+                <a href="https://wa.me/628123355227?text=Halo%20UPCADEMI%2C%20saya%20mau%20tanya%20tentang%20tryout" target="_blank" style="padding:12px 32px; border-radius:8px; background:#25D366; color:white; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; transition:0.3s;">
+                    💬 Chat WhatsApp
+                </a>
+                <a href="https://www.tiktok.com/@upcademi" target="_blank" style="padding:12px 32px; border-radius:8px; background:#000000; color:white; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; transition:0.3s;">
+                    🎵 Kunjungi TikTok
+                </a>
+            </div>
 
             <a href="index.html" class="btn-back">← Kembali ke Beranda</a>
         </div>
@@ -209,5 +170,48 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script>
+        // ===== UPDATE NAVBAR =====
+        function updateNavbar() {
+            const container = document.getElementById('navbarLogin');
+            if (!container) return;
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+            if (isLoggedIn) {
+                if (isAdmin) {
+                    container.innerHTML = `
+                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                }
+            } else {
+                container.innerHTML = `
+                    <a href="register.html" class="btn-register">Daftar</a>
+                    <a href="login.html" class="btn-login">Login</a>
+                `;
+            }
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.setItem('logoutEvent', Date.now());
+                window.location.href = 'index.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
+        });
+    </script>
 </body>
 </html>
