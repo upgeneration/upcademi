@@ -280,71 +280,83 @@
 
         // ===== RENDER SOAL =====
         function renderQuestions() {
-            const container = document.getElementById('questionContainer');
-            container.innerHTML = '';
+    const container = document.getElementById('questionContainer');
+    container.innerHTML = '';
 
-            questions.forEach((q, index) => {
-                const panel = document.createElement('div');
-                panel.className = 'question-panel' + (index === 0 ? ' active' : '');
-                panel.dataset.index = index;
+    console.log('📝 Data soal yang akan dirender:', questions);
 
-                let optionsHTML = '';
-                const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-                const opts = q.options || ['-', '-', '-', '-', '-'];
+    questions.forEach((q, index) => {
+        const panel = document.createElement('div');
+        panel.className = 'question-panel' + (index === 0 ? ' active' : '');
+        panel.dataset.index = index;
 
-                opts.forEach((opt, oi) => {
-                    const checked = answers[index] === oi ? 'checked' : '';
-                    let optionImageHTML = '';
-                    if (q.optionImages && q.optionImages[oi]) {
-                        optionImageHTML = `<img src="${q.optionImages[oi]}" style="max-width:120px; display:block; margin-top:6px; border-radius:6px; border:1px solid #E0E0E0;">`;
-                    }
-                    optionsHTML += `
-                        <label class="${checked ? 'selected' : ''}">
-                            <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
-                            <span>
-                                <span class="option-label">${optionLabels[oi]}.</span> 
-                                ${opt}
-                                ${optionImageHTML}
-                            </span>
-                        </label>
-                    `;
-                });
+        // ===== AMBIL DATA DENGAN FIELD YANG BENAR =====
+        // Data dari dashboard admin menggunakan: soal, opsiA, opsiB, opsiC, opsiD, opsiE, jawaban, pembahasan
+        const text = q.soal || q.text || 'Soal tidak tersedia';
+        const image = q.gambar || q.image || null;
+        
+        // Susun options dari opsiA-E
+        const options = [
+            q.opsiA || q['Opsi A'] || '-',
+            q.opsiB || q['Opsi B'] || '-',
+            q.opsiC || q['Opsi C'] || '-',
+            q.opsiD || q['Opsi D'] || '-',
+            q.opsiE || q['Opsi E'] || '-'
+        ];
 
-                let imageHTML = '';
-                if (q.image) {
-                    imageHTML = `<img src="${q.image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">`;
-                }
+        const pembahasan = q.pembahasan || q.Pembahasan || 'Tidak ada pembahasan.';
 
-                let statusText = 'Belum Dijawab';
-                let statusClass = '';
-                if (answers[index] !== null) {
-                    statusText = '✅ Dijawab';
-                    statusClass = 'answered-status';
-                }
-                if (ragu[index]) {
-                    statusText = '❓ Ragu-ragu';
-                    statusClass = 'ragu-status';
-                }
+        let optionsHTML = '';
+        const optionLabels = ['A', 'B', 'C', 'D', 'E'];
 
-                panel.innerHTML = `
-                    <div class="question-header">
-                        <span class="question-number">Soal ${q.number || index + 1} dari ${questions.length}</span>
-                        <span class="question-status ${statusClass}">${statusText}</span>
-                    </div>
-                    <div class="question-text">
-                        ${imageHTML}
-                        ${q.text}
-                    </div>
-                    <div class="options">${optionsHTML}</div>
-                `;
+        options.forEach((opt, oi) => {
+            const checked = answers[index] === oi ? 'checked' : '';
+            optionsHTML += `
+                <label class="${checked ? 'selected' : ''}">
+                    <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
+                    <span>
+                        <span class="option-label">${optionLabels[oi]}.</span> 
+                        ${opt || '-'}
+                    </span>
+                </label>
+            `;
+        });
 
-                container.appendChild(panel);
-            });
-
-            updateQuestionNumbers();
-            updateStatus();
-            updateRaguButton();
+        let imageHTML = '';
+        if (image) {
+            imageHTML = `<img src="${image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">`;
         }
+
+        let statusText = 'Belum Dijawab';
+        let statusClass = '';
+        if (answers[index] !== null) {
+            statusText = '✅ Dijawab';
+            statusClass = 'answered-status';
+        }
+        if (ragu[index]) {
+            statusText = '❓ Ragu-ragu';
+            statusClass = 'ragu-status';
+        }
+
+        panel.innerHTML = `
+            <div class="question-header">
+                <span class="question-number">Soal ${q.number || index + 1} dari ${questions.length}</span>
+                <span class="question-status ${statusClass}">${statusText}</span>
+            </div>
+            <div class="question-text">
+                ${imageHTML}
+                ${text}
+            </div>
+            <div class="options">${optionsHTML}</div>
+        `;
+
+        container.appendChild(panel);
+    });
+
+    updateQuestionNumbers();
+    updateStatus();
+    updateRaguButton();
+}
 
         // ===== NAVIGASI =====
         function navigateQuestion(direction) {
