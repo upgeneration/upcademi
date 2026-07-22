@@ -813,51 +813,76 @@
     // ===== TAMBAH SOAL MANUAL =====
     // =============================================
 
-    function tambahSoal(e) {
-        e.preventDefault();
+   function tambahSoal(e) {
+    e.preventDefault();
 
-        const paket = document.getElementById('paketSoal');
-        const nomor = document.getElementById('nomorSoal');
-        const teks = document.getElementById('teksSoal');
-        const opsiA = document.getElementById('opsiA');
-        const opsiB = document.getElementById('opsiB');
-        const opsiC = document.getElementById('opsiC');
-        const opsiD = document.getElementById('opsiD');
-        const opsiE = document.getElementById('opsiE');
-        const jawaban = document.getElementById('jawabanBenar');
-        const pembahasan = document.getElementById('pembahasanSoal');
+    const paket = document.getElementById('paketSoal');
+    const nomor = document.getElementById('nomorSoal');
+    const teks = document.getElementById('teksSoal');
+    const opsiA = document.getElementById('opsiA');
+    const opsiB = document.getElementById('opsiB');
+    const opsiC = document.getElementById('opsiC');
+    const opsiD = document.getElementById('opsiD');
+    const opsiE = document.getElementById('opsiE');
+    const jawaban = document.getElementById('jawabanBenar');
+    const pembahasan = document.getElementById('pembahasanSoal');
 
-        if (!paket.value || !nomor.value || !teks.value || !opsiA.value || !opsiB.value || !opsiC.value || !opsiD.value || !jawaban.value) {
-            alert('⚠️ Semua field wajib diisi! (Opsi E opsional)');
-            return false;
-        }
-
-        const soalBaru = {
-            id: Date.now(),
-            paket: paket.value,
-            nomor: nomor.value,
-            soal: teks.value,
-            gambar: '',
-            opsiA: opsiA.value,
-            opsiB: opsiB.value,
-            opsiC: opsiC.value,
-            opsiD: opsiD.value,
-            opsiE: opsiE.value || '',
-            jawaban: jawaban.value,
-            pembahasan: pembahasan.value,
-            pembahasanGambar: ''
-        };
-
-        let soal = getSoal();
-        soal.push(soalBaru);
-        saveSoal(soal);
-
-        alert('✅ Soal berhasil ditambahkan!');
-        document.getElementById('formSoal').reset();
-        renderSoal();
-
+    // Validasi: minimal opsi A atau gambar opsi A harus ada
+    if (!paket.value || !nomor.value || !teks.value || !jawaban.value) {
+        alert('⚠️ Paket, Nomor, Teks Soal, dan Jawaban wajib diisi!');
         return false;
     }
+
+    // Fungsi untuk membaca file gambar sebagai base64
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Kumpulkan semua gambar opsi
+    const gambarOpsi = {};
+    const opsiFiles = ['gambarOpsiA', 'gambarOpsiB', 'gambarOpsiC', 'gambarOpsiD', 'gambarOpsiE'];
+    const opsiKeys = ['gambarOpsiA', 'gambarOpsiB', 'gambarOpsiC', 'gambarOpsiD', 'gambarOpsiE'];
+
+    // Proses upload gambar (sederhana, simpan nama file saja dulu)
+    // Untuk saat ini, kita simpan nama file sebagai placeholder
+    // Nanti di exam.html, kita tampilkan gambar jika ada
+
+    const soalBaru = {
+        id: Date.now(),
+        paket: paket.value,
+        nomor: nomor.value,
+        soal: teks.value,
+        gambar: '', // Untuk gambar soal (belum diimplementasikan)
+        opsiA: opsiA.value || '',
+        opsiB: opsiB.value || '',
+        opsiC: opsiC.value || '',
+        opsiD: opsiD.value || '',
+        opsiE: opsiE.value || '',
+        gambarOpsiA: document.getElementById('gambarOpsiA').files[0] ? document.getElementById('gambarOpsiA').files[0].name : '',
+        gambarOpsiB: document.getElementById('gambarOpsiB').files[0] ? document.getElementById('gambarOpsiB').files[0].name : '',
+        gambarOpsiC: document.getElementById('gambarOpsiC').files[0] ? document.getElementById('gambarOpsiC').files[0].name : '',
+        gambarOpsiD: document.getElementById('gambarOpsiD').files[0] ? document.getElementById('gambarOpsiD').files[0].name : '',
+        gambarOpsiE: document.getElementById('gambarOpsiE').files[0] ? document.getElementById('gambarOpsiE').files[0].name : '',
+        jawaban: jawaban.value,
+        pembahasan: pembahasan.value || '',
+        pembahasanGambar: ''
+    };
+
+    let soal = getSoal();
+    soal.push(soalBaru);
+    saveSoal(soal);
+
+    alert('✅ Soal berhasil ditambahkan!');
+    document.getElementById('formSoal').reset();
+    renderSoal();
+
+    return false;
+}
 
     // =============================================
     // ===== IMPORT EXCEL/CSV =====
