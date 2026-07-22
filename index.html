@@ -174,17 +174,15 @@
         }
 
         function logout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('isAdmin');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userName');
-                window.location.href = 'index.html';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavbar();
-        });
+    if (confirm('Yakin ingin logout?')) {
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        // Tambahkan ini untuk hapus semua data komentar/riwayat (opsional)
+        // localStorage.clear();
+        window.location.href = 'index.html';
+    }
+}
     </script>
 
 </body>
