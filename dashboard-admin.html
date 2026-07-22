@@ -613,16 +613,32 @@
         // =============================================
 
         function updateStats() {
-            const users = getUsers();
-            const pesanan = getPesanan();
-            const pending = pesanan.filter(p => p.status === 'pending').length;
-            const totalRevenue = pesanan.filter(p => p.status === 'aktif').reduce((sum, p) => sum + (p.harga || 0), 0);
-            document.getElementById('totalUsers').textContent = users.length;
-            document.getElementById('totalOrders').textContent = pesanan.length;
-            document.getElementById('pendingOrders').textContent = pending;
-            document.getElementById('totalRevenue').textContent = 'Rp' + totalRevenue.toLocaleString('id-ID');
-        }
+    const users = getUsers();
+    const pesanan = getPesanan();
 
+    // Hitung pending
+    const pending = pesanan.filter(p => p.status === 'pending').length;
+
+    // Hitung total pendapatan (pastikan harga adalah angka)
+    let totalRevenue = 0;
+    pesanan.forEach(p => {
+        if (p.status === 'aktif') {
+            // Konversi harga ke angka (hapus titik, koma, spasi)
+            let harga = p.harga || 0;
+            if (typeof harga === 'string') {
+                harga = harga.replace(/[^0-9]/g, ''); // Hanya angka
+                harga = parseInt(harga) || 0;
+            }
+            totalRevenue += harga;
+        }
+    });
+
+    // Tampilkan total pendapatan dengan format Rupiah
+    document.getElementById('totalRevenue').textContent = 'Rp' + totalRevenue.toLocaleString('id-ID');
+    document.getElementById('totalUsers').textContent = users.length;
+    document.getElementById('totalOrders').textContent = pesanan.length;
+    document.getElementById('pendingOrders').textContent = pending;
+}
         // =============================================
         // ===== SWITCH TAB =====
         // =============================================
