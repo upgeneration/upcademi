@@ -366,13 +366,6 @@
     }
 
     // =============================================
-    // ===== RIWAYAT TRYOUT (SEMENTARA) =====
-    // =============================================
-
-    // Data riwayat tryout (nanti dari localStorage hasil tryout)
-    const riwayatTryout = [];
-
-    // =============================================
 // ===== RIWAYAT TRYOUT DARI LOCALSTORAGE =====
 // =============================================
 
@@ -447,15 +440,22 @@ function renderRiwayat() {
     // ===== UPDATE STATS =====
     // =============================================
 
-    function updateStats() {
-        const total = riwayatTryout.length;
-        const totalScore = riwayatTryout.reduce((sum, item) => sum + item.score, 0);
-        const avg = total > 0 ? Math.round(totalScore / total) : 0;
-        const best = total > 0 ? Math.max(...riwayatTryout.map(item => item.score)) : 0;
+   function updateStats() {
+    const userEmail = localStorage.getItem('userEmail');
+    if (!userEmail) return;
 
-        document.getElementById('totalTryout').textContent = total;
-        document.getElementById('avgScore').textContent = avg;
-        document.getElementById('bestScore').textContent = best;
+    const semuaHasil = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
+    const riwayatUser = semuaHasil.filter(item => item.userEmail === userEmail);
+
+    const total = riwayatUser.length;
+    const totalScore = riwayatUser.reduce((sum, item) => sum + (item.skor || 0), 0);
+    const avg = total > 0 ? Math.round(totalScore / total) : 0;
+    const best = total > 0 ? Math.max(...riwayatUser.map(item => item.skor || 0)) : 0;
+
+    document.getElementById('totalTryout').textContent = total;
+    document.getElementById('avgScore').textContent = avg;
+    document.getElementById('bestScore').textContent = best;
+}
     }
 
     // =============================================
