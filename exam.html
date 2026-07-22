@@ -512,59 +512,67 @@
         }
 
         function confirmSubmit() {
-            closeSubmitModal();
-            clearInterval(timerInterval);
+    closeSubmitModal();
+    clearInterval(timerInterval);
 
-            // Pastikan answers dalam bentuk array
-            const finalAnswers = answers.map(a => (a !== null && a !== undefined) ? a : null);
+    // ===== BUAT SALINAN JAWABAN =====
+    const finalAnswers = answers.map(a => (a !== null && a !== undefined) ? a : null);
 
-            // Hitung skor
-            let benar = 0, salah = 0, tidakDijawab = 0;
-            questions.forEach((q, i) => {
-                const ans = finalAnswers[i];
-                if (ans === null || ans === undefined) {
-                    tidakDijawab++;
-                } else if (String(ans) === String(q.correct)) {
-                    benar++;
-                } else {
-                    salah++;
-                }
-            });
+    console.log('📝 Jawaban yang akan disimpan:', finalAnswers);
 
-            const userEmail = localStorage.getItem('userEmail') || 'anonymous';
-            const userName = localStorage.getItem('userName') || 'User';
-            const paketName = document.getElementById('paketName').textContent || 'Tryout';
+    // Hitung skor
+    let benar = 0;
+    let salah = 0;
+    let tidakDijawab = 0;
 
-            const hasil = {
-                id: Date.now(),
-                userEmail: userEmail,
-                userName: userName,
-                paket: paketName,
-                skor: benar,
-                total: questions.length,
-                benar: benar,
-                salah: salah,
-                tidakDijawab: tidakDijawab,
-                tanggal: new Date().toISOString(),
-                answers: finalAnswers
-            };
-
-            // Simpan ke hasilTryout
-            let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
-            hasilList.push(hasil);
-            localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
-
-            // Simpan ke examResult untuk result.html
-            localStorage.setItem('examResult', JSON.stringify({
-                answers: finalAnswers,
-                totalQuestions: questions.length,
-                timestamp: new Date().toISOString()
-            }));
-
-            // Redirect ke result
-            window.location.href = 'result.html?paket=' + paketId;
+    questions.forEach((q, i) => {
+        const ans = finalAnswers[i];
+        if (ans === null || ans === undefined) {
+            tidakDijawab++;
+        } else if (String(ans) === String(q.correct)) {
+            benar++;
+        } else {
+            salah++;
         }
+    });
 
+    const userEmail = localStorage.getItem('userEmail') || 'anonymous';
+    const userName = localStorage.getItem('userName') || 'User';
+    const paketName = document.getElementById('paketName').textContent || 'Tryout';
+
+    const hasil = {
+        id: Date.now(),
+        userEmail: userEmail,
+        userName: userName,
+        paket: paketName,
+        skor: benar,
+        total: questions.length,
+        benar: benar,
+        salah: salah,
+        tidakDijawab: tidakDijawab,
+        tanggal: new Date().toISOString(),
+        answers: finalAnswers
+    };
+
+    // ===== SIMPAN KE LOCALSTORAGE =====
+    // 1. Simpan ke hasilTryout (untuk leaderboard & riwayat)
+    let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
+    hasilList.push(hasil);
+    localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
+
+    // 2. Simpan ke examResult (untuk result.html)
+    localStorage.setItem('examResult', JSON.stringify({
+        answers: finalAnswers,
+        totalQuestions: questions.length,
+        timestamp: new Date().toISOString()
+    }));
+
+    console.log('✅ Data berhasil disimpan!');
+    console.log('📦 examResult:', JSON.parse(localStorage.getItem('examResult')));
+
+    // Redirect ke halaman hasil
+    window.location.href = 'result.html?paket=' + paketId;
+}
         function submitExam(e) {
             e.preventDefault();
             showSubmitModal();
