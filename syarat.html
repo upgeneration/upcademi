@@ -82,8 +82,9 @@
                 <a href="index.html">Beranda</a>
                 <a href="packages.html">Paket</a>
                 <a href="leaderboard.html">Peringkat</a>
-                <a href="register.html" class="btn-register">Daftar</a>
-                <a href="login.html" class="btn-login">Login</a>
+                <div id="navbarLogin">
+                    <!-- Diisi oleh JavaScript -->
+                </div>
             </div>
         </div>
     </nav>
@@ -152,5 +153,48 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script>
+        // ===== UPDATE NAVBAR =====
+        function updateNavbar() {
+            const container = document.getElementById('navbarLogin');
+            if (!container) return;
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+            if (isLoggedIn) {
+                if (isAdmin) {
+                    container.innerHTML = `
+                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                }
+            } else {
+                container.innerHTML = `
+                    <a href="register.html" class="btn-register">Daftar</a>
+                    <a href="login.html" class="btn-login">Login</a>
+                `;
+            }
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.setItem('logoutEvent', Date.now());
+                window.location.href = 'index.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
+        });
+    </script>
 </body>
 </html>
