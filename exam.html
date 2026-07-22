@@ -6,24 +6,52 @@
     <title>Tryout - UPCADEMI</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* ===== EXAM STYLE ===== */
         * { box-sizing: border-box; }
         body { background: #f0f2f5; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-        .exam-navbar { background: var(--navy); padding: 10px 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .exam-navbar .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .exam-navbar {
+            background: var(--navy);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .exam-navbar .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .exam-navbar .logo { font-size: 20px; font-weight: 700; color: var(--white); }
         .exam-navbar .logo span { color: var(--red-light); }
         .exam-navbar .exam-info { color: var(--white); font-size: 14px; }
         .exam-navbar .exam-info .timer-top { font-weight: 700; font-size: 18px; font-family: monospace; }
         .exam-navbar .exam-info .timer-top.warning { color: #FFB74D; }
         .exam-navbar .exam-info .timer-top.danger { color: #FF5252; animation: blink 0.5s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .exam-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 260px 1fr 200px;
+            gap: 16px;
+            min-height: calc(100vh - 70px);
+        }
 
-        .exam-container { max-width: 1400px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 260px 1fr 200px; gap: 16px; min-height: calc(100vh - 70px); }
-
-        .exam-sidebar { background: var(--white); border-radius: 12px; padding: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); height: fit-content; position: sticky; top: 80px; }
+        .exam-sidebar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
         .exam-sidebar .info { text-align: center; padding-bottom: 12px; border-bottom: 2px solid var(--gray-bg); margin-bottom: 12px; }
         .exam-sidebar .info .label { font-size: 12px; color: var(--text-gray); }
         .exam-sidebar .info .timer { font-size: 28px; font-weight: 800; color: var(--red); font-family: monospace; }
@@ -39,7 +67,6 @@
         .q-num.answered.active { background: var(--navy); border-color: var(--navy); }
         .q-num.ragu { background: #FFB74D; border-color: #FF9800; color: var(--white); }
         .q-num.ragu.active { background: var(--navy); border-color: var(--navy); }
-        .q-num.not-answered { background: var(--white); border-color: #E0E0E0; color: var(--text-dark); }
 
         .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--gray-bg); font-size: 11px; }
         .legend-item { display: flex; align-items: center; gap: 4px; }
@@ -78,7 +105,7 @@
         .btn-nav.next { background: var(--navy); color: var(--white); }
         .btn-nav.next:hover { background: var(--navy-light); box-shadow: 0 4px 15px rgba(26,35,126,0.3); }
         .btn-nav.ragu-btn { background: #FFB74D; color: var(--white); }
-        .btn-nav.ragu-btn:hover { background: #FF9800; box-shadow: 0 4px 15px rgba(255,152,0,0.3); }
+        .btn-nav.ragu-btn:hover { background: #FF9800; }
         .btn-nav.ragu-btn.active-ragu { background: #FF9800; box-shadow: 0 0 0 3px #FFB74D; }
         .btn-nav.submit-btn { background: var(--red); color: var(--white); padding: 10px 28px; }
         .btn-nav.submit-btn:hover { background: var(--red-dark); box-shadow: 0 4px 15px rgba(211,47,47,0.3); }
@@ -107,15 +134,17 @@
         .modal-box .modal-buttons .btn-confirm { background: var(--red); color: var(--white); }
         .modal-box .modal-buttons .btn-confirm:hover { background: var(--red-dark); }
 
+        .mobile-toggle { display: none; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .mobile-toggle button { padding: 8px 16px; border: 2px solid var(--navy); border-radius: 8px; background: transparent; color: var(--navy); font-weight: 600; cursor: pointer; font-size: 13px; flex: 1; transition: 0.3s; }
+        .mobile-toggle button.active { background: var(--navy); color: var(--white); }
+
         @media (max-width: 1024px) {
             .exam-container { grid-template-columns: 1fr; gap: 12px; padding: 12px; }
             .exam-sidebar, .exam-status { position: static; display: none; }
             .exam-sidebar.mobile-show, .exam-status.mobile-show { display: block; }
             .exam-content { padding: 16px; }
             .question-numbers { grid-template-columns: repeat(8, 1fr); }
-            .mobile-toggle { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-            .mobile-toggle button { padding: 8px 16px; border: 2px solid var(--navy); border-radius: 8px; background: transparent; color: var(--navy); font-weight: 600; cursor: pointer; font-size: 13px; flex: 1; transition: 0.3s; }
-            .mobile-toggle button.active { background: var(--navy); color: var(--white); }
+            .mobile-toggle { display: flex; }
             .nav-buttons { flex-direction: column; }
             .nav-buttons .left-group, .nav-buttons .right-group { width: 100%; }
             .nav-buttons .btn-nav { flex: 1; justify-content: center; padding: 12px 16px; }
@@ -134,19 +163,14 @@
 </head>
 <body>
 
-    <!-- ===== NAVBAR KHUSUS EXAM ===== -->
     <nav class="exam-navbar">
         <div class="container">
             <div class="logo">UPCADEMI<span>.com</span></div>
-            <div class="exam-info">
-                ⏱️ <span class="timer-top" id="timerTop">01:50:00</span>
-            </div>
+            <div class="exam-info">⏱️ <span class="timer-top" id="timerTop">01:50:00</span></div>
         </div>
     </nav>
 
-    <!-- ===== EXAM CONTAINER ===== -->
     <div class="exam-container">
-
         <div class="mobile-toggle">
             <button onclick="toggleMobile('sidebar')" class="active" id="btnSidebar">📋 Soal</button>
             <button onclick="toggleMobile('status')" id="btnStatus">📊 Status</button>
@@ -197,7 +221,7 @@
         <div class="modal-box">
             <div class="icon">📤</div>
             <h3>Kumpulkan Tryout?</h3>
-            <p id="modalMessage">Anda telah menjawab 0 dari 10 soal. Yakin ingin mengumpulkan?</p>
+            <p id="modalMessage">Anda telah menjawab 0 dari 0 soal. Yakin ingin mengumpulkan?</p>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closeSubmitModal()">Batal</button>
                 <button class="btn-confirm" onclick="confirmSubmit()">Ya, Kumpulkan</button>
@@ -207,9 +231,9 @@
 
     <script src="js/script.js"></script>
     <script>
-        // =============================================
-        // ===== AMBIL SOAL DARI LOCALSTORAGE =====
-        // =============================================
+        // ============================================================
+        // 1. AMBIL SOAL DARI LOCALSTORAGE
+        // ============================================================
 
         const urlParams = new URLSearchParams(window.location.search);
         const paketId = urlParams.get('paket');
@@ -217,43 +241,53 @@
         const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
         const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
-        console.log('🔍 paketId:', paketId);
-        console.log('📦 Semua Paket:', semuaPaket);
-        console.log('📝 Semua Soal:', semuaSoal);
+        let paketName = '';
+        const paket = semuaPaket.find(p => String(p.id) === String(paketId));
+        if (paket) paketName = paket.name;
 
         let questions = [];
-        let paketName = '';
-
-        if (paketId) {
-            const paket = semuaPaket.find(p => String(p.id) === String(paketId));
-            if (paket) {
-                paketName = paket.name;
-                questions = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
-                console.log('📚 Soal untuk paket "' + paketName + '":', questions.length);
-            }
+        if (paketName) {
+            questions = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
         }
-
-        if (questions.length === 0 && semuaSoal.length > 0) {
-            questions = semuaSoal;
-            console.log('📚 Menampilkan semua soal (', questions.length, ')');
-        }
-
         if (questions.length === 0) {
-            questions = [{
-                id: 0,
-                number: 1,
-                text: '📭 Belum ada soal untuk paket ini. Silakan hubungi admin.',
-                image: null,
-                options: ['-', '-', '-', '-', '-'],
-                optionImages: [null, null, null, null, null],
-                pembahasan: 'Belum ada soal yang tersedia.',
-                pembahasanImage: null
-            }];
+            questions = semuaSoal;
         }
 
-        document.getElementById('paketName').textContent = paketName || 'Tryout';
+        // Jika tetap kosong, buat soal dummy
+        if (questions.length === 0) {
+            questions = [
+                { id: 1, number: 1, text: 'Belum ada soal untuk paket ini.', options: ['-','-','-','-','-'], correct: 0, pembahasan: '-' }
+            ];
+        }
 
-        // ===== STATE =====
+        // Normalisasi: pastikan semua soal punya options, correct, jawaban
+        questions = questions.map((q, i) => {
+            const opt = q.opsiA ? [q.opsiA, q.opsiB, q.opsiC, q.opsiD, q.opsiE] : (q.options || ['-','-','-','-','-']);
+            let correctIdx = 0;
+            if (q.jawaban !== undefined && q.jawaban !== null) {
+                const idx = ['A','B','C','D','E'].indexOf(q.jawaban.toUpperCase());
+                if (idx !== -1) correctIdx = idx;
+            } else if (q.correct !== undefined) {
+                correctIdx = q.correct;
+            }
+            return {
+                id: q.id || i,
+                number: q.nomor || i + 1,
+                text: q.soal || q.text || 'Soal tidak tersedia',
+                image: q.gambar || q.image || '',
+                options: opt,
+                optionImages: q.optionImages || [null, null, null, null, null],
+                correct: correctIdx,
+                jawaban: correctIdx, // biar kompatibel
+                pembahasan: q.pembahasan || '',
+                pembahasanImage: q.pembahasanGambar || ''
+            };
+        });
+
+        // ============================================================
+        // 2. STATE
+        // ============================================================
+
         let currentQuestion = 0;
         const totalQuestions = questions.length;
         let answers = new Array(totalQuestions).fill(null);
@@ -261,7 +295,10 @@
         let timerInterval = null;
         let timeLeft = 110 * 60;
 
-        // ===== RENDER SOAL =====
+        // ============================================================
+        // 3. RENDER SOAL
+        // ============================================================
+
         function renderQuestions() {
             const container = document.getElementById('questionContainer');
             container.innerHTML = '';
@@ -271,82 +308,47 @@
                 panel.className = 'question-panel' + (index === 0 ? ' active' : '');
                 panel.dataset.index = index;
 
-                // Ambil data dengan field yang benar
-                const text = q.soal || q.text || 'Soal tidak tersedia';
-                const image = q.gambar || q.image || null;
-
-                // Susun options dari opsiA-E
-                const options = [
-                    q.opsiA || '-',
-                    q.opsiB || '-',
-                    q.opsiC || '-',
-                    q.opsiD || '-',
-                    q.opsiE || '-'
-                ];
-
                 let optionsHTML = '';
                 const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-
-                options.forEach((opt, oi) => {
+                q.options.forEach((opt, oi) => {
                     const checked = answers[index] === oi ? 'checked' : '';
-                    
-                    // Cek gambar opsi
-                    const gambarOpsiKey = 'gambarOpsi' + optionLabels[oi];
-                    const gambarOpsi = q[gambarOpsiKey] || null;
-                    let gambarHTML = '';
-                    if (gambarOpsi) {
-                        gambarHTML = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsi}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;" onerror="this.parentElement.innerHTML='<span style=\'color:red;font-size:12px;\'>Gambar tidak ditemukan</span>'"></div>`;
-                    }
-
+                    let optImg = q.optionImages && q.optionImages[oi] ? `<br><img src="${q.optionImages[oi]}" style="max-width:120px; border-radius:6px; border:1px solid #E0E0E0; margin-top:4px;">` : '';
                     optionsHTML += `
                         <label class="${checked ? 'selected' : ''}">
                             <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
-                            <span>
-                                <span class="option-label">${optionLabels[oi]}.</span> 
-                                ${opt}
-                                ${gambarHTML}
-                            </span>
+                            <span><span class="option-label">${optionLabels[oi]}.</span> ${opt} ${optImg}</span>
                         </label>
                     `;
                 });
 
-                let imageHTML = '';
-                if (image) {
-                    imageHTML = `<img src="${image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">`;
-                }
+                let imageHTML = q.image ? `<img src="${q.image}" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">` : '';
 
                 let statusText = 'Belum Dijawab';
                 let statusClass = '';
-                if (answers[index] !== null) {
-                    statusText = '✅ Dijawab';
-                    statusClass = 'answered-status';
-                }
-                if (ragu[index]) {
-                    statusText = '❓ Ragu-ragu';
-                    statusClass = 'ragu-status';
-                }
+                if (answers[index] !== null) { statusText = '✅ Dijawab'; statusClass = 'answered-status'; }
+                if (ragu[index]) { statusText = '❓ Ragu-ragu'; statusClass = 'ragu-status'; }
 
                 panel.innerHTML = `
                     <div class="question-header">
-                        <span class="question-number">Soal ${q.number || index + 1} dari ${questions.length}</span>
+                        <span class="question-number">Soal ${q.number || index + 1} dari ${totalQuestions}</span>
                         <span class="question-status ${statusClass}">${statusText}</span>
                     </div>
-                    <div class="question-text">
-                        ${imageHTML}
-                        ${text}
-                    </div>
+                    <div class="question-text">${imageHTML}${q.text}</div>
                     <div class="options">${optionsHTML}</div>
                 `;
-
                 container.appendChild(panel);
             });
 
             updateQuestionNumbers();
             updateStatus();
             updateRaguButton();
+            document.getElementById('paketName').textContent = paketName || 'Tryout';
         }
 
-        // ===== NAVIGASI =====
+        // ============================================================
+        // 4. NAVIGASI
+        // ============================================================
+
         function navigateQuestion(direction) {
             const panels = document.querySelectorAll('.question-panel');
             const numbers = document.querySelectorAll('.q-num');
@@ -380,36 +382,19 @@
             updateRaguButton();
         }
 
-        function updateQuestionHeader() {
-            const panel = document.querySelectorAll('.question-panel')[currentQuestion];
-            if (!panel) return;
-            const statusEl = panel.querySelector('.question-status');
-            if (!statusEl) return;
-
-            let statusText = 'Belum Dijawab';
-            let statusClass = '';
-            if (answers[currentQuestion] !== null) {
-                statusText = '✅ Dijawab';
-                statusClass = 'answered-status';
-            }
-            if (ragu[currentQuestion]) {
-                statusText = '❓ Ragu-ragu';
-                statusClass = 'ragu-status';
-            }
-
-            statusEl.textContent = statusText;
-            statusEl.className = 'question-status ' + statusClass;
-        }
+        // ============================================================
+        // 5. PILIH OPSI / RAGU
+        // ============================================================
 
         function selectOption(index, value) {
             answers[index] = value;
             if (ragu[index]) ragu[index] = false;
 
             const panel = document.querySelectorAll('.question-panel')[index];
-            const labels = panel.querySelectorAll('.options label');
-            labels.forEach((label, i) => {
-                label.classList.toggle('selected', i === value);
-            });
+            if (panel) {
+                const labels = panel.querySelectorAll('.options label');
+                labels.forEach((label, i) => label.classList.toggle('selected', i === value));
+            }
 
             updateQuestionNumbers();
             updateStatus();
@@ -434,6 +419,25 @@
                 btn.classList.remove('active-ragu');
                 btn.textContent = '❓ Ragu-ragu';
             }
+        }
+
+        // ============================================================
+        // 6. UPDATE UI
+        // ============================================================
+
+        function updateQuestionHeader() {
+            const panel = document.querySelectorAll('.question-panel')[currentQuestion];
+            if (!panel) return;
+            const statusEl = panel.querySelector('.question-status');
+            if (!statusEl) return;
+
+            let statusText = 'Belum Dijawab';
+            let statusClass = '';
+            if (answers[currentQuestion] !== null) { statusText = '✅ Dijawab'; statusClass = 'answered-status'; }
+            if (ragu[currentQuestion]) { statusText = '❓ Ragu-ragu'; statusClass = 'ragu-status'; }
+
+            statusEl.textContent = statusText;
+            statusEl.className = 'question-status ' + statusClass;
         }
 
         function updateQuestionNumbers() {
@@ -463,22 +467,37 @@
             document.getElementById('unansweredCount').textContent = totalQuestions - answered;
         }
 
+        // ============================================================
+        // 7. TIMER
+        // ============================================================
+
         function startTimer() {
             const display = document.getElementById('timerDisplay');
             const topDisplay = document.getElementById('timerTop');
+
             timerInterval = setInterval(() => {
                 timeLeft--;
-                const hours = Math.floor(timeLeft / 3600);
-                const minutes = Math.floor((timeLeft % 3600) / 60);
-                const seconds = timeLeft % 60;
-                const timeStr = String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-                display.textContent = timeStr;
-                topDisplay.textContent = timeStr;
+                const h = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
+                const m = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, '0');
+                const s = String(timeLeft % 60).padStart(2, '0');
+                const str = h + ':' + m + ':' + s;
+                display.textContent = str;
+                topDisplay.textContent = str;
+
                 if (timeLeft < 600) { display.className = 'timer warning'; topDisplay.className = 'timer-top warning'; }
                 if (timeLeft < 300) { display.className = 'timer danger'; topDisplay.className = 'timer-top danger'; }
-                if (timeLeft <= 0) { clearInterval(timerInterval); alert('⏰ Waktu habis!'); confirmSubmit(); }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert('⏰ Waktu habis! Tryout akan dikumpulkan otomatis.');
+                    confirmSubmit();
+                }
             }, 1000);
         }
+
+        // ============================================================
+        // 8. SUBMIT & SIMPAN JAWABAN
+        // ============================================================
 
         function showSubmitModal() {
             let answered = 0;
@@ -488,71 +507,80 @@
             modal.classList.add('show');
         }
 
-        function closeSubmitModal() { document.getElementById('submitModal').classList.remove('show'); }
-
-      function confirmSubmit() {
-    closeSubmitModal();
-    clearInterval(timerInterval);
-
-    // Hitung skor
-    let benar = 0;
-    let salah = 0;
-    let tidakDijawab = 0;
-
-    questions.forEach((q, index) => {
-        const userAnswer = answers[index];
-        const correctAns = q.jawaban || q.correct;
-        
-        if (userAnswer === null || userAnswer === undefined) {
-            tidakDijawab++;
-        } else if (userAnswer == correctAns || userAnswer === correctAns) {
-            benar++;
-        } else {
-            salah++;
+        function closeSubmitModal() {
+            document.getElementById('submitModal').classList.remove('show');
         }
-    });
 
-    // ===== SIMPAN HASIL TRYOUT =====
-    const userEmail = localStorage.getItem('userEmail') || 'anonymous';
-    const userName = localStorage.getItem('userName') || 'User';
-    const paketName = document.getElementById('paketName').textContent || 'Tryout';
+        function confirmSubmit() {
+            closeSubmitModal();
+            clearInterval(timerInterval);
 
-    const hasil = {
-        id: Date.now(),
-        userEmail: userEmail,
-        userName: userName,
-        paket: paketName,
-        skor: benar,
-        total: questions.length,
-        benar: benar,
-        salah: salah,
-        tidakDijawab: tidakDijawab,
-        tanggal: new Date().toISOString(),
-        answers: answers
-    };
+            // Pastikan answers dalam bentuk array
+            const finalAnswers = answers.map(a => (a !== null && a !== undefined) ? a : null);
 
-    // Ambil data hasil yang sudah ada
-    let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
-    hasilList.push(hasil);
-    localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
+            // Hitung skor
+            let benar = 0, salah = 0, tidakDijawab = 0;
+            questions.forEach((q, i) => {
+                const ans = finalAnswers[i];
+                if (ans === null || ans === undefined) {
+                    tidakDijawab++;
+                } else if (String(ans) === String(q.correct)) {
+                    benar++;
+                } else {
+                    salah++;
+                }
+            });
 
-    // ===== SIMPAN JUGA UNTUK EXAM RESULT =====
-    localStorage.setItem('examResult', JSON.stringify({
-        answers: answers,
-        totalQuestions: questions.length,
-        timestamp: new Date().toISOString()
-    }));
+            const userEmail = localStorage.getItem('userEmail') || 'anonymous';
+            const userName = localStorage.getItem('userName') || 'User';
+            const paketName = document.getElementById('paketName').textContent || 'Tryout';
 
-    // Redirect ke halaman hasil
-    window.location.href = 'result.html?paket=' + new URLSearchParams(window.location.search).get('paket');
-}
-        function submitExam(e) { e.preventDefault(); showSubmitModal(); return false; }
+            const hasil = {
+                id: Date.now(),
+                userEmail: userEmail,
+                userName: userName,
+                paket: paketName,
+                skor: benar,
+                total: questions.length,
+                benar: benar,
+                salah: salah,
+                tidakDijawab: tidakDijawab,
+                tanggal: new Date().toISOString(),
+                answers: finalAnswers
+            };
+
+            // Simpan ke hasilTryout
+            let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
+            hasilList.push(hasil);
+            localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
+
+            // Simpan ke examResult untuk result.html
+            localStorage.setItem('examResult', JSON.stringify({
+                answers: finalAnswers,
+                totalQuestions: questions.length,
+                timestamp: new Date().toISOString()
+            }));
+
+            // Redirect ke result
+            window.location.href = 'result.html?paket=' + paketId;
+        }
+
+        function submitExam(e) {
+            e.preventDefault();
+            showSubmitModal();
+            return false;
+        }
+
+        // ============================================================
+        // 9. MOBILE
+        // ============================================================
 
         function toggleMobile(type) {
             const sidebar = document.getElementById('sidebar');
             const status = document.getElementById('status');
             const btnSidebar = document.getElementById('btnSidebar');
             const btnStatus = document.getElementById('btnStatus');
+
             if (type === 'sidebar') {
                 sidebar.classList.toggle('mobile-show');
                 status.classList.remove('mobile-show');
@@ -566,16 +594,22 @@
             }
         }
 
+        // ============================================================
+        // 10. KEYBOARD
+        // ============================================================
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowLeft') { e.preventDefault(); navigateQuestion(-1); }
             else if (e.key === 'ArrowRight') { e.preventDefault(); navigateQuestion(1); }
         });
 
-        // ===== INIT =====
+        // ============================================================
+        // 11. INIT
+        // ============================================================
+
         renderQuestions();
         startTimer();
         updateStatus();
     </script>
-
 </body>
 </html>
