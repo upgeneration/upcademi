@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebijakan Privasi - UPCADEMI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .page-privasi {
+            padding: 60px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .page-privasi h1 {
+            color: var(--navy);
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .page-privasi .subtitle {
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .page-privasi h3 {
+            color: var(--navy);
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+        .page-privasi p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .page-privasi ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+        .page-privasi ul li {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 32px;
+            background: var(--navy);
+            color: var(--white);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-back:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+        }
+        .update-date {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-top: 30px;
+            padding-top: 16px;
+            border-top: 1px solid #E0E0E0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+                <span>UPCADEMI</span>
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html">Beranda</a>
+                <a href="packages.html">Paket</a>
+                <a href="leaderboard.html">Peringkat</a>
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== KONTEN PRIVASI ===== -->
+    <section class="page-privasi">
+        <div class="container">
+            <h1>🔒 Kebijakan Privasi</h1>
+            <p class="subtitle">Kami menghargai privasi Anda. Berikut adalah kebijakan privasi UPCADEMI.</p>
+
+            <h3>1. Informasi yang Kami Kumpulkan</h3>
+            <p>Kami mengumpulkan informasi berikut saat Anda menggunakan UPCADEMI:</p>
+            <ul>
+                <li><strong>Data Pribadi:</strong> Nama, alamat email, dan nomor telepon saat Anda mendaftar.</li>
+                <li><strong>Data Penggunaan:</strong> Aktivitas Anda dalam mengerjakan tryout, skor, dan hasil.</li>
+                <li><strong>Data Pembayaran:</strong> Informasi transaksi saat Anda membeli paket tryout.</li>
+            </ul>
+
+            <h3>2. Bagaimana Kami Menggunakan Data Anda</h3>
+            <ul>
+                <li>Untuk memproses pendaftaran dan pembelian paket tryout.</li>
+                <li>Untuk memberikan akses ke tryout dan fitur-fitur UPCADEMI.</li>
+                <li>Untuk mengirimkan notifikasi terkait tryout dan pembaruan.</li>
+                <li>Untuk meningkatkan layanan dan pengalaman pengguna.</li>
+            </ul>
+
+            <h3>3. Perlindungan Data</h3>
+            <p>Kami menggunakan langkah-langkah keamanan yang wajar untuk melindungi data Anda dari akses, pengubahan, atau penghapusan yang tidak sah.</p>
+
+            <h3>4. Berbagi Data dengan Pihak Ketiga</h3>
+            <p>Kami tidak menjual atau membagikan data pribadi Anda kepada pihak ketiga, kecuali:</p>
+            <ul>
+                <li>Diperlukan untuk memproses pembayaran (misal: payment gateway).</li>
+                <li>Diwajibkan oleh hukum atau peraturan yang berlaku.</li>
+            </ul>
+
+            <h3>5. Hak Anda</h3>
+            <ul>
+                <li>Anda dapat mengakses, mengubah, atau menghapus data pribadi Anda kapan saja.</li>
+                <li>Anda dapat meminta penghapusan akun dengan menghubungi kami.</li>
+            </ul>
+
+            <h3>6. Perubahan Kebijakan</h3>
+            <p>Kami dapat memperbarui kebijakan privasi ini dari waktu ke waktu. Perubahan akan diumumkan di halaman ini.</p>
+
+            <div class="update-date">Terakhir diperbarui: 21 Juli 2026</div>
+
+            <a href="index.html" class="btn-back">← Kembali ke Beranda</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="tentang.html">Tentang Kami</a>
+                <a href="kontak.html">Kontak</a>
+                <a href="privasi.html">Kebijakan Privasi</a>
+                <a href="syarat.html">Syarat & Ketentuan</a>
+            </div>
+            <div class="copyright">&copy; 2026 UPCADEMI. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
