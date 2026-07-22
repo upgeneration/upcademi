@@ -964,19 +964,88 @@
     });
 
     function handleImportExcel(input) {
-        if (input.files && input.files[0]) {
-            alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
-                  'Format yang didukung:\n' +
-                  '- Kolom A: Nomor Soal\n' +
-                  '- Kolom B: Teks Soal\n' +
-                  '- Kolom C: Gambar Soal (URL)\n' +
-                  '- Kolom D-H: Opsi A-E\n' +
-                  '- Kolom I: Jawaban Benar\n' +
-                  '- Kolom J: Pembahasan\n' +
-                  '- Kolom K: Gambar Pembahasan (URL)');
-            input.value = '';
-        }
+    if (!input.files || input.files.length === 0) {
+        alert('⚠️ Silakan pilih file terlebih dahulu!');
+        return;
     }
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            const text = e.target.result;
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            
+            if (lines.length < 2) {
+                alert('❌ File kosong atau tidak ada data!');
+                return;
+            }
+
+            // Ambil header (baris pertama)
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            
+            // Cek apakah header sesuai
+            const expectedHeaders = ['no', 'paket', 'teks soal', 'gambar soal', 'opsi a', 'opsi b', 'opsi c', 'opsi d', 'opsi e', 'jawaban', 'pembahasan', 'gambar pembahasan'];
+            
+            // Ambil data soal yang sudah ada
+            let soal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
+            let jumlahTambah = 0;
+
+            // Proses setiap baris data (mulai dari baris ke-2)
+            for (let i = 1; i < lines.length; i++) {
+                const row = lines[i].split(',').map(cell => cell.trim());
+                
+                // Minimal harus ada 11 kolom
+                if (row.length < 11) {
+                    console.warn(`⚠️ Baris ${i+1} diabaikan (kurang kolom)`);
+                    continue;
+                }
+
+                const soalBaru = {
+                    id: Date.now() + i,
+                    paket: row[1] || 'Paket Tryout',
+                    soal: row[2] || 'Soal',
+                    gambar: row[3] || '',
+                    opsiA: row[4] || '',
+                    opsiB: row[5] || '',
+                    opsiC: row[6] || '',
+                    opsiD: row[7] || '',
+                    opsiE: row[8] || '',
+                    jawaban: row[9] || '',
+                    pembahasan: row[10] || '',
+                    pembahasanGambar: row[11] || ''
+                };
+
+                // Validasi minimal: teks soal dan opsi harus ada
+                if (soalBaru.soal && soalBaru.opsiA && soalBaru.jawaban) {
+                    soal.push(soalBaru);
+                    jumlahTambah++;
+                }
+            }
+
+            if (jumlahTambah === 0) {
+                alert('❌ Tidak ada data yang valid untuk di-import. Pastikan format CSV benar!');
+                return;
+            }
+
+            // Simpan ke localStorage
+            localStorage.setItem('soalUpcademi', JSON.stringify(soal));
+            
+            // Refresh tampilan tabel soal
+            renderSoal();
+            
+            alert('✅ ' + jumlahTambah + ' soal berhasil di-import!');
+            
+        } catch(err) {
+            alert('❌ Gagal import file: ' + err.message);
+            console.error(err);
+        }
+    };
+
+    reader.readAsText(file);
+    input.value = '';
+}
 
     // =============================================
     // ===== FORM SUBMIT SOAL =====
