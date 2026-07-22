@@ -515,62 +515,54 @@
     closeSubmitModal();
     clearInterval(timerInterval);
 
-    // ===== BUAT SALINAN JAWABAN =====
-    const finalAnswers = answers.map(a => (a !== null && a !== undefined) ? a : null);
+    // ===== 1. KUMPULKAN JAWABAN =====
+    const jawabanUser = [];
+    for (let i = 0; i < questions.length; i++) {
+        const jawaban = answers[i];
+        if (jawaban !== null && jawaban !== undefined) {
+            jawabanUser.push(jawaban);
+        } else {
+            jawabanUser.push(null);
+        }
+    }
 
-    console.log('📝 Jawaban yang akan disimpan:', finalAnswers);
+    console.log('📝 Jawaban User:', jawabanUser);
 
-    // Hitung skor
+    // ===== 2. HITUNG SKOR =====
     let benar = 0;
     let salah = 0;
     let tidakDijawab = 0;
 
     questions.forEach((q, i) => {
-        const ans = finalAnswers[i];
-        if (ans === null || ans === undefined) {
+        const userAns = jawabanUser[i];
+        const correctAns = q.correct || 0;
+
+        if (userAns === null) {
             tidakDijawab++;
-        } else if (String(ans) === String(q.correct)) {
+        } else if (userAns === correctAns) {
             benar++;
         } else {
             salah++;
         }
     });
 
-    const userEmail = localStorage.getItem('userEmail') || 'anonymous';
-    const userName = localStorage.getItem('userName') || 'User';
-    const paketName = document.getElementById('paketName').textContent || 'Tryout';
+    console.log('📊 Skor:', benar, 'Benar,', salah, 'Salah,', tidakDijawab, 'Tidak dijawab');
 
-    const hasil = {
-        id: Date.now(),
-        userEmail: userEmail,
-        userName: userName,
-        paket: paketName,
+    // ===== 3. SIMPAN KE LOCALSTORAGE =====
+    const data = {
+        jawaban: jawabanUser,
         skor: benar,
         total: questions.length,
         benar: benar,
         salah: salah,
         tidakDijawab: tidakDijawab,
-        tanggal: new Date().toISOString(),
-        answers: finalAnswers
+        timestamp: new Date().toISOString()
     };
 
-    // ===== SIMPAN KE LOCALSTORAGE =====
-    // 1. Simpan ke hasilTryout (untuk leaderboard & riwayat)
-    let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
-    hasilList.push(hasil);
-    localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
+    localStorage.setItem('hasilTryoutUser', JSON.stringify(data));
+    console.log('✅ Data tersimpan di localStorage:', data);
 
-    // 2. Simpan ke examResult (untuk result.html)
-    localStorage.setItem('examResult', JSON.stringify({
-        answers: finalAnswers,
-        totalQuestions: questions.length,
-        timestamp: new Date().toISOString()
-    }));
-
-    console.log('✅ Data berhasil disimpan!');
-    console.log('📦 examResult:', JSON.parse(localStorage.getItem('examResult')));
-
-    // Redirect ke halaman hasil
+    // ===== 4. REDIRECT =====
     window.location.href = 'result.html?paket=' + paketId;
 }
         function submitExam(e) {
