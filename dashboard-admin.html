@@ -611,452 +611,436 @@
     </section>
 
     <script src="js/script.js"></script>
-    <script>
-        // ===== AMBIL PESANAN DARI LOCALSTORAGE =====
-function getPesanan() {
-    return JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
-}
+<script>
+    // =============================================
+    // ===== AMBIL DATA DARI LOCALSTORAGE =====
+    // =============================================
 
-function renderOrders() {
-    const tbody = document.getElementById('ordersTable');
-    if (!tbody) return;
-
-    const pesanan = getPesanan();
-
-    if (pesanan.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
-                    📭 Belum ada pesanan.
-                </td>
-            </tr>
-        `;
-        return;
+    // ===== PESANAN =====
+    function getPesanan() {
+        return JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
     }
 
-    tbody.innerHTML = pesanan.map((item, index) => {
-        const statusClass = item.status === 'aktif' ? 'active' : 
-                           item.status === 'pending' ? 'pending' : 'expired';
-        const statusText = item.status === 'aktif' ? '✅ Aktif' : 
-                          item.status === 'pending' ? '⏳ Pending' : '❌ Kadaluarsa';
-        
-        return `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${item.userName}</td>
-                <td>${item.paketName}</td>
-                <td>${item.tanggal}</td>
-                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                <td>
-                    ${item.status === 'pending' ? 
-                        `<button class="btn-action verify" onclick="verifikasiPesanan(${item.id})">✅ Verifikasi</button>` : 
-                        ''}
-                    <button class="btn-action delete" onclick="hapusPesanan(${item.id})">🗑️</button>
-                </td>
-            </tr>
-        `;
-    }).join('');
-}
-
-// ===== VERIFIKASI PESANAN =====
-function verifikasiPesanan(id) {
-    if (!confirm('Yakin ingin memverifikasi pesanan ini? User akan mendapat akses tryout.')) return;
-    
-    let pesanan = getPesanan();
-    const index = pesanan.findIndex(p => p.id === id);
-    
-    if (index !== -1) {
-        pesanan[index].status = 'aktif';
+    function savePesanan(pesanan) {
         localStorage.setItem('pesananUpcademi', JSON.stringify(pesanan));
+    }
+
+    // ===== USERS =====
+    function getUsers() {
+        return JSON.parse(localStorage.getItem('usersUpcademi') || '[]');
+    }
+
+    // ===== SOAL =====
+    function getSoal() {
+        return JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
+    }
+
+    // ===== PAKET =====
+    function getPaket() {
+        try {
+            const data = localStorage.getItem('paketUpcademi');
+            return data ? JSON.parse(data) : [];
+        } catch(e) {
+            return [];
+        }
+    }
+
+    function savePaket(paket) {
+        localStorage.setItem('paketUpcademi', JSON.stringify(paket));
+    }
+
+    // =============================================
+    // ===== RENDER ORDERS (PESANAN) =====
+    // =============================================
+
+    function renderOrders() {
+        const tbody = document.getElementById('ordersTable');
+        if (!tbody) return;
+
+        const pesanan = getPesanan();
+
+        if (pesanan.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
+                        📭 Belum ada pesanan.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = pesanan.map((item, index) => {
+            const statusClass = item.status === 'aktif' ? 'active' : 
+                               item.status === 'pending' ? 'pending' : 'expired';
+            const statusText = item.status === 'aktif' ? '✅ Aktif' : 
+                              item.status === 'pending' ? '⏳ Pending' : '❌ Kadaluarsa';
+
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.userName || 'User'}</td>
+                    <td>${item.paketName || 'Paket'}</td>
+                    <td>${item.tanggal || '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        ${item.status === 'pending' ? 
+                            `<button class="btn-action verify" onclick="verifikasiPesanan(${item.id})">✅ Verifikasi</button>` : 
+                            ''}
+                        <button class="btn-action delete" onclick="hapusPesanan(${item.id})">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ===== VERIFIKASI PESANAN =====
+    function verifikasiPesanan(id) {
+        if (!confirm('Yakin ingin memverifikasi pesanan ini? User akan mendapat akses tryout.')) return;
+
+        let pesanan = getPesanan();
+        const index = pesanan.findIndex(p => p.id === id);
+
+        if (index !== -1) {
+            pesanan[index].status = 'aktif';
+            savePesanan(pesanan);
+            renderOrders();
+            updateStats();
+            alert('✅ Pesanan berhasil diverifikasi! User sekarang bisa mengerjakan tryout.');
+        }
+    }
+
+    // ===== HAPUS PESANAN =====
+    function hapusPesanan(id) {
+        if (!confirm('Yakin ingin menghapus pesanan ini?')) return;
+
+        let pesanan = getPesanan();
+        pesanan = pesanan.filter(p => p.id !== id);
+        savePesanan(pesanan);
         renderOrders();
         updateStats();
-        alert('✅ Pesanan berhasil diverifikasi! User sekarang bisa mengerjakan tryout.');
     }
-}
 
-// ===== HAPUS PESANAN =====
-function hapusPesanan(id) {
-    if (!confirm('Yakin ingin menghapus pesanan ini?')) return;
-    
-    let pesanan = getPesanan();
-    pesanan = pesanan.filter(p => p.id !== id);
-    localStorage.setItem('pesananUpcademi', JSON.stringify(pesanan));
-    renderOrders();
-    updateStats();
-}
+    // =============================================
+    // ===== RENDER USERS =====
+    // =============================================
 
-// ===== UPDATE STATS =====
-function updateStats() {
-    const pesanan = getPesanan();
-    const total = pesanan.length;
-    const pending = pesanan.filter(p => p.status === 'pending').length;
-    const totalRevenue = pesanan
-        .filter(p => p.status === 'aktif')
-        .reduce((sum, p) => sum + (p.harga || 0), 0);
+    function renderUsers() {
+        const tbody = document.getElementById('usersTable');
+        if (!tbody) return;
 
-    document.getElementById('totalOrders').textContent = total;
-    document.getElementById('pendingOrders').textContent = pending;
-    document.getElementById('totalRevenue').textContent = 'Rp' + totalRevenue.toLocaleString('id-ID');
-}
+        const users = getUsers();
 
-        // =============================================
-        // ===== KELOLA PAKET (localStorage) =====
-        // =============================================
-
-        function getPaket() {
-            try {
-                const data = localStorage.getItem('paketUpcademi');
-                return data ? JSON.parse(data) : [];
-            } catch(e) {
-                return [];
-            }
+        if (users.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
+                        👤 Belum ada pengguna terdaftar.
+                    </td>
+                </tr>
+            `;
+            return;
         }
 
-        function savePaket(paket) {
-            localStorage.setItem('paketUpcademi', JSON.stringify(paket));
+        tbody.innerHTML = users.map((item, index) => {
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.name || '-'}</td>
+                    <td>${item.email || '-'}</td>
+                    <td>${item.phone || '-'}</td>
+                    <td>-</td>
+                    <td>
+                        <button class="btn-action delete" onclick="deleteUser(${index})">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function deleteUser(index) {
+        if (!confirm('Yakin ingin menghapus pengguna ini?')) return;
+
+        let users = getUsers();
+        users.splice(index, 1);
+        localStorage.setItem('usersUpcademi', JSON.stringify(users));
+        renderUsers();
+        updateStats();
+    }
+
+    // =============================================
+    // ===== RENDER SOAL =====
+    // =============================================
+
+    function renderSoal() {
+        const tbody = document.getElementById('soalTable');
+        if (!tbody) return;
+
+        const soal = getSoal();
+
+        if (soal.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:30px; color:var(--text-gray);">
+                        📝 Belum ada soal.
+                    </td>
+                </tr>
+            `;
+            return;
         }
 
-        function renderPaket() {
-            const tbody = document.getElementById('paketTable');
-            if (!tbody) return;
+        tbody.innerHTML = soal.map((item, index) => {
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.paket || '-'}</td>
+                    <td>${item.soal ? item.soal.substring(0, 30) + (item.soal.length > 30 ? '...' : '') : '-'}</td>
+                    <td>${item.gambar || 'Tidak'}</td>
+                    <td>
+                        <button class="btn-action delete" onclick="deleteSoal(${index})">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
 
-            const paket = getPaket();
+    function deleteSoal(index) {
+        if (!confirm('Yakin ingin menghapus soal ini?')) return;
 
-            if (paket.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
-                            📭 Belum ada paket. Silakan tambahkan paket baru!
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
+        let soal = getSoal();
+        soal.splice(index, 1);
+        localStorage.setItem('soalUpcademi', JSON.stringify(soal));
+        renderSoal();
+    }
 
-            tbody.innerHTML = paket.map((item, index) => {
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><strong>${item.name}</strong></td>
-                        <td>${item.category}</td>
-                        <td>Rp${item.price}</td>
-                        <td>${item.duration}</td>
-                        <td>
-                            <button class="btn-action delete" onclick="hapusPaket(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+    // =============================================
+    // ===== KELOLA PAKET =====
+    // =============================================
+
+    function renderPaket() {
+        const tbody = document.getElementById('paketTable');
+        if (!tbody) return;
+
+        const paket = getPaket();
+
+        if (paket.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
+                        📭 Belum ada paket. Silakan tambahkan paket baru!
+                    </td>
+                </tr>
+            `;
+            return;
         }
 
-        function tambahPaket(e) {
-            e.preventDefault();
+        tbody.innerHTML = paket.map((item, index) => {
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.category}</td>
+                    <td>Rp${item.price}</td>
+                    <td>${item.duration}</td>
+                    <td>
+                        <button class="btn-action delete" onclick="hapusPaket(${item.id})">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
 
-            const nama = document.getElementById('namaPaket');
-            const kategori = document.getElementById('kategoriPaket');
-            const harga = document.getElementById('hargaPaket');
-            const durasi = document.getElementById('durasiPaket');
-            const deskripsi = document.getElementById('deskripsiPaket');
-            const fitur = document.getElementById('fiturPaket');
-            const alert = document.getElementById('paketAlert');
+    function tambahPaket(e) {
+        e.preventDefault();
 
-            alert.style.display = 'none';
-            alert.className = '';
+        const nama = document.getElementById('namaPaket');
+        const kategori = document.getElementById('kategoriPaket');
+        const harga = document.getElementById('hargaPaket');
+        const durasi = document.getElementById('durasiPaket');
+        const deskripsi = document.getElementById('deskripsiPaket');
+        const fitur = document.getElementById('fiturPaket');
+        const alert = document.getElementById('paketAlert');
 
-            if (!nama.value.trim() || !kategori.value || !harga.value || !durasi.value.trim()) {
-                alert.textContent = '⚠️ Semua field wajib diisi!';
-                alert.style.display = 'block';
-                alert.style.background = '#FFEBEE';
-                alert.style.color = '#B71C1C';
-                return false;
-            }
+        alert.style.display = 'none';
+        alert.className = '';
 
-            const paketBaru = {
-                id: Date.now(),
-                name: nama.value.trim(),
-                category: kategori.value,
-                price: harga.value,
-                duration: durasi.value.trim(),
-                description: deskripsi.value.trim(),
-                features: fitur.value.trim()
-            };
-
-            const paket = getPaket();
-            paket.push(paketBaru);
-            savePaket(paket);
-
-            alert.textContent = '✅ Paket "' + nama.value + '" berhasil ditambahkan!';
+        if (!nama.value.trim() || !kategori.value || !harga.value || !durasi.value.trim()) {
+            alert.textContent = '⚠️ Semua field wajib diisi!';
             alert.style.display = 'block';
-            alert.style.background = '#E8F5E9';
-            alert.style.color = '#2E7D32';
-
-            document.getElementById('formPaket').reset();
-            document.getElementById('durasiPaket').value = '3 Bulan';
-            renderPaket();
-
+            alert.style.background = '#FFEBEE';
+            alert.style.color = '#B71C1C';
             return false;
         }
 
-        function hapusPaket(id) {
-            if (!confirm('Yakin ingin menghapus paket ini?')) return;
+        const paketBaru = {
+            id: Date.now(),
+            name: nama.value.trim(),
+            category: kategori.value,
+            price: harga.value,
+            duration: durasi.value.trim(),
+            description: deskripsi.value.trim(),
+            features: fitur.value.trim()
+        };
 
-            let paket = getPaket();
-            paket = paket.filter(item => item.id !== id);
-            savePaket(paket);
-            renderPaket();
+        const paket = getPaket();
+        paket.push(paketBaru);
+        savePaket(paket);
+
+        alert.textContent = '✅ Paket "' + nama.value + '" berhasil ditambahkan!';
+        alert.style.display = 'block';
+        alert.style.background = '#E8F5E9';
+        alert.style.color = '#2E7D32';
+
+        document.getElementById('formPaket').reset();
+        document.getElementById('durasiPaket').value = '3 Bulan';
+        renderPaket();
+
+        return false;
+    }
+
+    function hapusPaket(id) {
+        if (!confirm('Yakin ingin menghapus paket ini?')) return;
+
+        let paket = getPaket();
+        paket = paket.filter(item => item.id !== id);
+        savePaket(paket);
+        renderPaket();
+    }
+
+    // =============================================
+    // ===== UPDATE STATS =====
+    // =============================================
+
+    function updateStats() {
+        const users = getUsers();
+        const pesanan = getPesanan();
+        const pending = pesanan.filter(p => p.status === 'pending').length;
+        const totalRevenue = pesanan
+            .filter(p => p.status === 'aktif')
+            .reduce((sum, p) => sum + (p.harga || 0), 0);
+
+        document.getElementById('totalUsers').textContent = users.length;
+        document.getElementById('totalOrders').textContent = pesanan.length;
+        document.getElementById('pendingOrders').textContent = pending;
+        document.getElementById('totalRevenue').textContent = 'Rp' + totalRevenue.toLocaleString('id-ID');
+    }
+
+    // =============================================
+    // ===== SWITCH TAB =====
+    // =============================================
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.admin-tabs button').forEach(el => el.classList.remove('active'));
+
+        document.getElementById('tab-' + tabName).classList.add('active');
+        document.querySelector(`.admin-tabs button[onclick="switchTab('${tabName}')"]`).classList.add('active');
+    }
+
+    // =============================================
+    // ===== PREVIEW FILE =====
+    // =============================================
+
+    document.getElementById('fileSoal').addEventListener('change', function(e) {
+        const preview = document.getElementById('previewSoal');
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                preview.innerHTML = `<img src="${ev.target.result}" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
+            };
+            reader.readAsDataURL(this.files[0]);
         }
+    });
 
-        // =============================================
-        // ===== RENDER ORDERS =====
-        // =============================================
+    document.getElementById('filePembahasan').addEventListener('change', function(e) {
+        const preview = document.getElementById('previewPembahasan');
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                preview.innerHTML = `<img src="${ev.target.result}" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
 
-        function renderOrders() {
-            const tbody = document.getElementById('ordersTable');
-            tbody.innerHTML = ordersData.map((item, index) => {
-                const statusClass = item.status === 'active' ? 'active' : 
-                                   item.status === 'pending' ? 'pending' : 'expired';
-                const statusText = item.status === 'active' ? '✅ Aktif' : 
-                                  item.status === 'pending' ? '⏳ Pending' : '❌ Kadaluarsa';
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.name}</td>
-                        <td>${item.paket}</td>
-                        <td>${item.date}</td>
-                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                        <td>
-                            ${item.status === 'pending' ? `<button class="btn-action verify" onclick="verifyOrder(${item.id})">✅ Verifikasi</button>` : ''}
-                            <button class="btn-action delete" onclick="deleteOrder(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
+    function handleImportExcel(input) {
+        if (input.files && input.files[0]) {
+            alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
+                  'Format yang didukung:\n' +
+                  '- Kolom A: Nomor Soal\n' +
+                  '- Kolom B: Teks Soal\n' +
+                  '- Kolom C: Gambar Soal (URL)\n' +
+                  '- Kolom D-H: Opsi A-E\n' +
+                  '- Kolom I: Jawaban Benar\n' +
+                  '- Kolom J: Pembahasan\n' +
+                  '- Kolom K: Gambar Pembahasan (URL)');
+            input.value = '';
+        }
+    }
+
+    // =============================================
+    // ===== FORM SUBMIT SOAL =====
+    // =============================================
+
+    document.getElementById('formSoal').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('✅ Soal berhasil disimpan! (Data akan tersimpan di database)');
+        this.reset();
+        document.getElementById('filePreview').innerHTML = '';
+    });
+
+    // =============================================
+    // ===== UPDATE NAVBAR =====
+    // =============================================
+
+    function updateNavbar() {
+        const container = document.getElementById('navbarLogin');
+        if (!container) return;
+
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+        if (isLoggedIn) {
+            if (isAdmin) {
+                container.innerHTML = `
+                    <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                    <a href="#" onclick="logout()" class="btn-login">Logout</a>
                 `;
-            }).join('');
-        }
-
-        function verifyOrder(id) {
-            const order = ordersData.find(o => o.id === id);
-            if (order && order.status === 'pending') {
-                order.status = 'active';
-                renderOrders();
-                updateStats();
-                alert('✅ Pesanan berhasil diverifikasi!');
-            }
-        }
-
-        function deleteOrder(id) {
-            if (confirm('Yakin ingin menghapus pesanan ini?')) {
-                const index = ordersData.findIndex(o => o.id === id);
-                if (index !== -1) {
-                    ordersData.splice(index, 1);
-                    renderOrders();
-                    updateStats();
-                }
-            }
-        }
-
-        // =============================================
-        // ===== RENDER USERS =====
-        // =============================================
-
-        function renderUsers() {
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = usersData.map((item, index) => {
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.name}</td>
-                        <td>${item.email}</td>
-                        <td>${item.phone}</td>
-                        <td>${item.paket}</td>
-                        <td>
-                            <button class="btn-action delete" onclick="deleteUser(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function deleteUser(id) {
-            if (confirm('Yakin ingin menghapus pengguna ini?')) {
-                const index = usersData.findIndex(u => u.id === id);
-                if (index !== -1) {
-                    usersData.splice(index, 1);
-                    renderUsers();
-                    updateStats();
-                }
-            }
-        }
-
-        // =============================================
-        // ===== RENDER SOAL =====
-        // =============================================
-
-        function renderSoal() {
-            const tbody = document.getElementById('soalTable');
-            tbody.innerHTML = soalData.map((item, index) => {
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.paket}</td>
-                        <td>${item.soal.substring(0, 30)}${item.soal.length > 30 ? '...' : ''}</td>
-                        <td>${item.gambar}</td>
-                        <td>
-                            <button class="btn-action delete" onclick="deleteSoal(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function deleteSoal(id) {
-            if (confirm('Yakin ingin menghapus soal ini?')) {
-                const index = soalData.findIndex(s => s.id === id);
-                if (index !== -1) {
-                    soalData.splice(index, 1);
-                    renderSoal();
-                }
-            }
-        }
-
-        // =============================================
-        // ===== UPDATE STATS =====
-        // =============================================
-
-        function updateStats() {
-            document.getElementById('totalUsers').textContent = usersData.length;
-            document.getElementById('totalOrders').textContent = ordersData.length;
-            document.getElementById('pendingOrders').textContent = ordersData.filter(o => o.status === 'pending').length;
-            document.getElementById('totalRevenue').textContent = 'Rp' + (199000 + 179000 + 249000).toLocaleString('id-ID');
-        }
-
-        // =============================================
-        // ===== SWITCH TAB =====
-        // =============================================
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.admin-tabs button').forEach(el => el.classList.remove('active'));
-
-            document.getElementById('tab-' + tabName).classList.add('active');
-            document.querySelector(`.admin-tabs button[onclick="switchTab('${tabName}')"]`).classList.add('active');
-        }
-
-        // =============================================
-        // ===== PREVIEW FILE =====
-        // =============================================
-
-        document.getElementById('fileSoal').addEventListener('change', function(e) {
-            const preview = document.getElementById('previewSoal');
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    preview.innerHTML = `<img src="${ev.target.result}" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-
-        document.getElementById('filePembahasan').addEventListener('change', function(e) {
-            const preview = document.getElementById('previewPembahasan');
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    preview.innerHTML = `<img src="${ev.target.result}" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
-                };
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-
-        function handleImportExcel(input) {
-            if (input.files && input.files[0]) {
-                alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
-                      'Format yang didukung:\n' +
-                      '- Kolom A: Nomor Soal\n' +
-                      '- Kolom B: Teks Soal\n' +
-                      '- Kolom C: Gambar Soal (URL)\n' +
-                      '- Kolom D-H: Opsi A-E\n' +
-                      '- Kolom I: Jawaban Benar\n' +
-                      '- Kolom J: Pembahasan\n' +
-                      '- Kolom K: Gambar Pembahasan (URL)');
-                input.value = '';
-            }
-        }
-
-        // =============================================
-        // ===== FORM SUBMIT SOAL =====
-        // =============================================
-
-        document.getElementById('formSoal').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('✅ Soal berhasil disimpan! (Data akan tersimpan di database)');
-            this.reset();
-            document.getElementById('filePreview').innerHTML = '';
-        });
-
-                // =============================================
-        // ===== INIT =====
-        // =============================================
-
-        document.addEventListener('DOMContentLoaded', function() {
-            renderOrders();
-            renderUsers();
-            renderSoal();
-            renderPaket();
-            updateStats();
-            updateNavbar(); // <-- TAMBAHKAN INI
-        });
-
-        // =============================================
-        // ===== UPDATE NAVBAR & LOGOUT =====
-        // =============================================
-
-        function updateNavbar() {
-            const container = document.getElementById('navbarLogin');
-            if (!container) return;
-
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const isLoggedIn = localStorage.getItem('userEmail') !== null;
-
-            console.log('🔄 Update Navbar - isLoggedIn:', isLoggedIn, 'isAdmin:', isAdmin);
-
-            if (isLoggedIn) {
-                if (isAdmin) {
-                    container.innerHTML = `
-                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
-                }
             } else {
                 container.innerHTML = `
-                    <a href="register.html" class="btn-register">Daftar</a>
-                    <a href="login.html" class="btn-login">Login</a>
+                    <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                    <a href="#" onclick="logout()" class="btn-login">Logout</a>
                 `;
             }
+        } else {
+            container.innerHTML = `
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            `;
         }
+    }
 
-        function logout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('isAdmin');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userName');
-                localStorage.setItem('logoutEvent', Date.now());
-                window.location.href = 'index.html';
-            }
+    function logout() {
+        if (confirm('Yakin ingin logout?')) {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html';
         }
+    }
 
-        // ===== DENGARKAN PERUBAHAN LOGIN DI HALAMAN LAIN =====
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'logoutEvent' || e.key === 'userEmail' || e.key === 'isAdmin') {
-                console.log('🔄 Terdeteksi perubahan login, update navbar...');
-                updateNavbar();
-            }
-        });
+    // =============================================
+    // ===== INIT =====
+    // =============================================
 
-    </script>
+    document.addEventListener('DOMContentLoaded', function() {
+        renderOrders();
+        renderUsers();
+        renderSoal();
+        renderPaket();
+        updateStats();
+        updateNavbar();
+    });
+</script>
 </body>
 </html>
