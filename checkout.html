@@ -449,6 +449,27 @@ document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toL
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        // ===== CEK APAKAH USER SUDAH LOGIN =====
+function cekLoginSebelumCheckout() {
+    const isLoggedIn = localStorage.getItem('userEmail') !== null;
+    if (!isLoggedIn) {
+        alert('⚠️ Anda harus login terlebih dahulu untuk membeli paket tryout!');
+        window.location.href = 'login.html';
+        return false;
+    }
+    return true;
+}
+
+// ===== HANLE CHECKOUT =====
+function handleCheckout() {
+    // Cek login dulu
+    if (!cekLoginSebelumCheckout()) {
+        return;
+    }
+
+    // ... kode checkout yang sudah ada (upload bukti, dll)
+    // Pastikan semua proses checkout hanya berjalan jika user sudah login.
+}
     </script>
 
 </body>
