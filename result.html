@@ -225,7 +225,7 @@
         </div>
     </section>
 
-    <script src="js/script.js"></script>
+   <script src="js/script.js"></script>
 <script>
     // =============================================
     // ===== AMBIL DATA DARI LOCALSTORAGE =====
@@ -251,17 +251,23 @@
     let paketName = '';
 
     if (paketId) {
-        const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]').find(p => p.id == paketId);
+        const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+        const paket = semuaPaket.find(p => String(p.id) === String(paketId));
         if (paket) {
             paketName = paket.name;
-            soalData = semuaSoal.filter(s => s.paket === paketName);
+            soalData = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
         }
     }
 
-    // Jika tidak ada soal, pakai default
+    // Jika tidak ada soal, pakai semua soal
+    if (soalData.length === 0 && semuaSoal.length > 0) {
+        soalData = semuaSoal;
+    }
+
+    // Jika masih tidak ada, pakai default
     if (soalData.length === 0) {
         soalData = [
-            { id: 1, number: 1, text: 'Belum ada soal untuk paket ini.', options: ['-', '-', '-', '-', '-'], correct: 0, pembahasan: 'Tidak ada pembahasan.' }
+            { id: 1, number: 1, soal: 'Belum ada soal untuk paket ini.', opsiA: '-', opsiB: '-', opsiC: '-', opsiD: '-', opsiE: '-', jawaban: 'A', pembahasan: 'Tidak ada pembahasan.' }
         ];
     }
 
@@ -269,23 +275,40 @@
     const userAnswers = result.answers || [];
     const total = result.totalQuestions || soalData.length;
 
+    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+
     // Gabungkan soal dengan jawaban user
     const soalDenganJawaban = soalData.map((q, index) => {
         const userAns = userAnswers[index] !== undefined ? userAnswers[index] : null;
         let status = 'tidak-dijawab';
         let isCorrect = false;
 
+        // Cari index jawaban benar (A=0, B=1, dst)
+        const correctIndex = optionLabels.indexOf(q.jawaban);
+        const correctAnswer = correctIndex !== -1 ? correctIndex : 0;
+
         if (userAns === null || userAns === undefined) {
             status = 'tidak-dijawab';
-        } else if (userAns === q.correct) {
+        } else if (userAns === correctAnswer) {
             status = 'benar';
             isCorrect = true;
         } else {
             status = 'salah';
         }
 
+        // Susun options dari opsiA-E
+        const options = [
+            q.opsiA || '-',
+            q.opsiB || '-',
+            q.opsiC || '-',
+            q.opsiD || '-',
+            q.opsiE || '-'
+        ];
+
         return {
             ...q,
+            options: options,
+            correct: correctAnswer,
             userAnswer: userAns,
             isCorrect: isCorrect,
             status: status
@@ -306,7 +329,6 @@
 
     // ===== TAMPILKAN PEMBAHASAN =====
     const container = document.getElementById('pembahasanContainer');
-    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
 
     soalDenganJawaban.forEach((q, index) => {
         const card = document.createElement('div');
@@ -317,31 +339,24 @@
         const statusClass = q.status === 'benar' ? 'benar' : 
                            q.status === 'salah' ? 'salah' : '';
 
-        const imageHTML = q.image ? `<img src="${q.image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
-
-        const pembahasanImageHTML = q.pembahasanGambar ? 
-            `<img src="${q.pembahasanGambar}" alt="Gambar pembahasan" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
+        const imageHTML = q.gambar ? `<img src="${q.gambar}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
 
         const userAnswerText = q.userAnswer !== null && q.userAnswer !== undefined ? 
-            optionLabels[q.userAnswer] + '. ' + (q.options ? q.options[q.userAnswer] : '-') : 
+            optionLabels[q.userAnswer] + '. ' + (q.options[q.userAnswer] || '-') : 
             'Tidak dijawab';
 
-        let userOptionImage = '';
-        if (q.userAnswer !== null && q.userAnswer !== undefined && q.optionImages && q.optionImages[q.userAnswer]) {
-            userOptionImage = `<br><img src="${q.optionImages[q.userAnswer]}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0; margin-top:4px;">`;
-        }
+        const correctAnswerText = optionLabels[q.correct] + '. ' + (q.options[q.correct] || '-');
 
         card.innerHTML = `
             <div class="soal-header">
                 <span>Soal ${q.number || index + 1}</span>
                 <span class="status ${statusClass}">${statusText}</span>
             </div>
-            <div class="soal-text">${imageHTML}${q.text}</div>
-            <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong>${userOptionImage}</div>
-            <div class="jawaban-benar">✅ Jawaban Benar: ${optionLabels[q.correct]}. ${q.options ? q.options[q.correct] : '-'}</div>
+            <div class="soal-text">${imageHTML}${q.soal || 'Soal tidak tersedia'}</div>
+            <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong></div>
+            <div class="jawaban-benar">✅ Jawaban Benar: ${correctAnswerText}</div>
             <div class="pembahasan">
                 <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Tidak ada pembahasan.'}
-                ${pembahasanImageHTML}
             </div>
         `;
 
