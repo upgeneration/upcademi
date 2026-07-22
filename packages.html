@@ -24,6 +24,7 @@
             font-size: 18px;
         }
 
+        /* Filter */
         .filter-section {
             display: flex;
             justify-content: center;
@@ -50,6 +51,12 @@
             color: var(--white);
         }
 
+        .filter-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* Grid paket lebih besar */
         .package-grid-full {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -87,6 +94,7 @@
             margin-bottom: 12px;
         }
 
+        /* ===== RESPONSIF ===== */
         @media (max-width: 992px) {
             .package-grid-full {
                 grid-template-columns: repeat(2, 1fr);
@@ -99,12 +107,15 @@
                 max-width: 400px;
                 margin: 0 auto;
             }
+
             .packages-page h1 {
                 font-size: 28px;
             }
+
             .filter-section {
                 gap: 8px;
             }
+
             .filter-btn {
                 padding: 8px 16px;
                 font-size: 13px;
@@ -116,26 +127,26 @@
 
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
-                <span>UPCADEMI</span>
-            </a>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="nav-menu" id="navMenu">
-                <a href="index.html">Beranda</a>
-                <a href="packages.html">Paket</a>
-                <a href="leaderboard.html">Peringkat</a>
-                <div id="navbarLogin">
-                    <!-- Diisi oleh JavaScript -->
-                </div>
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+            <span>UPCADEMI</span>
+        </a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="index.html">Beranda</a>
+            <a href="packages.html">Paket</a>
+            <a href="leaderboard.html">Peringkat</a>
+            <div id="navbarLogin">
+                <!-- Diisi oleh JavaScript -->
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- ===== PACKAGES SECTION ===== -->
     <section class="packages-page">
@@ -143,6 +154,7 @@
             <h1>Semua Paket Tryout</h1>
             <p class="subtitle">Pilih paket sesuai kebutuhan dan target ujianmu</p>
 
+            <!-- Filter -->
             <div class="filter-section">
                 <button class="filter-btn active" data-filter="all">Semua</button>
                 <button class="filter-btn" data-filter="cpns">CPNS</button>
@@ -150,8 +162,99 @@
                 <button class="filter-btn" data-filter="kedinasan">Kedinasan</button>
             </div>
 
+            <!-- Grid Paket -->
             <div class="package-grid-full" id="packageGrid">
-                <!-- Akan diisi oleh JavaScript -->
+                <!-- Paket 1: CPNS -->
+                <div class="package-card-full popular" data-category="cpns">
+                    <div class="badge-popular">Paling Laris</div>
+                    <span class="badge-category">CPNS</span>
+                    <div class="package-name">CPNS Master</div>
+                    <div class="package-price">Rp199.000 <small>/paket</small></div>
+                    <p class="package-desc">Persiapan lengkap untuk tes CPNS 2026</p>
+                    <ul class="package-features">
+                        <li>10 Paket Tryout CPNS</li>
+                        <li>TWK, TIU, TKP lengkap</li>
+                        <li>Pembahasan detail</li>
+                        <li>Akses 60 hari</li>
+                    </ul>
+                    <a href="checkout.html?paket=cpns-master" class="btn-buy">Beli Sekarang</a>
+                </div>
+
+                <!-- Paket 2: UTBK -->
+                <div class="package-card-full" data-category="utbk">
+                    <span class="badge-category">UTBK</span>
+                    <div class="package-name">UTBK Pro</div>
+                    <div class="package-price">Rp179.000 <small>/paket</small></div>
+                    <p class="package-desc">Raih skor tertinggi di UTBK 2026</p>
+                    <ul class="package-features">
+                        <li>8 Paket Tryout UTBK</li>
+                        <li>TPS + TKA lengkap</li>
+                        <li>Analisis per materi</li>
+                        <li>Akses 45 hari</li>
+                    </ul>
+                    <a href="checkout.html?paket=utbk-pro" class="btn-buy">Beli Sekarang</a>
+                </div>
+
+                <!-- Paket 3: Kedinasan -->
+                <div class="package-card-full" data-category="kedinasan">
+                    <span class="badge-category">Kedinasan</span>
+                    <div class="package-name">Kedinasan Plus</div>
+                    <div class="package-price">Rp249.000 <small>/paket</small></div>
+                    <p class="package-desc">Lulus sekolah kedinasan favorit</p>
+                    <ul class="package-features">
+                        <li>12 Paket Tryout Kedinasan</li>
+                        <li>Soal SKD + SKB</li>
+                        <li>Pembahasan lengkap</li>
+                        <li>Akses 90 hari</li>
+                    </ul>
+                    <a href="checkout.html?paket=kedinasan-plus" class="btn-buy">Beli Sekarang</a>
+                </div>
+
+                <!-- Paket 4: CPNS Basic -->
+                <div class="package-card-full" data-category="cpns">
+                    <span class="badge-category">CPNS</span>
+                    <div class="package-name">CPNS Basic</div>
+                    <div class="package-price">Rp99.000 <small>/paket</small></div>
+                    <p class="package-desc">Mulai persiapan CPNS dari dasar</p>
+                    <ul class="package-features">
+                        <li>3 Paket Tryout CPNS</li>
+                        <li>TWK + TIU + TKP</li>
+                        <li>Pembahasan singkat</li>
+                        <li>Akses 30 hari</li>
+                    </ul>
+                    <a href="checkout.html?paket=cpns-basic" class="btn-buy">Beli Sekarang</a>
+                </div>
+
+                <!-- Paket 5: UTBK Premium -->
+                <div class="package-card-full popular" data-category="utbk">
+                    <div class="badge-popular">Paling Laris</div>
+                    <span class="badge-category">UTBK</span>
+                    <div class="package-name">UTBK Premium</div>
+                    <div class="package-price">Rp299.000 <small>/paket</small></div>
+                    <p class="package-desc">Solusi lengkap untuk UTBK</p>
+                    <ul class="package-features">
+                        <li>15 Paket Tryout UTBK</li>
+                        <li>Semua materi TPS + TKA</li>
+                        <li>Analisis mendalam</li>
+                        <li>Akses 120 hari</li>
+                    </ul>
+                    <a href="checkout.html?paket=utbk-premium" class="btn-buy">Beli Sekarang</a>
+                </div>
+
+                <!-- Paket 6: Kedinasan Basic -->
+                <div class="package-card-full" data-category="kedinasan">
+                    <span class="badge-category">Kedinasan</span>
+                    <div class="package-name">Kedinasan Basic</div>
+                    <div class="package-price">Rp129.000 <small>/paket</small></div>
+                    <p class="package-desc">Persiapan awal sekolah kedinasan</p>
+                    <ul class="package-features">
+                        <li>4 Paket Tryout Kedinasan</li>
+                        <li>SKD + SKB</li>
+                        <li>Pembahasan detail</li>
+                        <li>Akses 30 hari</li>
+                    </ul>
+                    <a href="checkout.html?paket=kedinasan-basic" class="btn-buy">Beli Sekarang</a>
+                </div>
             </div>
         </div>
     </section>
@@ -169,122 +272,121 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script>
-        // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
-        function getPaket() {
-            try {
-                const data = localStorage.getItem('paketUpcademi');
-                return data ? JSON.parse(data) : [];
-            } catch(e) {
-                return [];
-            }
+   <script src="js/script.js"></script>
+<script>
+    // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
+    function getPaket() {
+        try {
+            const data = localStorage.getItem('paketUpcademi');
+            return data ? JSON.parse(data) : [];
+        } catch(e) {
+            return [];
+        }
+    }
+
+    // ===== RENDER SEMUA PAKET =====
+    function renderPackages() {
+        const grid = document.getElementById('packageGrid');
+        if (!grid) return;
+
+        const paket = getPaket();
+
+        if (paket.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align:center; padding:60px 20px; color:var(--text-gray);">
+                    <div style="font-size:48px; margin-bottom:16px;">📦</div>
+                    <h3>Belum ada paket tryout</h3>
+                    <p>Silakan tambahkan paket melalui dashboard admin.</p>
+                </div>
+            `;
+            return;
         }
 
-        // ===== RENDER SEMUA PAKET =====
-        function renderPackages() {
-            const grid = document.getElementById('packageGrid');
-            if (!grid) return;
-
-            const paket = getPaket();
-
-            if (paket.length === 0) {
-                grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align:center; padding:60px 20px; color:var(--text-gray);">
-                        <div style="font-size:48px; margin-bottom:16px;">📦</div>
-                        <h3>Belum ada paket tryout</h3>
-                        <p>Silakan tambahkan paket melalui dashboard admin.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            paket.forEach((item, index) => {
-                const isPopular = index === 0 ? 'popular' : '';
-                const features = item.features ? item.features.split(',').map(f => f.trim()) : [];
-                
-                html += `
-                    <div class="package-card-full ${isPopular}" data-category="${item.category.toLowerCase()}">
-                        ${index === 0 ? `<div class="badge-popular">Paling Laris</div>` : ''}
-                        <span class="badge-category">${item.category}</span>
-                        <div class="package-name">${item.name}</div>
-                        <div class="package-price">Rp${parseInt(item.price).toLocaleString('id-ID')} <small>/paket</small></div>
-                        <p class="package-desc">${item.description || 'Persiapan tryout terbaik'}</p>
-                        <ul class="package-features">
-                            ${features.map(f => `<li>${f}</li>`).join('')}
-                            <li>Akses ${item.duration}</li>
-                        </ul>
-                        <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
-                    </div>
-                `;
-            });
-
-            grid.innerHTML = html;
-        }
-
-        // ===== FILTER PAKET =====
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                const filter = this.dataset.filter;
-                const cards = document.querySelectorAll('.package-card-full');
-
-                cards.forEach(card => {
-                    if (filter === 'all' || card.dataset.category === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
+        // Generate kartu paket
+        let html = '';
+        paket.forEach((item, index) => {
+            const isPopular = index === 0 ? 'popular' : '';
+            const features = item.features ? item.features.split(',').map(f => f.trim()) : [];
+            
+            html += `
+                <div class="package-card-full ${isPopular}" data-category="${item.category.toLowerCase()}">
+                    ${index === 0 ? `<div class="badge-popular">Paling Laris</div>` : ''}
+                    <span class="badge-category">${item.category}</span>
+                    <div class="package-name">${item.name}</div>
+                    <div class="package-price">Rp${parseInt(item.price).toLocaleString('id-ID')} <small>/paket</small></div>
+                    <p class="package-desc">${item.description || 'Persiapan tryout terbaik'}</p>
+                    <ul class="package-features">
+                        ${features.map(f => `<li>${f}</li>`).join('')}
+                        <li>Akses ${item.duration}</li>
+                    </ul>
+                    <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
+                </div>
+            `;
         });
 
-        // ===== UPDATE NAVBAR =====
-        function updateNavbar() {
-            const container = document.getElementById('navbarLogin');
-            if (!container) return;
+        grid.innerHTML = html;
+    }
 
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+    // ===== FILTER PAKET =====
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
 
-            if (isLoggedIn) {
-                if (isAdmin) {
-                    container.innerHTML = `
-                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
+            const filter = this.dataset.filter;
+            const cards = document.querySelectorAll('.package-card-full');
+
+            cards.forEach(card => {
+                if (filter === 'all' || card.dataset.category === filter) {
+                    card.style.display = 'block';
                 } else {
-                    container.innerHTML = `
-                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
+                    card.style.display = 'none';
                 }
-            } else {
-                container.innerHTML = `
-                    <a href="register.html" class="btn-register">Daftar</a>
-                    <a href="login.html" class="btn-login">Login</a>
-                `;
-            }
-        }
-
-        function logout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('isAdmin');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userName');
-                window.location.href = 'index.html';
-            }
-        }
-
-        // ===== JALANKAN SAAT HALAMAN LOAD =====
-        document.addEventListener('DOMContentLoaded', function() {
-            renderPackages();
-            updateNavbar();
+            });
         });
-    </script>
+    });
+
+    // ===== JALANKAN SAAT HALAMAN LOAD =====
+    document.addEventListener('DOMContentLoaded', function() {
+        renderPackages();
+    });
+<script>
+function updateNavbar() {
+    const container = document.getElementById('navbarLogin');
+    if (!container) return;
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const isLoggedIn = localStorage.getItem('userEmail') !== null;
+    if (isLoggedIn) {
+        if (isAdmin) {
+            container.innerHTML = `
+                <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                <a href="#" onclick="logout()" class="btn-login">Logout</a>
+            `;
+        } else {
+            container.innerHTML = `
+                <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                <a href="#" onclick="logout()" class="btn-login">Logout</a>
+            `;
+        }
+    } else {
+        container.innerHTML = `
+            <a href="register.html" class="btn-register">Daftar</a>
+            <a href="login.html" class="btn-login">Login</a>
+        `;
+    }
+}
+function logout() {
+    if (confirm('Yakin ingin logout?')) {
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        window.location.href = 'index.html';
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    updateNavbar();
+});
+</script>
 
 </body>
 </html>
