@@ -929,7 +929,7 @@
             document.getElementById('filePreview').innerHTML = '';
         });
 
-        // =============================================
+                // =============================================
         // ===== INIT =====
         // =============================================
 
@@ -939,48 +939,60 @@
             renderSoal();
             renderPaket();
             updateStats();
+            updateNavbar(); // <-- TAMBAHKAN INI
         });
-   <script>
-// ===== UPDATE NAVBAR =====
-function updateNavbar() {
-    const container = document.getElementById('navbarLogin');
-    if (!container) return;
 
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const isLoggedIn = localStorage.getItem('userEmail') !== null;
+        // =============================================
+        // ===== UPDATE NAVBAR & LOGOUT =====
+        // =============================================
 
-    if (isLoggedIn) {
-        if (isAdmin) {
-            container.innerHTML = `
-                <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
-                <a href="#" onclick="logout()" class="btn-login">Logout</a>
-            `;
-        } else {
-            container.innerHTML = `
-                <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
-                <a href="#" onclick="logout()" class="btn-login">Logout</a>
-            `;
+        function updateNavbar() {
+            const container = document.getElementById('navbarLogin');
+            if (!container) return;
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+            console.log('🔄 Update Navbar - isLoggedIn:', isLoggedIn, 'isAdmin:', isAdmin);
+
+            if (isLoggedIn) {
+                if (isAdmin) {
+                    container.innerHTML = `
+                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                }
+            } else {
+                container.innerHTML = `
+                    <a href="register.html" class="btn-register">Daftar</a>
+                    <a href="login.html" class="btn-login">Login</a>
+                `;
+            }
         }
-    } else {
-        container.innerHTML = `
-            <a href="register.html" class="btn-register">Daftar</a>
-            <a href="login.html" class="btn-login">Login</a>
-        `;
-    }
-}
 
-function logout() {
-    if (confirm('Yakin ingin logout?')) {
-        localStorage.removeItem('isAdmin');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userName');
-        window.location.href = 'index.html';
-    }
-}
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.setItem('logoutEvent', Date.now());
+                window.location.href = 'index.html';
+            }
+        }
 
-document.addEventListener('DOMContentLoaded', function() {
-    updateNavbar();
-});
-</script>
+        // ===== DENGARKAN PERUBAHAN LOGIN DI HALAMAN LAIN =====
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'logoutEvent' || e.key === 'userEmail' || e.key === 'isAdmin') {
+                console.log('🔄 Terdeteksi perubahan login, update navbar...');
+                updateNavbar();
+            }
+        });
+
+    </script>
 </body>
 </html>
