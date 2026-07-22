@@ -764,6 +764,12 @@ const paketId = urlParams.get('paket');
 
 // Ambil semua soal dari localStorage
 const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
+const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+
+// ===== DEBUG: CEK DATA =====
+console.log('🔍 paketId dari URL:', paketId);
+console.log('📦 Semua paket:', semuaPaket);
+console.log('📝 Semua soal:', semuaSoal);
 
 // Filter soal berdasarkan paket yang dipilih
 let questions = [];
@@ -771,15 +777,21 @@ let paketName = '';
 
 if (paketId) {
     // Cari nama paket dari ID
-    const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]').find(p => p.id == paketId);
+    const paket = semuaPaket.find(p => p.id == paketId);
+    console.log('🎯 Paket ditemukan:', paket);
+    
     if (paket) {
         paketName = paket.name;
         questions = semuaSoal.filter(s => s.paket === paketName);
+        console.log('📚 Soal untuk paket "' + paketName + '":', questions.length, 'soal');
+    } else {
+        console.warn('⚠️ Paket dengan ID', paketId, 'tidak ditemukan!');
     }
 }
 
 // Jika tidak ada soal untuk paket tersebut, tampilkan pesan
 if (questions.length === 0) {
+    console.warn('⚠️ Tidak ada soal untuk paket ini, gunakan soal contoh.');
     questions = [
         {
             id: 0,
