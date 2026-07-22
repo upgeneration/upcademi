@@ -610,7 +610,7 @@
         </div>
     </section>
 
-   <script src="js/script.js"></script>
+  <script src="js/script.js"></script>
 <script>
     // =============================================
     // ===== AMBIL DATA DARI LOCALSTORAGE =====
@@ -650,7 +650,7 @@
     }
 
     // =============================================
-    // ===== RENDER ORDERS =====
+    // ===== RENDER ORDERS (PESANAN) =====
     // =============================================
 
     function renderOrders() {
@@ -695,7 +695,7 @@
     }
 
     function verifikasiPesanan(id) {
-        if (!confirm('Yakin ingin memverifikasi pesanan ini?')) return;
+        if (!confirm('Yakin ingin memverifikasi pesanan ini? User akan mendapat akses tryout.')) return;
 
         let pesanan = getPesanan();
         const index = pesanan.findIndex(p => p.id === id);
@@ -705,7 +705,7 @@
             savePesanan(pesanan);
             renderOrders();
             updateStats();
-            alert('✅ Pesanan berhasil diverifikasi!');
+            alert('✅ Pesanan berhasil diverifikasi! User sekarang bisa mengerjakan tryout.');
         }
     }
 
@@ -829,7 +829,6 @@
         const jawaban = document.getElementById('jawabanBenar');
         const pembahasan = document.getElementById('pembahasanSoal');
 
-        // Validasi
         if (!paket.value || !nomor.value || !teks.value || !opsiA.value || !opsiB.value || !opsiC.value || !opsiD.value || !jawaban.value) {
             alert('⚠️ Semua field wajib diisi! (Opsi E opsional)');
             return false;
@@ -847,7 +846,8 @@
             opsiD: opsiD.value,
             opsiE: opsiE.value || '',
             jawaban: jawaban.value,
-            pembahasan: pembahasan.value
+            pembahasan: pembahasan.value,
+            pembahasanGambar: ''
         };
 
         let soal = getSoal();
@@ -887,7 +887,6 @@
                 let soal = getSoal();
                 let jumlahTambah = 0;
 
-                // Proses setiap baris (mulai dari baris ke-2)
                 for (let i = 1; i < lines.length; i++) {
                     const row = lines[i].split(',').map(cell => cell.trim());
                     
@@ -972,7 +971,7 @@
             `;
         }).join('');
 
-        // Update dropdown paket di form soal
+        // ===== UPDATE DROPDOWN PAKET DI FORM SOAL =====
         const selectPaket = document.getElementById('paketSoal');
         if (selectPaket) {
             const currentValue = selectPaket.value;
@@ -1095,32 +1094,6 @@
             };
             reader.readAsDataURL(this.files[0]);
         }
-    });
-
-    function handleImportExcel(input) {
-        if (input.files && input.files[0]) {
-            alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
-                  'Format yang didukung:\n' +
-                  '- Kolom A: Nomor Soal\n' +
-                  '- Kolom B: Teks Soal\n' +
-                  '- Kolom C: Gambar Soal (URL)\n' +
-                  '- Kolom D-H: Opsi A-E\n' +
-                  '- Kolom I: Jawaban Benar\n' +
-                  '- Kolom J: Pembahasan\n' +
-                  '- Kolom K: Gambar Pembahasan (URL)');
-            input.value = '';
-        }
-    }
-
-    // =============================================
-    // ===== FORM SUBMIT SOAL =====
-    // =============================================
-
-    document.getElementById('formSoal').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('✅ Soal berhasil disimpan! (Data akan tersimpan di database)');
-        this.reset();
-        document.getElementById('filePreview').innerHTML = '';
     });
 
     // =============================================
