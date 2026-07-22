@@ -378,29 +378,38 @@
             return urlParams.get(param);
         }
 
-        // Data paket (nanti dari database)
-        const packageData = {
-            'cpns-master': { name: 'CPNS Master', category: 'CPNS', duration: '60 Hari', price: 199000 },
-            'utbk-pro': { name: 'UTBK Pro', category: 'UTBK', duration: '45 Hari', price: 179000 },
-            'kedinasan-plus': { name: 'Kedinasan Plus', category: 'Kedinasan', duration: '90 Hari', price: 249000 },
-            'cpns-basic': { name: 'CPNS Basic', category: 'CPNS', duration: '30 Hari', price: 99000 },
-            'utbk-premium': { name: 'UTBK Premium', category: 'UTBK', duration: '120 Hari', price: 299000 },
-            'kedinasan-basic': { name: 'Kedinasan Basic', category: 'Kedinasan', duration: '30 Hari', price: 129000 },
-            'starter': { name: 'Starter', category: 'Tryout', duration: '7 Hari', price: 49000 },
-            'pro': { name: 'Pro', category: 'Tryout', duration: '30 Hari', price: 149000 },
-            'ultimate': { name: 'Ultimate', category: 'Tryout', duration: '90 Hari', price: 299000 }
-        };
+        // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
+function getPaketById(id) {
+    const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+    return paket.find(p => p.id == id);
+}
 
-        // Load data paket
-        const paket = getQueryParam('paket') || 'starter';
-        const data = packageData[paket] || packageData['starter'];
+// Ambil parameter dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const paketId = urlParams.get('paket');
 
-        document.getElementById('packageName').textContent = data.name;
-        document.getElementById('packageCategory').textContent = data.category;
-        document.getElementById('packageDuration').textContent = data.duration;
-        document.getElementById('totalPrice').textContent = 'Rp' + data.price.toLocaleString('id-ID');
-        document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toLocaleString('id-ID');
+let data = null;
 
+if (paketId) {
+    data = getPaketById(paketId);
+}
+
+// Jika paket tidak ditemukan, pakai default
+if (!data) {
+    data = {
+        name: 'Paket Tryout',
+        category: 'Tryout',
+        duration: '3 Bulan',
+        price: 0
+    };
+}
+
+// Tampilkan data
+document.getElementById('packageName').textContent = data.name;
+document.getElementById('packageCategory').textContent = data.category;
+document.getElementById('packageDuration').textContent = data.duration;
+document.getElementById('totalPrice').textContent = 'Rp' + data.price.toLocaleString('id-ID');
+document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toLocaleString('id-ID');
         // Function handle checkout
         function handleCheckout() {
             const fileInput = document.getElementById('buktiTransfer');
