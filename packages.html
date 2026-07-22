@@ -6,165 +6,29 @@
     <title>Paket Tryout - UPCADEMI</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .packages-page {
-            padding: 60px 0;
-        }
-        .packages-page h1 {
-            text-align: center;
-            font-size: 36px;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-        .packages-page .subtitle {
-            text-align: center;
-            color: var(--text-gray);
-            margin-bottom: 40px;
-            font-size: 18px;
-        }
-        .filter-section {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
-        .filter-btn {
-            padding: 10px 24px;
-            border: 2px solid var(--navy);
-            background: transparent;
-            color: var(--navy);
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 14px;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--navy);
-            color: var(--white);
-        }
-        .package-grid-full {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        .package-card-full {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 40px 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: 0.3s;
-            text-align: center;
-            border-top: 6px solid var(--navy);
-            position: relative;
-        }
-        .package-card-full:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        }
-        .package-card-full.popular {
-            border-top-color: var(--red);
-        }
-        .badge-category {
-            display: inline-block;
-            background: var(--navy-light);
-            color: var(--white);
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-        .badge-popular {
-            position: absolute;
-            top: 16px;
-            right: -30px;
-            background: var(--red);
-            color: white;
-            padding: 4px 40px;
-            font-size: 12px;
-            font-weight: 700;
-            transform: rotate(45deg);
-            text-transform: uppercase;
-        }
-        .package-name {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-        .package-price {
-            font-size: 36px;
-            font-weight: 800;
-            color: var(--red);
-            margin: 16px 0 8px;
-        }
-        .package-price small {
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--text-gray);
-        }
-        .package-desc {
-            color: var(--text-gray);
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-        .package-features {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 30px;
-            padding: 0;
-        }
-        .package-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-            color: var(--text-dark);
-            font-size: 14px;
-        }
-        .package-features li::before {
-            content: "✓ ";
-            color: var(--red);
-            font-weight: 700;
-        }
-        .btn-buy {
-            display: inline-block;
-            background-color: var(--red);
-            color: var(--white);
-            padding: 12px 40px;
-            border-radius: 8px;
-            font-weight: 700;
-            transition: 0.3s;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn-buy:hover {
-            background-color: var(--red-dark);
-            transform: scale(1.02);
-        }
-        @media (max-width: 992px) {
-            .package-grid-full {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 768px) {
-            .package-grid-full {
-                grid-template-columns: 1fr;
-                max-width: 400px;
-                margin: 0 auto;
-            }
-            .packages-page h1 {
-                font-size: 28px;
-            }
-            .filter-section {
-                gap: 8px;
-            }
-            .filter-btn {
-                padding: 8px 16px;
-                font-size: 13px;
-            }
-        }
+        .packages-page { padding: 60px 0; }
+        .packages-page h1 { text-align: center; font-size: 36px; color: var(--navy); margin-bottom: 8px; }
+        .packages-page .subtitle { text-align: center; color: var(--text-gray); margin-bottom: 40px; font-size: 18px; }
+        .filter-section { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+        .filter-btn { padding: 10px 24px; border: 2px solid var(--navy); background: transparent; color: var(--navy); border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .filter-btn:hover, .filter-btn.active { background: var(--navy); color: var(--white); }
+        .package-grid-full { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .package-card-full { background: var(--white); border-radius: 16px; padding: 40px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: 0.3s; text-align: center; border-top: 6px solid var(--navy); position: relative; }
+        .package-card-full:hover { transform: translateY(-8px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+        .package-card-full.popular { border-top-color: var(--red); }
+        .badge-category { display: inline-block; background: var(--navy-light); color: var(--white); padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+        .badge-popular { position: absolute; top: 16px; right: -30px; background: var(--red); color: white; padding: 4px 40px; font-size: 12px; font-weight: 700; transform: rotate(45deg); text-transform: uppercase; }
+        .package-name { font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .package-price { font-size: 36px; font-weight: 800; color: var(--red); margin: 16px 0 8px; }
+        .package-price small { font-size: 16px; font-weight: 400; color: var(--text-gray); }
+        .package-desc { color: var(--text-gray); margin-bottom: 20px; font-size: 15px; }
+        .package-features { list-style: none; text-align: left; margin-bottom: 30px; padding: 0; }
+        .package-features li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; color: var(--text-dark); font-size: 14px; }
+        .package-features li::before { content: "✓ "; color: var(--red); font-weight: 700; }
+        .btn-buy { display: inline-block; background-color: var(--red); color: var(--white); padding: 12px 40px; border-radius: 8px; font-weight: 700; transition: 0.3s; width: 100%; border: none; cursor: pointer; font-size: 16px; }
+        .btn-buy:hover { background-color: var(--red-dark); transform: scale(1.02); }
+        @media (max-width: 992px) { .package-grid-full { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .package-grid-full { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; } .packages-page h1 { font-size: 28px; } .filter-section { gap: 8px; } .filter-btn { padding: 8px 16px; font-size: 13px; } }
     </style>
 </head>
 <body>
@@ -185,14 +49,12 @@
                 <a href="index.html">Beranda</a>
                 <a href="packages.html" style="background: rgba(255,255,255,0.15);">Paket</a>
                 <a href="leaderboard.html">Peringkat</a>
-                <div id="navbarLogin">
-                    <!-- Diisi oleh JavaScript -->
-                </div>
+                <div id="navbarLogin"></div>
             </div>
         </div>
     </nav>
 
-    <!-- ===== PACKAGES SECTION ===== -->
+    <!-- ===== PACKAGES ===== -->
     <section class="packages-page">
         <div class="container">
             <h1>Semua Paket Tryout</h1>
@@ -204,10 +66,9 @@
                 <button class="filter-btn" data-filter="utbk">UTBK</button>
                 <button class="filter-btn" data-filter="kedinasan">Kedinasan</button>
             </div>
-            
-           <div class="package-grid-full" id="packageGrid">
-    <!-- Paket akan di-generate oleh JavaScript dari localStorage -->
-</div>
+
+            <div class="package-grid-full" id="packageGrid"></div>
+        </div>
     </section>
 
     <!-- ===== FOOTER ===== -->
@@ -225,6 +86,44 @@
 
     <script src="js/script.js"></script>
     <script>
+        // ===== RENDER SEMUA PAKET DARI LOCALSTORAGE =====
+        function renderSemuaPaket() {
+            const container = document.getElementById('packageGrid');
+            if (!container) return;
+
+            const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+
+            if (paket.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; padding:60px; color:var(--text-gray);">
+                        📭 Belum ada paket tryout. Silakan tambahkan paket di dashboard admin.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = paket.map((item, index) => {
+                const isPopular = index === 0 ? 'popular' : '';
+                const badgePopular = index === 0 ? '<div class="badge-popular">Paling Laris</div>' : '';
+                const features = item.features ? item.features.split(',').map(f => `<li>${f.trim()}</li>`).join('') : '';
+
+                return `
+                    <div class="package-card-full ${isPopular}" data-category="${item.category.toLowerCase()}">
+                        ${badgePopular}
+                        <span class="badge-category">${item.category}</span>
+                        <div class="package-name">${item.name}</div>
+                        <div class="package-price">Rp${item.price} <small>/paket</small></div>
+                        <p class="package-desc">${item.description || 'Paket tryout terbaik untuk persiapan ujian'}</p>
+                        <ul class="package-features">
+                            ${features}
+                            <li>Akses ${item.duration}</li>
+                        </ul>
+                        <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
+                    </div>
+                `;
+            }).join('');
+        }
+
         // ===== FILTER PAKET =====
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -244,11 +143,10 @@
             });
         });
 
-        // ===== UPDATE NAVBAR =====
+        // ===== NAVBAR =====
         function updateNavbar() {
             const container = document.getElementById('navbarLogin');
             if (!container) return;
-
             const isAdmin = localStorage.getItem('isAdmin') === 'true';
             const isLoggedIn = localStorage.getItem('userEmail') !== null;
 
@@ -277,76 +175,14 @@
                 localStorage.removeItem('isAdmin');
                 localStorage.removeItem('userEmail');
                 localStorage.removeItem('userName');
-                localStorage.setItem('logoutEvent', Date.now());
                 window.location.href = 'index.html';
             }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
+            renderSemuaPaket();
         });
-    <script>
-// ===== AMBIL PAKET DARI LOCALSTORAGE =====
-function renderSemuaPaket() {
-    const container = document.getElementById('packageGrid');
-    if (!container) return;
-
-    const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
-
-    if (paket.length === 0) {
-        container.innerHTML = `
-            <div style="grid-column: 1/-1; text-align:center; padding:60px; color:var(--text-gray);">
-                📭 Belum ada paket tryout. Silakan tambahkan paket di dashboard admin.
-            </div>
-        `;
-        return;
-    }
-
-    container.innerHTML = paket.map((item, index) => {
-        const isPopular = index === 0 ? 'popular' : '';
-        const badgePopular = index === 0 ? '<div class="badge-popular">Paling Laris</div>' : '';
-        const features = item.features ? item.features.split(',').map(f => `<li>${f.trim()}</li>`).join('') : '';
-
-        return `
-            <div class="package-card-full ${isPopular}" data-category="${item.category.toLowerCase()}">
-                ${badgePopular}
-                <span class="badge-category">${item.category}</span>
-                <div class="package-name">${item.name}</div>
-                <div class="package-price">Rp${item.price} <small>/paket</small></div>
-                <p class="package-desc">${item.description || 'Paket tryout terbaik untuk persiapan ujian'}</p>
-                <ul class="package-features">
-                    ${features}
-                    <li>Akses ${item.duration}</li>
-                </ul>
-                <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
-            </div>
-        `;
-    }).join('');
-}
-
-// Jalankan saat halaman load
-document.addEventListener('DOMContentLoaded', function() {
-    renderSemuaPaket();
-});
-
-// ===== FILTER PAKET =====
-document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-
-        const filter = this.dataset.filter;
-        const cards = document.querySelectorAll('.package-card-full');
-
-        cards.forEach(card => {
-            if (filter === 'all' || card.dataset.category === filter) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    });
-});
-</script>
+    </script>
 </body>
 </html>
