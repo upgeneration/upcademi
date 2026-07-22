@@ -220,6 +220,49 @@
     document.addEventListener('DOMContentLoaded', function() {
         renderHomePackages();
     });
+<script>
+// ===== UPDATE NAVBAR SESUAI STATUS LOGIN =====
+function updateNavbar() {
+    const container = document.getElementById('navbarLogin');
+    if (!container) return;
+
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+    if (isLoggedIn) {
+        if (isAdmin) {
+            container.innerHTML = `
+                <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                <a href="#" onclick="logout()" class="btn-login">Logout</a>
+            `;
+        } else {
+            container.innerHTML = `
+                <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                <a href="#" onclick="logout()" class="btn-login">Logout</a>
+            `;
+        }
+    } else {
+        container.innerHTML = `
+            <a href="register.html" class="btn-register">Daftar</a>
+            <a href="login.html" class="btn-login">Login</a>
+        `;
+    }
+}
+
+// ===== LOGOUT =====
+function logout() {
+    if (confirm('Yakin ingin logout?')) {
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        window.location.href = 'index.html';
+    }
+}
+
+// ===== JALANKAN SAAT HALAMAN LOAD =====
+document.addEventListener('DOMContentLoaded', function() {
+    updateNavbar();
+});
 </script>
 </body>
 </html>
