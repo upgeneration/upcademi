@@ -211,63 +211,46 @@
         // ===== AMBIL SOAL DARI LOCALSTORAGE =====
         // =============================================
 
-        // Ambil parameter paket dari URL
         const urlParams = new URLSearchParams(window.location.search);
         const paketId = urlParams.get('paket');
 
-        // Ambil semua data dari localStorage
         const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
         const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
-        console.log('🔍 paketId dari URL:', paketId);
-        console.log('📦 Semua paket:', semuaPaket);
-        console.log('📝 Semua soal:', semuaSoal);
+        console.log('🔍 paketId:', paketId);
+        console.log('📦 Semua Paket:', semuaPaket);
+        console.log('📝 Semua Soal:', semuaSoal);
 
-        // ===== CARI PAKET =====
-        let paketName = '';
         let questions = [];
+        let paketName = '';
 
         if (paketId) {
-            // Cari paket berdasarkan ID
             const paket = semuaPaket.find(p => String(p.id) === String(paketId));
             if (paket) {
                 paketName = paket.name;
-                console.log('🎯 Paket ditemukan:', paketName);
-            } else {
-                console.warn('⚠️ Paket dengan ID', paketId, 'tidak ditemukan!');
+                questions = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
+                console.log('📚 Soal untuk paket "' + paketName + '":', questions.length);
             }
         }
 
-        // Jika paket ditemukan, filter soal berdasarkan nama paket
-        if (paketName) {
-            questions = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
-            console.log('📚 Soal ditemukan untuk "' + paketName + '":', questions.length);
-        }
-
-        // Jika tidak ada soal, coba ambil semua soal (untuk testing)
         if (questions.length === 0 && semuaSoal.length > 0) {
-            console.warn('⚠️ Tidak ada soal untuk paket "' + paketName + '", menampilkan semua soal.');
             questions = semuaSoal;
+            console.log('📚 Menampilkan semua soal (', questions.length, ')');
         }
 
-        // Jika masih tidak ada soal, tampilkan pesan
         if (questions.length === 0) {
-            console.warn('⚠️ Tidak ada soal sama sekali.');
-            questions = [
-                {
-                    id: 0,
-                    number: 1,
-                    text: '📭 Belum ada soal untuk paket ini. Silakan hubungi admin.',
-                    image: null,
-                    options: ['-', '-', '-', '-', '-'],
-                    optionImages: [null, null, null, null, null],
-                    pembahasan: 'Belum ada soal yang tersedia.',
-                    pembahasanImage: null
-                }
-            ];
+            questions = [{
+                id: 0,
+                number: 1,
+                text: '📭 Belum ada soal untuk paket ini. Silakan hubungi admin.',
+                image: null,
+                options: ['-', '-', '-', '-', '-'],
+                optionImages: [null, null, null, null, null],
+                pembahasan: 'Belum ada soal yang tersedia.',
+                pembahasanImage: null
+            }];
         }
 
-        // Tampilkan nama paket di sidebar
         document.getElementById('paketName').textContent = paketName || 'Tryout';
 
         // ===== STATE =====
@@ -280,94 +263,88 @@
 
         // ===== RENDER SOAL =====
         function renderQuestions() {
-    const container = document.getElementById('questionContainer');
-    container.innerHTML = '';
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = '';
 
-    console.log('📝 Data soal yang akan dirender:', questions);
+            questions.forEach((q, index) => {
+                const panel = document.createElement('div');
+                panel.className = 'question-panel' + (index === 0 ? ' active' : '');
+                panel.dataset.index = index;
 
-    questions.forEach((q, index) => {
-        const panel = document.createElement('div');
-        panel.className = 'question-panel' + (index === 0 ? ' active' : '');
-        panel.dataset.index = index;
+                // Ambil data dengan field yang benar
+                const text = q.soal || q.text || 'Soal tidak tersedia';
+                const image = q.gambar || q.image || null;
 
-        // ===== AMBIL DATA DENGAN FIELD YANG BENAR =====
-        // Data dari dashboard admin menggunakan: soal, opsiA, opsiB, opsiC, opsiD, opsiE, jawaban, pembahasan
-        const text = q.soal || q.text || 'Soal tidak tersedia';
-        const image = q.gambar || q.image || null;
-        
-        // Susun options dari opsiA-E
-        const options = [
-            q.opsiA || q['Opsi A'] || '-',
-            q.opsiB || q['Opsi B'] || '-',
-            q.opsiC || q['Opsi C'] || '-',
-            q.opsiD || q['Opsi D'] || '-',
-            q.opsiE || q['Opsi E'] || '-'
-        ];
+                // Susun options dari opsiA-E
+                const options = [
+                    q.opsiA || '-',
+                    q.opsiB || '-',
+                    q.opsiC || '-',
+                    q.opsiD || '-',
+                    q.opsiE || '-'
+                ];
 
-        const pembahasan = q.pembahasan || q.Pembahasan || 'Tidak ada pembahasan.';
+                let optionsHTML = '';
+                const optionLabels = ['A', 'B', 'C', 'D', 'E'];
 
-        let optionsHTML = '';
-        const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+                options.forEach((opt, oi) => {
+                    const checked = answers[index] === oi ? 'checked' : '';
+                    
+                    // Cek gambar opsi
+                    const gambarOpsiKey = 'gambarOpsi' + optionLabels[oi];
+                    const gambarOpsi = q[gambarOpsiKey] || null;
+                    let gambarHTML = '';
+                    if (gambarOpsi) {
+                        gambarHTML = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsi}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;" onerror="this.parentElement.innerHTML='<span style=\'color:red;font-size:12px;\'>Gambar tidak ditemukan</span>'"></div>`;
+                    }
 
-        // Di dalam renderQuestions()
-options.forEach((opt, oi) => {
-    const checked = answers[index] === oi ? 'checked' : '';
-    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-    const gambarOpsi = q['gambarOpsi' + optionLabels[oi]] || null;
-    
-    let gambarHTML = '';
-    if (gambarOpsi) {
-        // Jika gambar opsi ada, tampilkan
-        gambarHTML = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsi}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;" onerror="this.style.display='none'"></div>`;
-    }
-    
-    optionsHTML += `
-        <label class="${checked ? 'selected' : ''}">
-            <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
-            <span>
-                <span class="option-label">${optionLabels[oi]}.</span> 
-                ${opt || '(Gambar)'}
-                ${gambarHTML}
-            </span>
-        </label>
-    `;
-});
+                    optionsHTML += `
+                        <label class="${checked ? 'selected' : ''}">
+                            <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
+                            <span>
+                                <span class="option-label">${optionLabels[oi]}.</span> 
+                                ${opt}
+                                ${gambarHTML}
+                            </span>
+                        </label>
+                    `;
+                });
 
-        let imageHTML = '';
-        if (image) {
-            imageHTML = `<img src="${image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">`;
+                let imageHTML = '';
+                if (image) {
+                    imageHTML = `<img src="${image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">`;
+                }
+
+                let statusText = 'Belum Dijawab';
+                let statusClass = '';
+                if (answers[index] !== null) {
+                    statusText = '✅ Dijawab';
+                    statusClass = 'answered-status';
+                }
+                if (ragu[index]) {
+                    statusText = '❓ Ragu-ragu';
+                    statusClass = 'ragu-status';
+                }
+
+                panel.innerHTML = `
+                    <div class="question-header">
+                        <span class="question-number">Soal ${q.number || index + 1} dari ${questions.length}</span>
+                        <span class="question-status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="question-text">
+                        ${imageHTML}
+                        ${text}
+                    </div>
+                    <div class="options">${optionsHTML}</div>
+                `;
+
+                container.appendChild(panel);
+            });
+
+            updateQuestionNumbers();
+            updateStatus();
+            updateRaguButton();
         }
-
-        let statusText = 'Belum Dijawab';
-        let statusClass = '';
-        if (answers[index] !== null) {
-            statusText = '✅ Dijawab';
-            statusClass = 'answered-status';
-        }
-        if (ragu[index]) {
-            statusText = '❓ Ragu-ragu';
-            statusClass = 'ragu-status';
-        }
-
-        panel.innerHTML = `
-            <div class="question-header">
-                <span class="question-number">Soal ${q.number || index + 1} dari ${questions.length}</span>
-                <span class="question-status ${statusClass}">${statusText}</span>
-            </div>
-            <div class="question-text">
-                ${imageHTML}
-                ${text}
-            </div>
-            <div class="options">${optionsHTML}</div>
-        `;
-
-        container.appendChild(panel);
-    });
-
-    updateQuestionNumbers();
-    updateStatus();
-    updateRaguButton();
-}
 
         // ===== NAVIGASI =====
         function navigateQuestion(direction) {
