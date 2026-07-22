@@ -372,48 +372,76 @@
     // Data riwayat tryout (nanti dari localStorage hasil tryout)
     const riwayatTryout = [];
 
-    function renderRiwayat() {
-        const container = document.getElementById('riwayatContainer');
-        if (!container) return;
+    // =============================================
+// ===== RIWAYAT TRYOUT DARI LOCALSTORAGE =====
+// =============================================
 
-        if (riwayatTryout.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="icon">📋</div>
-                    <p>Belum ada riwayat tryout.</p>
-                </div>
-            `;
-            return;
-        }
+function renderRiwayat() {
+    const container = document.getElementById('riwayatContainer');
+    if (!container) return;
 
-        let html = `
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        <th>Paket</th>
-                        <th>Skor</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
+    const userEmail = localStorage.getItem('userEmail');
+    if (!userEmail) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">🔒</div>
+                <p>Silakan login untuk melihat riwayat tryout.</p>
+            </div>
         `;
-
-        riwayatTryout.forEach(item => {
-            const scoreClass = item.score >= 80 ? 'high' : item.score >= 60 ? 'medium' : 'low';
-            html += `
-                <tr>
-                    <td>${item.date}</td>
-                    <td>${item.paket}</td>
-                    <td><strong>${item.score}</strong></td>
-                    <td><span class="badge-score ${scoreClass}">${item.status}</span></td>
-                </tr>
-            `;
-        });
-
-        html += `</tbody></table>`;
-        container.innerHTML = html;
+        return;
     }
+
+    // Ambil semua hasil tryout dari localStorage
+    const semuaHasil = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
+    
+    // Filter hasil berdasarkan user yang login
+    const riwayatUser = semuaHasil.filter(item => item.userEmail === userEmail);
+
+    if (riwayatUser.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">📋</div>
+                <p>Belum ada riwayat tryout. Yuk, kerjakan tryout pertama Anda!</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Tampilkan riwayat terbaru di atas
+    const sorted = riwayatUser.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Paket</th>
+                    <th>Skor</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    sorted.forEach(item => {
+        const score = item.skor || 0;
+        const total = item.total || score;
+        const scoreClass = score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low';
+        const status = score >= 80 ? '✅ Lulus' : score >= 60 ? '📖 Perlu Belajar' : '📚 Perlu Bimbingan';
+        
+        html += `
+            <tr>
+                <td>${new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
+                <td>${item.paket || 'Tryout'}</td>
+                <td><strong>${score} / ${total}</strong></td>
+                <td><span class="badge-score ${scoreClass}">${status}</span></td>
+            </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+}
 
     // =============================================
     // ===== UPDATE STATS =====
