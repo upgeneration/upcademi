@@ -612,28 +612,92 @@
 
     <script src="js/script.js"></script>
     <script>
-        // =============================================
-        // ===== SAMPLE DATA (ORDERS, USERS, SOAL) =====
-        // =============================================
+        // ===== AMBIL PESANAN DARI LOCALSTORAGE =====
+function getPesanan() {
+    return JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
+}
 
-        const ordersData = [
-            { id: 1, name: 'Budi Santoso', paket: 'CPNS Master', date: '2026-07-20', status: 'active' },
-            { id: 2, name: 'Siti Rahayu', paket: 'UTBK Pro', date: '2026-07-19', status: 'pending' },
-            { id: 3, name: 'Andi Wijaya', paket: 'Kedinasan Plus', date: '2026-07-18', status: 'active' },
-            { id: 4, name: 'Rina Anggraeni', paket: 'Starter', date: '2026-07-17', status: 'pending' },
-            { id: 5, name: 'Dedi Kurniawan', paket: 'Pro', date: '2026-07-16', status: 'expired' }
-        ];
+function renderOrders() {
+    const tbody = document.getElementById('ordersTable');
+    if (!tbody) return;
 
-        const usersData = [
-            { id: 1, name: 'Budi Santoso', email: 'budi@gmail.com', phone: '081234567890', paket: 'CPNS Master' },
-            { id: 2, name: 'Siti Rahayu', email: 'siti@gmail.com', phone: '081234567891', paket: 'UTBK Pro' },
-            { id: 3, name: 'Andi Wijaya', email: 'andi@gmail.com', phone: '081234567892', paket: 'Kedinasan Plus' }
-        ];
+    const pesanan = getPesanan();
 
-        const soalData = [
-            { id: 1, paket: 'CPNS Master', soal: 'Seorang pedagang membeli 20 kg beras...', gambar: 'Ada' },
-            { id: 2, paket: 'UTBK Pro', soal: 'Jika 3x + 5 = 20, maka nilai x adalah...', gambar: 'Tidak' }
-        ];
+    if (pesanan.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
+                    📭 Belum ada pesanan.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = pesanan.map((item, index) => {
+        const statusClass = item.status === 'aktif' ? 'active' : 
+                           item.status === 'pending' ? 'pending' : 'expired';
+        const statusText = item.status === 'aktif' ? '✅ Aktif' : 
+                          item.status === 'pending' ? '⏳ Pending' : '❌ Kadaluarsa';
+        
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.userName}</td>
+                <td>${item.paketName}</td>
+                <td>${item.tanggal}</td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                <td>
+                    ${item.status === 'pending' ? 
+                        `<button class="btn-action verify" onclick="verifikasiPesanan(${item.id})">✅ Verifikasi</button>` : 
+                        ''}
+                    <button class="btn-action delete" onclick="hapusPesanan(${item.id})">🗑️</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// ===== VERIFIKASI PESANAN =====
+function verifikasiPesanan(id) {
+    if (!confirm('Yakin ingin memverifikasi pesanan ini? User akan mendapat akses tryout.')) return;
+    
+    let pesanan = getPesanan();
+    const index = pesanan.findIndex(p => p.id === id);
+    
+    if (index !== -1) {
+        pesanan[index].status = 'aktif';
+        localStorage.setItem('pesananUpcademi', JSON.stringify(pesanan));
+        renderOrders();
+        updateStats();
+        alert('✅ Pesanan berhasil diverifikasi! User sekarang bisa mengerjakan tryout.');
+    }
+}
+
+// ===== HAPUS PESANAN =====
+function hapusPesanan(id) {
+    if (!confirm('Yakin ingin menghapus pesanan ini?')) return;
+    
+    let pesanan = getPesanan();
+    pesanan = pesanan.filter(p => p.id !== id);
+    localStorage.setItem('pesananUpcademi', JSON.stringify(pesanan));
+    renderOrders();
+    updateStats();
+}
+
+// ===== UPDATE STATS =====
+function updateStats() {
+    const pesanan = getPesanan();
+    const total = pesanan.length;
+    const pending = pesanan.filter(p => p.status === 'pending').length;
+    const totalRevenue = pesanan
+        .filter(p => p.status === 'aktif')
+        .reduce((sum, p) => sum + (p.harga || 0), 0);
+
+    document.getElementById('totalOrders').textContent = total;
+    document.getElementById('pendingOrders').textContent = pending;
+    document.getElementById('totalRevenue').textContent = 'Rp' + totalRevenue.toLocaleString('id-ID');
+}
 
         // =============================================
         // ===== KELOLA PAKET (localStorage) =====
