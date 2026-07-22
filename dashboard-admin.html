@@ -858,21 +858,81 @@
     // =============================================
 
     function handleImportExcel(input) {
-        if (!input.files || input.files.length === 0) {
-            alert('⚠️ Silakan pilih file terlebih dahulu!');
-            return;
-        }
+    if (!input.files || input.files.length === 0) {
+        alert('⚠️ Silakan pilih file terlebih dahulu!');
+        return;
+    }
 
-        const file = input.files[0];
+    const file = input.files[0];
+    const fileName = file.name.toLowerCase();
+
+    // ===== CEK FORMAT FILE =====
+    if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+        // ===== BACA FILE EXCEL (.xlsx / .xls) =====
         const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet);
 
+                if (jsonData.length === 0) {
+                    alert('❌ File Excel kosong atau tidak ada data!');
+                    return;
+                }
+
+                let soal = getSoal();
+                let jumlahTambah = 0;
+
+                jsonData.forEach((row, index) => {
+                    const soalBaru = {
+                        id: Date.now() + index,
+                        paket: row['Paket'] || row['paket'] || 'Paket Tryout',
+                        soal: row['Soal'] || row['soal'] || 'Soal',
+                        gambar: row['Gambar'] || row['gambar'] || '',
+                        opsiA: row['Opsi A'] || row['opsi a'] || '',
+                        opsiB: row['Opsi B'] || row['opsi b'] || '',
+                        opsiC: row['Opsi C'] || row['opsi c'] || '',
+                        opsiD: row['Opsi D'] || row['opsi d'] || '',
+                        opsiE: row['Opsi E'] || row['opsi e'] || '',
+                        jawaban: row['Jawaban'] || row['jawaban'] || '',
+                        pembahasan: row['Pembahasan'] || row['pembahasan'] || '',
+                        pembahasanGambar: row['Gambar Pembahasan'] || row['gambar pembahasan'] || ''
+                    };
+
+                    if (soalBaru.soal && soalBaru.opsiA && soalBaru.jawaban) {
+                        soal.push(soalBaru);
+                        jumlahTambah++;
+                    }
+                });
+
+                if (jumlahTambah === 0) {
+                    alert('❌ Tidak ada data yang valid untuk di-import. Pastikan format Excel benar!');
+                    return;
+                }
+
+                saveSoal(soal);
+                renderSoal();
+                alert('✅ ' + jumlahTambah + ' soal berhasil di-import dari Excel!');
+
+            } catch(err) {
+                alert('❌ Gagal import Excel: ' + err.message);
+                console.error(err);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+
+    } else if (fileName.endsWith('.csv')) {
+        // ===== BACA FILE CSV =====
+        const reader = new FileReader();
         reader.onload = function(e) {
             try {
                 const text = e.target.result;
                 const lines = text.split('\n').filter(line => line.trim() !== '');
                 
                 if (lines.length < 2) {
-                    alert('❌ File kosong atau tidak ada data!');
+                    alert('❌ File CSV kosong atau tidak ada data!');
                     return;
                 }
 
@@ -915,17 +975,21 @@
 
                 saveSoal(soal);
                 renderSoal();
-                alert('✅ ' + jumlahTambah + ' soal berhasil di-import!');
-                
+                alert('✅ ' + jumlahTambah + ' soal berhasil di-import dari CSV!');
+
             } catch(err) {
-                alert('❌ Gagal import file: ' + err.message);
+                alert('❌ Gagal import CSV: ' + err.message);
                 console.error(err);
             }
         };
-
         reader.readAsText(file);
-        input.value = '';
+
+    } else {
+        alert('⚠️ Format file tidak didukung! Gunakan file .xlsx, .xls, atau .csv');
     }
+
+    input.value = '';
+}
 
     // =============================================
     // ===== KELOLA PAKET =====
