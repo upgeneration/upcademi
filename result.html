@@ -231,7 +231,7 @@
     // ===== AMBIL DATA DARI LOCALSTORAGE =====
     // =============================================
 
-    // Ambil hasil tryout dari localStorage (dikirim dari exam.html)
+    // Ambil hasil tryout dari localStorage
     const result = JSON.parse(localStorage.getItem('examResult'));
 
     if (!result) {
@@ -276,11 +276,6 @@
     const total = result.totalQuestions || soalData.length;
 
     const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-    const gambarOpsiUser = q['gambarOpsi' + optionLabels[q.userAnswer]] || null;
-let gambarHTMLUser = '';
-if (gambarOpsiUser) {
-    gambarHTMLUser = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsiUser}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;"></div>`;
-}
 
     // Gabungkan soal dengan jawaban user
     const soalDenganJawaban = soalData.map((q, index) => {
@@ -346,9 +341,20 @@ if (gambarOpsiUser) {
 
         const imageHTML = q.gambar ? `<img src="${q.gambar}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
 
+        // ===== JAWABAN USER =====
         const userAnswerText = q.userAnswer !== null && q.userAnswer !== undefined ? 
             optionLabels[q.userAnswer] + '. ' + (q.options[q.userAnswer] || '-') : 
             'Tidak dijawab';
+
+        // ===== GAMBAR OPSI USER (jika ada) =====
+        let gambarUserHTML = '';
+        if (q.userAnswer !== null && q.userAnswer !== undefined) {
+            const gambarKey = 'gambarOpsi' + optionLabels[q.userAnswer];
+            const gambarOpsi = q[gambarKey] || null;
+            if (gambarOpsi) {
+                gambarUserHTML = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsi}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;"></div>`;
+            }
+        }
 
         const correctAnswerText = optionLabels[q.correct] + '. ' + (q.options[q.correct] || '-');
 
@@ -358,7 +364,10 @@ if (gambarOpsiUser) {
                 <span class="status ${statusClass}">${statusText}</span>
             </div>
             <div class="soal-text">${imageHTML}${q.soal || 'Soal tidak tersedia'}</div>
-            <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong></div>
+            <div class="jawaban-user">
+                Jawaban Anda: <strong>${userAnswerText}</strong>
+                ${gambarUserHTML}
+            </div>
             <div class="jawaban-benar">✅ Jawaban Benar: ${correctAnswerText}</div>
             <div class="pembahasan">
                 <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Tidak ada pembahasan.'}
@@ -370,6 +379,48 @@ if (gambarOpsiUser) {
 
     // Hapus data examResult setelah ditampilkan (opsional)
     // localStorage.removeItem('examResult');
+
+    // ===== UPDATE NAVBAR =====
+    function updateNavbar() {
+        const container = document.getElementById('navbarLogin');
+        if (!container) return;
+
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+        if (isLoggedIn) {
+            if (isAdmin) {
+                container.innerHTML = `
+                    <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                    <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                `;
+            } else {
+                container.innerHTML = `
+                    <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                    <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                `;
+            }
+        } else {
+            container.innerHTML = `
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            `;
+        }
+    }
+
+    function logout() {
+        if (confirm('Yakin ingin logout?')) {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html';
+        }
+    }
+
+    // ===== JALANKAN SAAT LOAD =====
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNavbar();
+    });
 </script>
 </body>
 </html>
