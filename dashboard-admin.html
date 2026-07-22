@@ -428,19 +428,11 @@
                 <h3>📝 Tambah Soal Baru</h3>
                 <form class="form-admin" id="formSoal">
                     <div class="full-width">
-                        <label>Pilih Paket</label>
-                        <select required>
-                            <option value="">-- Pilih Paket --</option>
-                            <option>CPNS Master</option>
-                            <option>CPNS Basic</option>
-                            <option>UTBK Pro</option>
-                            <option>UTBK Premium</option>
-                            <option>Kedinasan Plus</option>
-                            <option>Kedinasan Basic</option>
-                            <option>Starter</option>
-                            <option>Pro</option>
-                            <option>Ultimate</option>
-                        </select>
+                        <select id="paketSoal" required>
+    <option value="">-- Pilih Paket --</option>
+    <option value="Paket Tryout SKD CPNS Part 1">Paket Tryout SKD CPNS Part 1</option>
+    <!-- otomatis tambah sesuai paket di localStorage -->
+</select>
                     </div>
                     <div class="full-width">
                         <label>Nomor Soal</label>
