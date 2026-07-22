@@ -9,22 +9,18 @@
         .leaderboard-page {
             padding: 40px 0;
         }
-
         .leaderboard-header {
             text-align: center;
             margin-bottom: 40px;
         }
-
         .leaderboard-header h1 {
             font-size: 36px;
             color: var(--navy);
         }
-
         .leaderboard-header p {
             color: var(--text-gray);
             font-size: 18px;
         }
-
         .filter-leaderboard {
             display: flex;
             justify-content: center;
@@ -32,7 +28,6 @@
             flex-wrap: wrap;
             margin-bottom: 30px;
         }
-
         .filter-leaderboard select {
             padding: 10px 20px;
             border: 2px solid #E0E0E0;
@@ -42,12 +37,10 @@
             color: var(--text-dark);
             cursor: pointer;
         }
-
         .filter-leaderboard select:focus {
             border-color: var(--navy);
             outline: none;
         }
-
         .leaderboard-table {
             background: var(--white);
             border-radius: 16px;
@@ -56,38 +49,31 @@
             max-width: 900px;
             margin: 0 auto;
         }
-
         .leaderboard-table table {
             width: 100%;
             border-collapse: collapse;
         }
-
         .leaderboard-table thead {
             background: var(--navy);
             color: var(--white);
         }
-
         .leaderboard-table thead th {
             padding: 16px 20px;
             text-align: left;
             font-weight: 600;
             font-size: 14px;
         }
-
         .leaderboard-table tbody td {
             padding: 14px 20px;
             border-bottom: 1px solid #f0f0f0;
             font-size: 14px;
         }
-
         .leaderboard-table tbody tr:hover {
             background: #F5F7FA;
         }
-
         .leaderboard-table tbody tr:last-child td {
             border-bottom: none;
         }
-
         .rank-number {
             display: inline-block;
             width: 32px;
@@ -98,33 +84,15 @@
             font-weight: 700;
             font-size: 14px;
         }
-
-        .rank-1 {
-            background: #FFD700;
-            color: #8B6914;
-        }
-
-        .rank-2 {
-            background: #C0C0C0;
-            color: #555;
-        }
-
-        .rank-3 {
-            background: #CD7F32;
-            color: #fff;
-        }
-
-        .rank-other {
-            background: #E0E0E0;
-            color: var(--text-gray);
-        }
-
+        .rank-1 { background: #FFD700; color: #8B6914; }
+        .rank-2 { background: #C0C0C0; color: #555; }
+        .rank-3 { background: #CD7F32; color: #fff; }
+        .rank-other { background: #E0E0E0; color: var(--text-gray); }
         .user-info {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .user-avatar {
             width: 36px;
             height: 36px;
@@ -137,17 +105,8 @@
             font-weight: 700;
             font-size: 16px;
         }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .user-paket {
-            font-size: 12px;
-            color: var(--text-gray);
-        }
-
+        .user-name { font-weight: 600; color: var(--text-dark); }
+        .user-paket { font-size: 12px; color: var(--text-gray); }
         .badge-score {
             display: inline-block;
             padding: 4px 16px;
@@ -155,22 +114,9 @@
             font-weight: 700;
             font-size: 14px;
         }
-
-        .badge-score.high {
-            background: #E8F5E9;
-            color: var(--green);
-        }
-
-        .badge-score.medium {
-            background: #FFF3E0;
-            color: #FF9800;
-        }
-
-        .badge-score.low {
-            background: #FFEBEE;
-            color: var(--red);
-        }
-
+        .badge-score.high { background: #E8F5E9; color: var(--green); }
+        .badge-score.medium { background: #FFF3E0; color: #FF9800; }
+        .badge-score.low { background: #FFEBEE; color: var(--red); }
         .pagination {
             display: flex;
             justify-content: center;
@@ -178,7 +124,6 @@
             margin-top: 30px;
             flex-wrap: wrap;
         }
-
         .pagination button {
             padding: 8px 16px;
             border: 2px solid #E0E0E0;
@@ -189,51 +134,27 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .pagination button:hover {
             border-color: var(--navy);
             color: var(--navy);
         }
-
         .pagination button.active {
             background: var(--navy);
             color: var(--white);
             border-color: var(--navy);
         }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-gray);
         }
-
-        .empty-state .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-        }
-
+        .empty-state .icon { font-size: 64px; margin-bottom: 16px; }
         @media (max-width: 768px) {
-            .leaderboard-table {
-                overflow-x: auto;
-            }
-
-            .leaderboard-table table {
-                min-width: 600px;
-            }
-
-            .leaderboard-header h1 {
-                font-size: 28px;
-            }
-
-            .filter-leaderboard {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .filter-leaderboard select {
-                width: 100%;
-                max-width: 300px;
-            }
+            .leaderboard-table { overflow-x: auto; }
+            .leaderboard-table table { min-width: 600px; }
+            .leaderboard-header h1 { font-size: 28px; }
+            .filter-leaderboard { flex-direction: column; align-items: center; }
+            .filter-leaderboard select { width: 100%; max-width: 300px; }
         }
     </style>
 </head>
@@ -255,8 +176,9 @@
                 <a href="index.html">Beranda</a>
                 <a href="packages.html">Paket</a>
                 <a href="leaderboard.html" style="background: rgba(255,255,255,0.15);">Peringkat</a>
-                <a href="register.html" class="btn-register">Daftar</a>
-                <a href="login.html" class="btn-login">Login</a>
+                <div id="navbarLogin">
+                    <!-- Diisi oleh JavaScript -->
+                </div>
             </div>
         </div>
     </nav>
@@ -269,7 +191,6 @@
                 <p>Lihat peringkat siswa berdasarkan skor tryout tertinggi</p>
             </div>
 
-            <!-- Filter -->
             <div class="filter-leaderboard">
                 <select id="filterPaket">
                     <option value="all">Semua Paket</option>
@@ -288,7 +209,6 @@
                 </select>
             </div>
 
-            <!-- Tabel -->
             <div class="leaderboard-table">
                 <table>
                     <thead>
@@ -300,16 +220,11 @@
                             <th style="width:120px; text-align:center;">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="leaderboardBody">
-                        <!-- Data akan di-generate JS -->
-                    </tbody>
+                    <tbody id="leaderboardBody"></tbody>
                 </table>
             </div>
 
-            <!-- Pagination -->
-            <div class="pagination" id="pagination">
-                <!-- JS akan generate -->
-            </div>
+            <div class="pagination" id="pagination"></div>
         </div>
     </section>
 
@@ -350,19 +265,14 @@
         let currentPage = 1;
         const itemsPerPage = 10;
 
-        // ===== RENDER LEADERBOARD =====
         function renderLeaderboard(page = 1) {
             const filterPaket = document.getElementById('filterPaket').value;
             const filterPeriode = document.getElementById('filterPeriode').value;
 
             let filteredData = [...leaderboardData];
-
-            // Filter paket
             if (filterPaket !== 'all') {
                 filteredData = filteredData.filter(item => item.paket === filterPaket);
             }
-
-            // Filter periode (simulasi)
             if (filterPeriode === 'today') {
                 filteredData = filteredData.slice(0, 5);
             } else if (filterPeriode === 'week') {
@@ -371,123 +281,111 @@
                 filteredData = filteredData.slice(0, 15);
             }
 
-            // Hitung pagination
             const totalItems = filteredData.length;
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const startIndex = (page - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
             const pageData = filteredData.slice(startIndex, endIndex);
 
-            // Render tabel
             const tbody = document.getElementById('leaderboardBody');
-
             if (pageData.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5">
-                            <div class="empty-state">
-                                <div class="icon">📊</div>
-                                <p>Belum ada data peringkat untuk filter ini</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="icon">📊</div><p>Belum ada data peringkat untuk filter ini</p></div></td></tr>`;
             } else {
                 tbody.innerHTML = pageData.map((item, index) => {
-                    const rankClass = item.rank === 1 ? 'rank-1' : 
-                                     item.rank === 2 ? 'rank-2' : 
-                                     item.rank === 3 ? 'rank-3' : 'rank-other';
-
-                    const scoreClass = item.score >= 80 ? 'high' : 
-                                      item.score >= 60 ? 'medium' : 'low';
-
+                    const rankClass = item.rank === 1 ? 'rank-1' : item.rank === 2 ? 'rank-2' : item.rank === 3 ? 'rank-3' : 'rank-other';
+                    const scoreClass = item.score >= 80 ? 'high' : item.score >= 60 ? 'medium' : 'low';
                     const initials = item.name.split(' ').map(n => n[0]).join('').slice(0, 2);
-
                     return `
                         <tr>
                             <td><span class="rank-number ${rankClass}">${item.rank}</span></td>
                             <td>
                                 <div class="user-info">
                                     <div class="user-avatar">${initials}</div>
-                                    <div>
-                                        <div class="user-name">${item.name}</div>
-                                    </div>
+                                    <div><div class="user-name">${item.name}</div></div>
                                 </div>
                             </td>
                             <td><span class="user-paket">${item.paket}</span></td>
                             <td style="text-align:center; font-weight:700; color:var(--navy);">${item.score}</td>
-                            <td style="text-align:center;">
-                                <span class="badge-score ${scoreClass}">${item.status}</span>
-                            </td>
+                            <td style="text-align:center;"><span class="badge-score ${scoreClass}">${item.status}</span></td>
                         </tr>
                     `;
                 }).join('');
             }
 
-            // Render pagination
             renderPagination(totalPages, page);
         }
 
-        // ===== RENDER PAGINATION =====
         function renderPagination(totalPages, currentPage) {
             const container = document.getElementById('pagination');
-
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                return;
-            }
-
+            if (totalPages <= 1) { container.innerHTML = ''; return; }
             let html = '';
             html += `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>⬅</button>`;
-
             for (let i = 1; i <= totalPages; i++) {
                 html += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
             }
-
             html += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>➡</button>`;
-
             container.innerHTML = html;
         }
 
-        // ===== GO TO PAGE =====
         function goToPage(page) {
             const filterPaket = document.getElementById('filterPaket').value;
             const filterPeriode = document.getElementById('filterPeriode').value;
-
             let filteredData = [...leaderboardData];
-            if (filterPaket !== 'all') {
-                filteredData = filteredData.filter(item => item.paket === filterPaket);
-            }
-            if (filterPeriode === 'today') {
-                filteredData = filteredData.slice(0, 5);
-            } else if (filterPeriode === 'week') {
-                filteredData = filteredData.slice(0, 10);
-            } else if (filterPeriode === 'month') {
-                filteredData = filteredData.slice(0, 15);
-            }
-
+            if (filterPaket !== 'all') filteredData = filteredData.filter(item => item.paket === filterPaket);
+            if (filterPeriode === 'today') filteredData = filteredData.slice(0, 5);
+            else if (filterPeriode === 'week') filteredData = filteredData.slice(0, 10);
+            else if (filterPeriode === 'month') filteredData = filteredData.slice(0, 15);
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
             if (page < 1 || page > totalPages) return;
-
             currentPage = page;
             renderLeaderboard(page);
         }
 
-        // ===== EVENT LISTENER FILTER =====
-        document.getElementById('filterPaket').addEventListener('change', function() {
-            currentPage = 1;
+        document.getElementById('filterPaket').addEventListener('change', function() { currentPage = 1; renderLeaderboard(1); });
+        document.getElementById('filterPeriode').addEventListener('change', function() { currentPage = 1; renderLeaderboard(1); });
+
+        // ===== UPDATE NAVBAR =====
+        function updateNavbar() {
+            const container = document.getElementById('navbarLogin');
+            if (!container) return;
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+            if (isLoggedIn) {
+                if (isAdmin) {
+                    container.innerHTML = `
+                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                }
+            } else {
+                container.innerHTML = `
+                    <a href="register.html" class="btn-register">Daftar</a>
+                    <a href="login.html" class="btn-login">Login</a>
+                `;
+            }
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.setItem('logoutEvent', Date.now());
+                window.location.href = 'index.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
             renderLeaderboard(1);
         });
-
-        document.getElementById('filterPeriode').addEventListener('change', function() {
-            currentPage = 1;
-            renderLeaderboard(1);
-        });
-
-        // ===== INIT =====
-        renderLeaderboard(1);
     </script>
-
 </body>
 </html>
