@@ -226,138 +226,130 @@
     </section>
 
     <script src="js/script.js"></script>
-    <script>
-        // ===== DATA SOAL + JAWABAN (CONTOH) =====
-        const questionsData = [
-            {
-                id: 1,
-                number: 1,
-                text: 'Seorang pedagang membeli 20 kg beras dengan harga Rp200.000. Ia menjual kembali dengan keuntungan 20%. Berapa harga jual per kg beras tersebut?',
-                image: null,
-                options: ['Rp10.000', 'Rp12.000', 'Rp14.000', 'Rp16.000', 'Rp18.000'],
-                correct: 1, // index jawaban benar
-                pembahasan: 'Harga beli total = Rp200.000. Keuntungan 20% = Rp200.000 × 20% = Rp40.000. Harga jual total = Rp240.000. Harga jual per kg = Rp240.000 ÷ 20 kg = Rp12.000.'
-            },
-            {
-                id: 2,
-                number: 2,
-                text: 'Jika 3x + 5 = 20, maka nilai x adalah...',
-                image: null,
-                options: ['3', '5', '7', '9', '11'],
-                correct: 1,
-                pembahasan: '3x + 5 = 20 → 3x = 15 → x = 5.'
-            },
-            {
-                id: 3,
-                number: 3,
-                text: 'Perhatikan gambar berikut! (contoh soal figural)',
-                image: 'assets/images/soal-figural-1.png',
-                options: ['A', 'B', 'C', 'D', 'E'],
-                correct: 2,
-                pembahasan: 'Jawaban yang tepat adalah C karena pola gambar berputar 90° searah jarum jam.'
-            }
-        ];
+<script>
+    // =============================================
+    // ===== AMBIL DATA DARI LOCALSTORAGE =====
+    // =============================================
 
-        // ===== AMBIL HASIL DARI localStorage =====
-        const result = JSON.parse(localStorage.getItem('examResult'));
+    // Ambil hasil tryout dari localStorage (dikirim dari exam.html)
+    const result = JSON.parse(localStorage.getItem('examResult'));
 
-        if (!result) {
-            // Jika tidak ada hasil, redirect ke index
-            window.location.href = 'index.html';
-        }
-
-        const userAnswers = result.answers || [];
-        const total = result.totalQuestions || questionsData.length;
-        const answered = result.answered || 0;
-
-        // ===== HITUNG SKOR =====
-        let benar = 0;
-        let salah = 0;
-        let tidakDijawab = 0;
-
-        const soalData = [];
-
-        for (let i = 0; i < total; i++) {
-            const q = questionsData[i];
-            const userAns = userAnswers[i];
-
-            let status = 'tidak-dijawab';
-            let isCorrect = false;
-
-            if (userAns === null || userAns === undefined) {
-                tidakDijawab++;
-            } else if (userAns === q.correct) {
-                benar++;
-                isCorrect = true;
-                status = 'benar';
-            } else {
-                salah++;
-                status = 'salah';
-            }
-
-            soalData.push({
-                ...q,
-                userAnswer: userAns,
-                isCorrect: isCorrect,
-                status: status
-            });
-        }
-
-        // ===== TAMPILKAN SKOR =====
-        document.getElementById('scoreDisplay').textContent = benar;
-        document.getElementById('totalDisplay').textContent = total;
-        document.getElementById('benarCount').textContent = benar;
-        document.getElementById('salahCount').textContent = salah;
-        document.getElementById('tidakDijawabCount').textContent = tidakDijawab;
-
-// ===== TAMPILKAN PEMBAHASAN =====
-const container = document.getElementById('pembahasanContainer');
-const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-
-soalData.forEach((q, index) => {
-    const card = document.createElement('div');
-    card.className = 'soal-card' + (q.status === 'salah' ? ' wrong' : '');
-
-    const statusText = q.status === 'benar' ? '✅ Benar' : 
-                      q.status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
-    const statusClass = q.status === 'benar' ? 'benar' : 
-                       q.status === 'salah' ? 'salah' : '';
-
-    // Gambar soal
-    let imageHTML = q.image ? `<img src="${q.image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
-
-    // Gambar pembahasan
-    let pembahasanImageHTML = q.pembahasanImage ? 
-        `<img src="${q.pembahasanImage}" alt="Gambar pembahasan" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
-
-    // Jawaban user
-    const userAnswerText = q.userAnswer !== null && q.userAnswer !== undefined ? 
-        optionLabels[q.userAnswer] + '. ' + q.options[q.userAnswer] : 
-        'Tidak dijawab';
-
-    // Gambar opsi jawaban user
-    let userOptionImage = '';
-    if (q.userAnswer !== null && q.userAnswer !== undefined && q.optionImages && q.optionImages[q.userAnswer]) {
-        userOptionImage = `<br><img src="${q.optionImages[q.userAnswer]}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0; margin-top:4px;">`;
+    if (!result) {
+        alert('⚠️ Tidak ada hasil tryout. Silakan kerjakan tryout terlebih dahulu.');
+        window.location.href = 'packages.html';
     }
 
-    card.innerHTML = `
-        <div class="soal-header">
-            <span>Soal ${q.number}</span>
-            <span class="status ${statusClass}">${statusText}</span>
-        </div>
-        <div class="soal-text">${imageHTML}${q.text}</div>
-        <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong>${userOptionImage}</div>
-        <div class="jawaban-benar">✅ Jawaban Benar: ${optionLabels[q.correct]}. ${q.options[q.correct]}</div>
-        <div class="pembahasan">
-            <strong>💡 Pembahasan:</strong> ${q.pembahasan}
-            ${pembahasanImageHTML}
-        </div>
-    `;
+    // Ambil semua soal dari localStorage
+    const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
 
-    container.appendChild(card);
-});
-    </script>
+    // Ambil parameter paket dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const paketId = urlParams.get('paket');
 
+    // Filter soal berdasarkan paket
+    let soalData = [];
+    let paketName = '';
+
+    if (paketId) {
+        const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]').find(p => p.id == paketId);
+        if (paket) {
+            paketName = paket.name;
+            soalData = semuaSoal.filter(s => s.paket === paketName);
+        }
+    }
+
+    // Jika tidak ada soal, pakai default
+    if (soalData.length === 0) {
+        soalData = [
+            { id: 1, number: 1, text: 'Belum ada soal untuk paket ini.', options: ['-', '-', '-', '-', '-'], correct: 0, pembahasan: 'Tidak ada pembahasan.' }
+        ];
+    }
+
+    // ===== GABUNGKAN DENGAN JAWABAN USER =====
+    const userAnswers = result.answers || [];
+    const total = result.totalQuestions || soalData.length;
+
+    // Gabungkan soal dengan jawaban user
+    const soalDenganJawaban = soalData.map((q, index) => {
+        const userAns = userAnswers[index] !== undefined ? userAnswers[index] : null;
+        let status = 'tidak-dijawab';
+        let isCorrect = false;
+
+        if (userAns === null || userAns === undefined) {
+            status = 'tidak-dijawab';
+        } else if (userAns === q.correct) {
+            status = 'benar';
+            isCorrect = true;
+        } else {
+            status = 'salah';
+        }
+
+        return {
+            ...q,
+            userAnswer: userAns,
+            isCorrect: isCorrect,
+            status: status
+        };
+    });
+
+    // ===== HITUNG SKOR =====
+    let benar = soalDenganJawaban.filter(q => q.status === 'benar').length;
+    let salah = soalDenganJawaban.filter(q => q.status === 'salah').length;
+    let tidakDijawab = soalDenganJawaban.filter(q => q.status === 'tidak-dijawab').length;
+
+    // ===== TAMPILKAN SKOR =====
+    document.getElementById('scoreDisplay').textContent = benar;
+    document.getElementById('totalDisplay').textContent = total;
+    document.getElementById('benarCount').textContent = benar;
+    document.getElementById('salahCount').textContent = salah;
+    document.getElementById('tidakDijawabCount').textContent = tidakDijawab;
+
+    // ===== TAMPILKAN PEMBAHASAN =====
+    const container = document.getElementById('pembahasanContainer');
+    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+
+    soalDenganJawaban.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'soal-card' + (q.status === 'salah' ? ' wrong' : '');
+
+        const statusText = q.status === 'benar' ? '✅ Benar' : 
+                          q.status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
+        const statusClass = q.status === 'benar' ? 'benar' : 
+                           q.status === 'salah' ? 'salah' : '';
+
+        const imageHTML = q.image ? `<img src="${q.image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
+
+        const pembahasanImageHTML = q.pembahasanGambar ? 
+            `<img src="${q.pembahasanGambar}" alt="Gambar pembahasan" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
+
+        const userAnswerText = q.userAnswer !== null && q.userAnswer !== undefined ? 
+            optionLabels[q.userAnswer] + '. ' + (q.options ? q.options[q.userAnswer] : '-') : 
+            'Tidak dijawab';
+
+        let userOptionImage = '';
+        if (q.userAnswer !== null && q.userAnswer !== undefined && q.optionImages && q.optionImages[q.userAnswer]) {
+            userOptionImage = `<br><img src="${q.optionImages[q.userAnswer]}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0; margin-top:4px;">`;
+        }
+
+        card.innerHTML = `
+            <div class="soal-header">
+                <span>Soal ${q.number || index + 1}</span>
+                <span class="status ${statusClass}">${statusText}</span>
+            </div>
+            <div class="soal-text">${imageHTML}${q.text}</div>
+            <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong>${userOptionImage}</div>
+            <div class="jawaban-benar">✅ Jawaban Benar: ${optionLabels[q.correct]}. ${q.options ? q.options[q.correct] : '-'}</div>
+            <div class="pembahasan">
+                <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Tidak ada pembahasan.'}
+                ${pembahasanImageHTML}
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+
+    // Hapus data examResult setelah ditampilkan (opsional)
+    // localStorage.removeItem('examResult');
+</script>
 </body>
 </html>
