@@ -240,8 +240,7 @@
                 <a href="index.html">Beranda</a>
                 <a href="packages.html">Paket</a>
                 <a href="leaderboard.html">Peringkat</a>
-                <a href="register.html" class="btn-register">Daftar</a>
-                <a href="login.html" class="btn-login">Login</a>
+                <div id="navbarLogin"></div>
             </div>
         </div>
     </nav>
@@ -274,87 +273,86 @@
                     </div>
                 </div>
 
-<!-- ===== METODE PEMBAYARAN ===== -->
-<div class="payment-section">
-    <h3>💳 Pilih Metode Pembayaran</h3>
+                <!-- ===== METODE PEMBAYARAN ===== -->
+                <div class="payment-section">
+                    <h3>💳 Pilih Metode Pembayaran</h3>
 
-    <div class="alert alert-success" id="alert-success">
-        ✅ Bukti transfer berhasil diupload! Kami akan verifikasi dalam 1x24 jam.
-    </div>
-    <div class="alert alert-error" id="alert-error">
-        ⚠️ Mohon upload bukti transfer terlebih dahulu.
-    </div>
+                    <div class="alert alert-success" id="alert-success">
+                        ✅ Bukti transfer berhasil diupload! Kami akan verifikasi dalam 1x24 jam.
+                    </div>
+                    <div class="alert alert-error" id="alert-error">
+                        ⚠️ Mohon upload bukti transfer terlebih dahulu.
+                    </div>
 
-    <!-- ===== OPSI 1: QRIS ===== -->
-    <div style="background:var(--gray-bg); padding:20px; border-radius:12px; margin-bottom:20px;">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-            <span style="font-size:28px;">📱</span>
-            <h4 style="color:var(--navy); margin:0;">Bayar via QRIS</h4>
-        </div>
-        <p style="color:var(--text-gray); font-size:14px; margin-bottom:12px;">
-            Scan QR Code di bawah menggunakan aplikasi mobile banking atau e-wallet (OVO, DANA, ShopeePay, dll.)
-        </p>
-        <div style="text-align:center; padding:16px; background:white; border-radius:12px; border:2px dashed #E0E0E0;">
-            <div style="font-size:14px; color:var(--text-gray); margin-bottom:8px;">
-                ⬇️ Tempatkan gambar QRIS di sini
+                    <!-- ===== OPSI 1: QRIS ===== -->
+                    <div style="background:var(--gray-bg); padding:20px; border-radius:12px; margin-bottom:20px;">
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                            <span style="font-size:28px;">📱</span>
+                            <h4 style="color:var(--navy); margin:0;">Bayar via QRIS</h4>
+                        </div>
+                        <p style="color:var(--text-gray); font-size:14px; margin-bottom:12px;">
+                            Scan QR Code di bawah menggunakan aplikasi mobile banking atau e-wallet (OVO, DANA, ShopeePay, dll.)
+                        </p>
+                        <div style="text-align:center; padding:16px; background:white; border-radius:12px; border:2px dashed #E0E0E0;">
+                            <div style="font-size:14px; color:var(--text-gray); margin-bottom:8px;">
+                                ⬇️ Tempatkan gambar QRIS di sini
+                            </div>
+                            <div style="background:#f5f5f5; padding:30px; border-radius:8px; display:inline-block;">
+                                <span style="font-size:48px;">📷</span>
+                                <p style="font-size:12px; color:var(--text-gray); margin-top:8px;">
+                                    (Upload file QRIS Anda di <code>assets/images/qris.png</code>)
+                                </p>
+                            </div>
+                        </div>
+                        <p style="color:var(--text-gray); font-size:12px; margin-top:8px; text-align:center;">
+                            Total: <strong id="qrisAmount" style="color:var(--red);">Rp199.000</strong>
+                        </p>
+                    </div>
+
+                    <!-- ===== OPSI 2: Transfer Bank ===== -->
+                    <div style="background:var(--gray-bg); padding:20px; border-radius:12px; margin-bottom:20px;">
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+                            <span style="font-size:28px;">🏦</span>
+                            <h4 style="color:var(--navy); margin:0;">Transfer Bank</h4>
+                        </div>
+
+                        <div class="bank-info">
+                            <div class="bank-name">🏦 Bank Central Asia (BCA)</div>
+                            <div class="account-number">4400012208</div>
+                            <div class="account-holder">a.n. Helmi Mirza Maulana</div>
+                        </div>
+
+                        <div class="instructions">
+                            <strong>📌 Instruksi Pembayaran:</strong>
+                            <ol>
+                                <li>Transfer sejumlah <strong id="instructionAmount">Rp199.000</strong> ke rekening di atas.</li>
+                                <li>Upload bukti transfer di form bawah.</li>
+                                <li>Kirim konfirmasi ke <strong>WhatsApp: 0812-3335-5227</strong></li>
+                                <li>Paket akan aktif dalam 1x24 jam setelah verifikasi.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- ===== UPLOAD BUKTI ===== -->
+                    <div class="upload-section">
+                        <label for="buktiTransfer">📤 Upload Bukti Transfer</label>
+                        <input type="file" id="buktiTransfer" accept="image/*" onchange="previewBukti(this)">
+                        <div id="preview-bukti"></div>
+                    </div>
+
+                    <button class="btn-checkout" onclick="handleCheckout()">
+                        Kirim Bukti & Selesaikan Pesanan
+                    </button>
+
+                    <div class="whatsapp-info">
+                        📱 Konfirmasi pembayaran via WhatsApp: 
+                        <a href="https://wa.me/6281233555227?text=Saya%20telah%20transfer%20untuk%20paket%20tryout" target="_blank" style="color:#25D366; font-weight:700;">
+                            0812-3335-5227
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div style="background:#f5f5f5; padding:30px; border-radius:8px; display:inline-block;">
-                <span style="font-size:48px;">📷</span>
-                <p style="font-size:12px; color:var(--text-gray); margin-top:8px;">
-                    (Upload file QRIS Anda di <code>assets/images/qris.png</code>)
-                </p>
-            </div>
-            <!-- Jika sudah punya file QRIS, ganti dengan:
-            <img src="assets/images/qris.png" alt="QRIS Pembayaran" style="max-width:200px; border-radius:8px;">
-            -->
         </div>
-        <p style="color:var(--text-gray); font-size:12px; margin-top:8px; text-align:center;">
-            Total: <strong id="qrisAmount" style="color:var(--red);">Rp199.000</strong>
-        </p>
-    </div>
-
-    <!-- ===== OPSI 2: Transfer Bank ===== -->
-    <div style="background:var(--gray-bg); padding:20px; border-radius:12px; margin-bottom:20px;">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-            <span style="font-size:28px;">🏦</span>
-            <h4 style="color:var(--navy); margin:0;">Transfer Bank</h4>
-        </div>
-
-<div class="bank-info">
-    <div class="bank-name">🏦 Bank Central Asia (BCA)</div>
-    <div class="account-number">4400012208</div>
-    <div class="account-holder">a.n. Helmi Mirza Maulana</div>
-</div>
-
-        <div class="instructions">
-            <strong>📌 Instruksi Pembayaran:</strong>
-            <ol>
-                <li>Transfer sejumlah <strong id="instructionAmount">Rp199.000</strong> ke rekening di atas.</li>
-                <li>Upload bukti transfer di form bawah.</li>
-                <li>Kirim konfirmasi ke <strong>WhatsApp: 0812-3335-5227</strong></li>
-                <li>Paket akan aktif dalam 1x24 jam setelah verifikasi.</li>
-            </ol>
-        </div>
-    </div>
-
-    <!-- ===== UPLOAD BUKTI ===== -->
-    <div class="upload-section">
-        <label for="buktiTransfer">📤 Upload Bukti Transfer</label>
-        <input type="file" id="buktiTransfer" accept="image/*" onchange="previewBukti(this)">
-        <div id="preview-bukti"></div>
-    </div>
-
-    <button class="btn-checkout" onclick="handleCheckout()">
-        Kirim Bukti & Selesaikan Pesanan
-    </button>
-
-    <div class="whatsapp-info">
-        📱 Konfirmasi pembayaran via WhatsApp: 
-        <a href="https://wa.me/6281233555227?text=Saya%20telah%20transfer%20untuk%20paket%20tryout" target="_blank" style="color:#25D366; font-weight:700;">
-            0812-3335-5227
-        </a>
-    </div>
-</div>
     </section>
 
     <!-- ===== FOOTER ===== -->
@@ -372,46 +370,63 @@
 
     <script src="js/script.js"></script>
     <script>
-        // Ambil parameter dari URL
+        // ===== AMBIL DATA PAKET DARI URL =====
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
-        // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
-function getPaketById(id) {
-    const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
-    return paket.find(p => p.id == id);
-}
+        function getPaketById(id) {
+            const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+            return paket.find(p => p.id == id);
+        }
 
-// Ambil parameter dari URL
-const urlParams = new URLSearchParams(window.location.search);
-const paketId = urlParams.get('paket');
+        const urlParams = new URLSearchParams(window.location.search);
+        const paketId = urlParams.get('paket');
 
-let data = null;
+        let data = null;
+        if (paketId) {
+            data = getPaketById(paketId);
+        }
 
-if (paketId) {
-    data = getPaketById(paketId);
-}
+        if (!data) {
+            data = {
+                name: 'Paket Tryout',
+                category: 'Tryout',
+                duration: '3 Bulan',
+                price: 0
+            };
+        }
 
-// Jika paket tidak ditemukan, pakai default
-if (!data) {
-    data = {
-        name: 'Paket Tryout',
-        category: 'Tryout',
-        duration: '3 Bulan',
-        price: 0
-    };
-}
+        document.getElementById('packageName').textContent = data.name;
+        document.getElementById('packageCategory').textContent = data.category;
+        document.getElementById('packageDuration').textContent = data.duration;
+        document.getElementById('totalPrice').textContent = 'Rp' + data.price.toLocaleString('id-ID');
+        document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toLocaleString('id-ID');
 
-// Tampilkan data
-document.getElementById('packageName').textContent = data.name;
-document.getElementById('packageCategory').textContent = data.category;
-document.getElementById('packageDuration').textContent = data.duration;
-document.getElementById('totalPrice').textContent = 'Rp' + data.price.toLocaleString('id-ID');
-document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toLocaleString('id-ID');
-        // Function handle checkout
+        // ===== PREVIEW BUKTI =====
+        function previewBukti(input) {
+            const preview = document.getElementById('preview-bukti');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Bukti Transfer" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ===== HANDLE CHECKOUT (DENGAN CEK LOGIN) =====
         function handleCheckout() {
+            // 1. CEK LOGIN
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+            if (!isLoggedIn) {
+                alert('⚠️ Anda harus login terlebih dahulu untuk membeli paket tryout!');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // 2. CEK UPLOAD BUKTI
             const fileInput = document.getElementById('buktiTransfer');
             const alertSuccess = document.getElementById('alert-success');
             const alertError = document.getElementById('alert-error');
@@ -425,51 +440,56 @@ document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toL
                 return;
             }
 
-            // Simulasi sukses
+            // 3. SIMULASI SUKSES
             alertSuccess.textContent = '✅ Bukti transfer berhasil diupload! Pesanan akan diproses dalam 1x24 jam.';
             alertSuccess.style.display = 'block';
-
-            // Reset file input
             fileInput.value = '';
 
-            // Redirect ke dashboard setelah 3 detik
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'dashboard-user.html';
             }, 3000);
         }
 
-        // Preview bukti
-        function previewBukti(input) {
-            const preview = document.getElementById('preview-bukti');
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Bukti Transfer">`;
-                };
-                reader.readAsDataURL(input.files[0]);
+        // ===== UPDATE NAVBAR =====
+        function updateNavbar() {
+            const container = document.getElementById('navbarLogin');
+            if (!container) return;
+
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+
+            if (isLoggedIn) {
+                if (isAdmin) {
+                    container.innerHTML = `
+                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                }
+            } else {
+                container.innerHTML = `
+                    <a href="register.html" class="btn-register">Daftar</a>
+                    <a href="login.html" class="btn-login">Login</a>
+                `;
             }
         }
-        // ===== CEK APAKAH USER SUDAH LOGIN =====
-function cekLoginSebelumCheckout() {
-    const isLoggedIn = localStorage.getItem('userEmail') !== null;
-    if (!isLoggedIn) {
-        alert('⚠️ Anda harus login terlebih dahulu untuk membeli paket tryout!');
-        window.location.href = 'login.html';
-        return false;
-    }
-    return true;
-}
 
-// ===== HANLE CHECKOUT =====
-function handleCheckout() {
-    // Cek login dulu
-    if (!cekLoginSebelumCheckout()) {
-        return;
-    }
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                window.location.href = 'index.html';
+            }
+        }
 
-    // ... kode checkout yang sudah ada (upload bukti, dll)
-    // Pastikan semua proses checkout hanya berjalan jika user sudah login.
-}
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
+        });
     </script>
 
 </body>
