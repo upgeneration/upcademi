@@ -490,7 +490,7 @@
 
         function closeSubmitModal() { document.getElementById('submitModal').classList.remove('show'); }
 
-       function confirmSubmit() {
+      function confirmSubmit() {
     closeSubmitModal();
     clearInterval(timerInterval);
 
@@ -501,9 +501,11 @@
 
     questions.forEach((q, index) => {
         const userAnswer = answers[index];
+        const correctAns = q.jawaban || q.correct;
+        
         if (userAnswer === null || userAnswer === undefined) {
             tidakDijawab++;
-        } else if (userAnswer == q.jawaban || userAnswer == q.correct) {
+        } else if (userAnswer == correctAns || userAnswer === correctAns) {
             benar++;
         } else {
             salah++;
@@ -534,20 +536,16 @@
     hasilList.push(hasil);
     localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
 
-    // Simpan juga untuk riwayat user
-    let riwayatUser = JSON.parse(localStorage.getItem('riwayatUser_' + userEmail) || '[]');
-    riwayatUser.push({
-        paket: paketName,
-        skor: benar,
-        total: questions.length,
-        tanggal: new Date().toLocaleDateString('id-ID')
-    });
-    localStorage.setItem('riwayatUser_' + userEmail, JSON.stringify(riwayatUser));
+    // ===== SIMPAN JUGA UNTUK EXAM RESULT =====
+    localStorage.setItem('examResult', JSON.stringify({
+        answers: answers,
+        totalQuestions: questions.length,
+        timestamp: new Date().toISOString()
+    }));
 
     // Redirect ke halaman hasil
-    window.location.href = 'result.html';
+    window.location.href = 'result.html?paket=' + new URLSearchParams(window.location.search).get('paket');
 }
-
         function submitExam(e) { e.preventDefault(); showSubmitModal(); return false; }
 
         function toggleMobile(type) {
