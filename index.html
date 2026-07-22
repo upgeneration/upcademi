@@ -10,26 +10,24 @@
 
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
-                <span>UPCADEMI</span>
-            </a>
-            <div class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="nav-menu" id="navMenu">
-                <a href="index.html">Beranda</a>
-                <a href="packages.html">Paket</a>
-                <a href="leaderboard.html">Peringkat</a>
-                <div id="navbarLogin">
-                    <!-- Diisi oleh JavaScript -->
-                </div>
-            </div>
+    <div class="container">
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+            <span>UPCADEMI</span>
+        </a>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-    </nav>
+        <div class="nav-menu" id="navMenu">
+            <a href="index.html">Beranda</a>
+            <a href="packages.html">Paket</a>
+            <a href="leaderboard.html">Peringkat</a>
+            <div id="navbarLogin"></div>
+        </div>
+    </div>
+</nav>
 
     <!-- ===== HERO SECTION ===== -->
     <section class="hero">
@@ -145,55 +143,47 @@
 
     <script src="js/script.js"></script>
     <script>
-        // ===== UPDATE NAVBAR =====
-        function updateNavbar() {
-            const container = document.getElementById('navbarLogin');
-            if (!container) return;
+// ===== UPDATE NAVBAR =====
+function updateNavbar() {
+    const container = document.getElementById('navbarLogin');
+    if (!container) return;
 
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const isLoggedIn = localStorage.getItem('userEmail') !== null;
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const isLoggedIn = localStorage.getItem('userEmail') !== null;
 
-            if (isLoggedIn) {
-                if (isAdmin) {
-                    container.innerHTML = `
-                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
-                }
-            } else {
-                container.innerHTML = `
-                    <a href="register.html" class="btn-register">Daftar</a>
-                    <a href="login.html" class="btn-login">Login</a>
-                `;
-            }
+    if (isLoggedIn) {
+        if (isAdmin) {
+            container.innerHTML = `
+                <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                <a href="#" onclick="logout()" class="btn-login">Logout</a>
+            `;
+        } else {
+            container.innerHTML = `
+                <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                <a href="#" onclick="logout()" class="btn-login">Logout</a>
+            `;
         }
+    } else {
+        container.innerHTML = `
+            <a href="register.html" class="btn-register">Daftar</a>
+            <a href="login.html" class="btn-login">Login</a>
+        `;
+    }
+}
 
-        function logout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('isAdmin');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userName');
-                window.location.href = 'index.html';
-            }
-        }
+function logout() {
+    if (confirm('Yakin ingin logout?')) {
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        window.location.href = 'index.html';
+    }
+}
 
-        // ===== DENGARKAN PERUBAHAN LOCALSTORAGE =====
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'isAdmin' || e.key === 'userEmail') {
-                updateNavbar();
-            }
-        });
-
-        // ===== JALANKAN SAAT HALAMAN LOAD =====
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavbar();
-        });
-    </script>
+document.addEventListener('DOMContentLoaded', function() {
+    updateNavbar();
+});
+</script>
 
 </body>
 </html>
