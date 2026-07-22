@@ -3,236 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peringkat - UPCADEMI</title>
+    <title>Paket Tryout - UPCADEMI</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .leaderboard-page {
-            padding: 40px 0;
+        .packages-page {
+            padding: 60px 0;
         }
-
-        .leaderboard-header {
+        .packages-page h1 {
             text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .leaderboard-header h1 {
             font-size: 36px;
             color: var(--navy);
+            margin-bottom: 8px;
         }
-
-        .leaderboard-header p {
+        .packages-page .subtitle {
+            text-align: center;
             color: var(--text-gray);
+            margin-bottom: 40px;
             font-size: 18px;
         }
-
-        .filter-leaderboard {
+        .filter-section {
             display: flex;
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
-
-        .filter-leaderboard select {
-            padding: 10px 20px;
-            border: 2px solid #E0E0E0;
-            border-radius: 8px;
-            font-size: 14px;
-            background: var(--white);
-            color: var(--text-dark);
-            cursor: pointer;
-        }
-
-        .filter-leaderboard select:focus {
-            border-color: var(--navy);
-            outline: none;
-        }
-
-        .leaderboard-table {
-            background: var(--white);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .leaderboard-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .leaderboard-table thead {
-            background: var(--navy);
-            color: var(--white);
-        }
-
-        .leaderboard-table thead th {
-            padding: 16px 20px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .leaderboard-table tbody td {
-            padding: 14px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-        }
-
-        .leaderboard-table tbody tr:hover {
-            background: #F5F7FA;
-        }
-
-        .leaderboard-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .rank-number {
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            line-height: 32px;
-            text-align: center;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .rank-1 {
-            background: #FFD700;
-            color: #8B6914;
-        }
-
-        .rank-2 {
-            background: #C0C0C0;
-            color: #555;
-        }
-
-        .rank-3 {
-            background: #CD7F32;
-            color: #fff;
-        }
-
-        .rank-other {
-            background: #E0E0E0;
-            color: var(--text-gray);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--navy-light);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .user-paket {
-            font-size: 12px;
-            color: var(--text-gray);
-        }
-
-        .badge-score {
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .badge-score.high {
-            background: #E8F5E9;
-            color: var(--green);
-        }
-
-        .badge-score.medium {
-            background: #FFF3E0;
-            color: #FF9800;
-        }
-
-        .badge-score.low {
-            background: #FFEBEE;
-            color: var(--red);
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .pagination button {
-            padding: 8px 16px;
-            border: 2px solid #E0E0E0;
-            border-radius: 8px;
-            background: var(--white);
-            color: var(--text-dark);
+        .filter-btn {
+            padding: 10px 24px;
+            border: 2px solid var(--navy);
+            background: transparent;
+            color: var(--navy);
+            border-radius: 30px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 14px;
         }
-
-        .pagination button:hover {
-            border-color: var(--navy);
-            color: var(--navy);
-        }
-
-        .pagination button.active {
+        .filter-btn:hover, .filter-btn.active {
             background: var(--navy);
             color: var(--white);
-            border-color: var(--navy);
         }
-
-        .empty-state {
+        .package-grid-full {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .package-card-full {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
             text-align: center;
-            padding: 60px 20px;
+            border-top: 6px solid var(--navy);
+            position: relative;
+        }
+        .package-card-full:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        .package-card-full.popular {
+            border-top-color: var(--red);
+        }
+        .badge-category {
+            display: inline-block;
+            background: var(--navy-light);
+            color: var(--white);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .badge-popular {
+            position: absolute;
+            top: 16px;
+            right: -30px;
+            background: var(--red);
+            color: white;
+            padding: 4px 40px;
+            font-size: 12px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            text-transform: uppercase;
+        }
+        .package-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .package-price {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--red);
+            margin: 16px 0 8px;
+        }
+        .package-price small {
+            font-size: 16px;
+            font-weight: 400;
             color: var(--text-gray);
         }
-
-        .empty-state .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
+        .package-desc {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            font-size: 15px;
         }
-
+        .package-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+            padding: 0;
+        }
+        .package-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+        .package-features li::before {
+            content: "✓ ";
+            color: var(--red);
+            font-weight: 700;
+        }
+        .btn-buy {
+            display: inline-block;
+            background-color: var(--red);
+            color: var(--white);
+            padding: 12px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn-buy:hover {
+            background-color: var(--red-dark);
+            transform: scale(1.02);
+        }
+        @media (max-width: 992px) {
+            .package-grid-full {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
         @media (max-width: 768px) {
-            .leaderboard-table {
-                overflow-x: auto;
+            .package-grid-full {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
             }
-
-            .leaderboard-table table {
-                min-width: 600px;
-            }
-
-            .leaderboard-header h1 {
+            .packages-page h1 {
                 font-size: 28px;
             }
-
-            .filter-leaderboard {
-                flex-direction: column;
-                align-items: center;
+            .filter-section {
+                gap: 8px;
             }
-
-            .filter-leaderboard select {
-                width: 100%;
-                max-width: 300px;
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 13px;
             }
         }
     </style>
@@ -241,75 +171,83 @@
 
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
-    <div class="container">
-        <a href="index.html" class="logo">
-            <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
-            <span>UPCADEMI</span>
-        </a>
-        <div class="hamburger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <div class="nav-menu" id="navMenu">
-            <a href="index.html">Beranda</a>
-            <a href="packages.html">Paket</a>
-            <a href="leaderboard.html">Peringkat</a>
-            <div id="navbarLogin">
-                <!-- Diisi oleh JavaScript -->
-            </div>
-        </div>
-    </div>
-</nav>
-
-    <!-- ===== LEADERBOARD SECTION ===== -->
-    <section class="leaderboard-page">
         <div class="container">
-            <div class="leaderboard-header">
-                <h1>🏆 Peringkat Siswa</h1>
-                <p>Lihat peringkat siswa berdasarkan skor tryout tertinggi</p>
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+                <span>UPCADEMI</span>
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html">Beranda</a>
+                <a href="packages.html" style="background: rgba(255,255,255,0.15);">Paket</a>
+                <a href="leaderboard.html">Peringkat</a>
+                <div id="navbarLogin">
+                    <!-- Diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== PACKAGES SECTION ===== -->
+    <section class="packages-page">
+        <div class="container">
+            <h1>Semua Paket Tryout</h1>
+            <p class="subtitle">Pilih paket sesuai kebutuhan dan target ujianmu</p>
+
+            <div class="filter-section">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="cpns">CPNS</button>
+                <button class="filter-btn" data-filter="utbk">UTBK</button>
+                <button class="filter-btn" data-filter="kedinasan">Kedinasan</button>
             </div>
 
-            <!-- Filter -->
-            <div class="filter-leaderboard">
-                <select id="filterPaket">
-                    <option value="all">Semua Paket</option>
-                    <option value="CPNS Master">CPNS Master</option>
-                    <option value="UTBK Pro">UTBK Pro</option>
-                    <option value="Kedinasan Plus">Kedinasan Plus</option>
-                    <option value="Starter">Starter</option>
-                    <option value="Pro">Pro</option>
-                    <option value="Ultimate">Ultimate</option>
-                </select>
-                <select id="filterPeriode">
-                    <option value="all">Semua Waktu</option>
-                    <option value="today">Hari Ini</option>
-                    <option value="week">Minggu Ini</option>
-                    <option value="month">Bulan Ini</option>
-                </select>
-            </div>
+            <div class="package-grid-full" id="packageGrid">
+                <div class="package-card-full popular" data-category="cpns">
+                    <div class="badge-popular">Paling Laris</div>
+                    <span class="badge-category">CPNS</span>
+                    <div class="package-name">CPNS Master</div>
+                    <div class="package-price">Rp199.000 <small>/paket</small></div>
+                    <p class="package-desc">Persiapan lengkap untuk tes CPNS 2026</p>
+                    <ul class="package-features">
+                        <li>10 Paket Tryout CPNS</li>
+                        <li>TWK, TIU, TKP lengkap</li>
+                        <li>Pembahasan detail</li>
+                        <li>Akses 3 Bulan</li>
+                    </ul>
+                    <a href="checkout.html?paket=cpns-master" class="btn-buy">Beli Sekarang</a>
+                </div>
 
-            <!-- Tabel -->
-            <div class="leaderboard-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:60px;">Rank</th>
-                            <th>Nama</th>
-                            <th style="width:150px;">Paket</th>
-                            <th style="width:100px; text-align:center;">Skor</th>
-                            <th style="width:120px; text-align:center;">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboardBody">
-                        <!-- Data akan di-generate JS -->
-                    </tbody>
-                </table>
-            </div>
+                <div class="package-card-full" data-category="utbk">
+                    <span class="badge-category">UTBK</span>
+                    <div class="package-name">UTBK Pro</div>
+                    <div class="package-price">Rp179.000 <small>/paket</small></div>
+                    <p class="package-desc">Raih skor tertinggi di UTBK 2026</p>
+                    <ul class="package-features">
+                        <li>8 Paket Tryout UTBK</li>
+                        <li>TPS + TKA lengkap</li>
+                        <li>Analisis per materi</li>
+                        <li>Akses 3 Bulan</li>
+                    </ul>
+                    <a href="checkout.html?paket=utbk-pro" class="btn-buy">Beli Sekarang</a>
+                </div>
 
-            <!-- Pagination -->
-            <div class="pagination" id="pagination">
-                <!-- JS akan generate -->
+                <div class="package-card-full" data-category="kedinasan">
+                    <span class="badge-category">Kedinasan</span>
+                    <div class="package-name">Kedinasan Plus</div>
+                    <div class="package-price">Rp249.000 <small>/paket</small></div>
+                    <p class="package-desc">Lulus sekolah kedinasan favorit</p>
+                    <ul class="package-features">
+                        <li>12 Paket Tryout Kedinasan</li>
+                        <li>Soal SKD + SKB</li>
+                        <li>Pembahasan lengkap</li>
+                        <li>Akses 3 Bulan</li>
+                    </ul>
+                    <a href="checkout.html?paket=kedinasan-plus" class="btn-buy">Beli Sekarang</a>
+                </div>
             </div>
         </div>
     </section>
@@ -329,207 +267,66 @@
 
     <script src="js/script.js"></script>
     <script>
-        // ===== DATA CONTOH (nanti dari database) =====
-        const leaderboardData = [
-            { rank: 1, name: 'Budi Santoso', paket: 'CPNS Master', score: 95, status: 'Lulus' },
-            { rank: 2, name: 'Siti Rahayu', paket: 'UTBK Pro', score: 92, status: 'Lulus' },
-            { rank: 3, name: 'Andi Wijaya', paket: 'Kedinasan Plus', score: 88, status: 'Lulus' },
-            { rank: 4, name: 'Rina Anggraeni', paket: 'CPNS Master', score: 85, status: 'Lulus' },
-            { rank: 5, name: 'Dedi Kurniawan', paket: 'Pro', score: 82, status: 'Lulus' },
-            { rank: 6, name: 'Lisa Marlina', paket: 'UTBK Pro', score: 78, status: 'Perlu Belajar' },
-            { rank: 7, name: 'Rudi Hartono', paket: 'Starter', score: 75, status: 'Perlu Belajar' },
-            { rank: 8, name: 'Maya Sari', paket: 'Ultimate', score: 72, status: 'Perlu Belajar' },
-            { rank: 9, name: 'Eko Prasetyo', paket: 'CPNS Master', score: 68, status: 'Perlu Belajar' },
-            { rank: 10, name: 'Dewi Lestari', paket: 'Kedinasan Plus', score: 65, status: 'Perlu Belajar' },
-            { rank: 11, name: 'Fajar Nugroho', paket: 'UTBK Pro', score: 60, status: 'Perlu Belajar' },
-            { rank: 12, name: 'Tuti Handayani', paket: 'Pro', score: 55, status: 'Perlu Belajar' },
-            { rank: 13, name: 'Hendra Gunawan', paket: 'Starter', score: 50, status: 'Perlu Belajar' },
-            { rank: 14, name: 'Nina Wulandari', paket: 'Ultimate', score: 48, status: 'Perlu Belajar' },
-            { rank: 15, name: 'Agus Saputra', paket: 'CPNS Master', score: 45, status: 'Perlu Belajar' }
-        ];
+        // ===== FILTER PAKET =====
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
 
-        let currentPage = 1;
-        const itemsPerPage = 10;
+                const filter = this.dataset.filter;
+                const cards = document.querySelectorAll('.package-card-full');
 
-        // ===== RENDER LEADERBOARD =====
-        function renderLeaderboard(page = 1) {
-            const filterPaket = document.getElementById('filterPaket').value;
-            const filterPeriode = document.getElementById('filterPeriode').value;
+                cards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
 
-            let filteredData = [...leaderboardData];
+        // ===== UPDATE NAVBAR =====
+        function updateNavbar() {
+            const container = document.getElementById('navbarLogin');
+            if (!container) return;
 
-            // Filter paket
-            if (filterPaket !== 'all') {
-                filteredData = filteredData.filter(item => item.paket === filterPaket);
-            }
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const isLoggedIn = localStorage.getItem('userEmail') !== null;
 
-            // Filter periode (simulasi)
-            if (filterPeriode === 'today') {
-                filteredData = filteredData.slice(0, 5);
-            } else if (filterPeriode === 'week') {
-                filteredData = filteredData.slice(0, 10);
-            } else if (filterPeriode === 'month') {
-                filteredData = filteredData.slice(0, 15);
-            }
-
-            // Hitung pagination
-            const totalItems = filteredData.length;
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-            const pageData = filteredData.slice(startIndex, endIndex);
-
-            // Render tabel
-            const tbody = document.getElementById('leaderboardBody');
-
-            if (pageData.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5">
-                            <div class="empty-state">
-                                <div class="icon">📊</div>
-                                <p>Belum ada data peringkat untuk filter ini</p>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                tbody.innerHTML = pageData.map((item, index) => {
-                    const rankClass = item.rank === 1 ? 'rank-1' : 
-                                     item.rank === 2 ? 'rank-2' : 
-                                     item.rank === 3 ? 'rank-3' : 'rank-other';
-
-                    const scoreClass = item.score >= 80 ? 'high' : 
-                                      item.score >= 60 ? 'medium' : 'low';
-
-                    const initials = item.name.split(' ').map(n => n[0]).join('').slice(0, 2);
-
-                    return `
-                        <tr>
-                            <td><span class="rank-number ${rankClass}">${item.rank}</span></td>
-                            <td>
-                                <div class="user-info">
-                                    <div class="user-avatar">${initials}</div>
-                                    <div>
-                                        <div class="user-name">${item.name}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><span class="user-paket">${item.paket}</span></td>
-                            <td style="text-align:center; font-weight:700; color:var(--navy);">${item.score}</td>
-                            <td style="text-align:center;">
-                                <span class="badge-score ${scoreClass}">${item.status}</span>
-                            </td>
-                        </tr>
+            if (isLoggedIn) {
+                if (isAdmin) {
+                    container.innerHTML = `
+                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
                     `;
-                }).join('');
+                } else {
+                    container.innerHTML = `
+                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                    `;
+                }
+            } else {
+                container.innerHTML = `
+                    <a href="register.html" class="btn-register">Daftar</a>
+                    <a href="login.html" class="btn-login">Login</a>
+                `;
             }
-
-            // Render pagination
-            renderPagination(totalPages, page);
         }
 
-        // ===== RENDER PAGINATION =====
-        function renderPagination(totalPages, currentPage) {
-            const container = document.getElementById('pagination');
-
-            if (totalPages <= 1) {
-                container.innerHTML = '';
-                return;
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('isAdmin');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.setItem('logoutEvent', Date.now());
+                window.location.href = 'index.html';
             }
-
-            let html = '';
-            html += `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>⬅</button>`;
-
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
-
-            html += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>➡</button>`;
-
-            container.innerHTML = html;
         }
 
-        // ===== GO TO PAGE =====
-        function goToPage(page) {
-            const filterPaket = document.getElementById('filterPaket').value;
-            const filterPeriode = document.getElementById('filterPeriode').value;
-
-            let filteredData = [...leaderboardData];
-            if (filterPaket !== 'all') {
-                filteredData = filteredData.filter(item => item.paket === filterPaket);
-            }
-            if (filterPeriode === 'today') {
-                filteredData = filteredData.slice(0, 5);
-            } else if (filterPeriode === 'week') {
-                filteredData = filteredData.slice(0, 10);
-            } else if (filterPeriode === 'month') {
-                filteredData = filteredData.slice(0, 15);
-            }
-
-            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-            if (page < 1 || page > totalPages) return;
-
-            currentPage = page;
-            renderLeaderboard(page);
-        }
-
-        // ===== EVENT LISTENER FILTER =====
-        document.getElementById('filterPaket').addEventListener('change', function() {
-            currentPage = 1;
-            renderLeaderboard(1);
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
         });
-
-        document.getElementById('filterPeriode').addEventListener('change', function() {
-            currentPage = 1;
-            renderLeaderboard(1);
-        });
-
-        // ===== INIT =====
-        renderLeaderboard(1);
-    <script>
-// ===== UPDATE NAVBAR =====
-function updateNavbar() {
-    const container = document.getElementById('navbarLogin');
-    if (!container) return;
-
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const isLoggedIn = localStorage.getItem('userEmail') !== null;
-
-    if (isLoggedIn) {
-        if (isAdmin) {
-            container.innerHTML = `
-                <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
-                <a href="#" onclick="logout()" class="btn-login">Logout</a>
-            `;
-        } else {
-            container.innerHTML = `
-                <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
-                <a href="#" onclick="logout()" class="btn-login">Logout</a>
-            `;
-        }
-    } else {
-        container.innerHTML = `
-            <a href="register.html" class="btn-register">Daftar</a>
-            <a href="login.html" class="btn-login">Login</a>
-        `;
-    }
-}
-
-function logout() {
-    if (confirm('Yakin ingin logout?')) {
-        localStorage.removeItem('isAdmin');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userName');
-        window.location.href = 'index.html';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    updateNavbar();
-});
-</script>
-
+    </script>
 </body>
 </html>
