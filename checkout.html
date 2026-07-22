@@ -369,146 +369,161 @@
     </footer>
 
     <script src="js/script.js"></script>
-    <script>
-        // ===== AMBIL DATA PAKET DARI URL =====
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
+<script>
+    // ==========================================
+    // CHECKOUT - UPCADEMI
+    // ==========================================
+
+    // ===== CEK LOGIN SEBELUM CHECKOUT =====
+    function cekLoginSebelumCheckout() {
+        const isLoggedIn = localStorage.getItem('userEmail') !== null;
+        if (!isLoggedIn) {
+            alert('⚠️ Anda harus login terlebih dahulu untuk membeli paket tryout!');
+            window.location.href = 'login.html';
+            return false;
         }
+        return true;
+    }
 
-        function getPaketById(id) {
-            const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
-            return paket.find(p => p.id == id);
-        }
+    // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
+    function getPaketById(id) {
+        const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+        return paket.find(p => p.id == id);
+    }
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const paketId = urlParams.get('paket');
+    // ===== AMBIL PARAMETER URL =====
+    const urlParams = new URLSearchParams(window.location.search);
+    const paketId = urlParams.get('paket');
 
-        let data = null;
-        if (paketId) {
-            data = getPaketById(paketId);
-        }
+    let data = null;
 
-        if (!data) {
-            data = {
-                name: 'Paket Tryout',
-                category: 'Tryout',
-                duration: '3 Bulan',
-                price: 0
+    if (paketId) {
+        data = getPaketById(paketId);
+    }
+
+    // Jika paket tidak ditemukan, pakai default
+    if (!data) {
+        data = {
+            name: 'Paket Tryout',
+            category: 'Tryout',
+            duration: '3 Bulan',
+            price: 0
+        };
+    }
+
+    // ===== TAMPILKAN DATA =====
+    document.getElementById('packageName').textContent = data.name;
+    document.getElementById('packageCategory').textContent = data.category || 'Tryout';
+    document.getElementById('packageDuration').textContent = data.duration || '3 Bulan';
+    document.getElementById('totalPrice').textContent = 'Rp' + (data.price || 0).toLocaleString('id-ID');
+    document.getElementById('instructionAmount').textContent = 'Rp' + (data.price || 0).toLocaleString('id-ID');
+    document.getElementById('qrisAmount').textContent = 'Rp' + (data.price || 0).toLocaleString('id-ID');
+
+    // ===== PREVIEW BUKTI =====
+    function previewBukti(input) {
+        const preview = document.getElementById('preview-bukti');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `<img src="${e.target.result}" alt="Bukti Transfer" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
             };
+            reader.readAsDataURL(input.files[0]);
         }
-
-        document.getElementById('packageName').textContent = data.name;
-        document.getElementById('packageCategory').textContent = data.category;
-        document.getElementById('packageDuration').textContent = data.duration;
-        document.getElementById('totalPrice').textContent = 'Rp' + data.price.toLocaleString('id-ID');
-        document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toLocaleString('id-ID');
-
-        // ===== PREVIEW BUKTI =====
-        function previewBukti(input) {
-            const preview = document.getElementById('preview-bukti');
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Bukti Transfer" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // ===== HANDLE CHECKOUT (DENGAN CEK LOGIN) =====
-        function handleCheckout() {
-    // Cek login
-    if (!cekLoginSebelumCheckout()) {
-        return;
     }
 
-    const fileInput = document.getElementById('buktiTransfer');
-    const alertSuccess = document.getElementById('alert-success');
-    const alertError = document.getElementById('alert-error');
+    // ===== HANDLE CHECKOUT (LENGKAP) =====
+    function handleCheckout() {
+        // Cek login dulu
+        if (!cekLoginSebelumCheckout()) {
+            return;
+        }
 
-    alertSuccess.style.display = 'none';
-    alertError.style.display = 'none';
+        const fileInput = document.getElementById('buktiTransfer');
+        const alertSuccess = document.getElementById('alert-success');
+        const alertError = document.getElementById('alert-error');
 
-    if (!fileInput.files || fileInput.files.length === 0) {
-        alertError.textContent = '⚠️ Mohon upload bukti transfer terlebih dahulu!';
-        alertError.style.display = 'block';
-        return;
+        alertSuccess.style.display = 'none';
+        alertError.style.display = 'none';
+
+        // Cek apakah file sudah diupload
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alertError.textContent = '⚠️ Mohon upload bukti transfer terlebih dahulu!';
+            alertError.style.display = 'block';
+            return;
+        }
+
+        // ===== SIMPAN DATA PESANAN =====
+        const userEmail = localStorage.getItem('userEmail');
+        const userName = localStorage.getItem('userName') || 'User';
+
+        const pesanan = {
+            id: Date.now(),
+            userEmail: userEmail,
+            userName: userName,
+            paketId: paketId,
+            paketName: data.name,
+            harga: data.price,
+            tanggal: new Date().toLocaleDateString('id-ID'),
+            bukti: 'uploaded',
+            status: 'pending'
+        };
+
+        let pesananList = JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
+        pesananList.push(pesanan);
+        localStorage.setItem('pesananUpcademi', JSON.stringify(pesananList));
+
+        alertSuccess.textContent = '✅ Bukti transfer berhasil diupload! Pesanan akan diproses dalam 1x24 jam.';
+        alertSuccess.style.display = 'block';
+
+        fileInput.value = '';
+        document.getElementById('preview-bukti').innerHTML = '';
+
+        setTimeout(() => {
+            window.location.href = 'dashboard-user.html';
+        }, 3000);
     }
 
-    // ===== SIMPAN DATA PESANAN =====
-    const userEmail = localStorage.getItem('userEmail');
-    const userName = localStorage.getItem('userName') || 'User';
-    
-    const pesanan = {
-        id: Date.now(),
-        userEmail: userEmail,
-        userName: userName,
-        paketId: paketId,
-        paketName: data.name,
-        harga: data.price,
-        tanggal: new Date().toLocaleDateString('id-ID'),
-        bukti: 'uploaded', // Simpan status bukti
-        status: 'pending' // pending | aktif | kadaluarsa
-    };
+    // ===== UPDATE NAVBAR =====
+    function updateNavbar() {
+        const container = document.getElementById('navbarLogin');
+        if (!container) return;
 
-    // Ambil data pesanan yang sudah ada
-    let pesananList = JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
-    pesananList.push(pesanan);
-    localStorage.setItem('pesananUpcademi', JSON.stringify(pesananList));
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const isLoggedIn = localStorage.getItem('userEmail') !== null;
 
-    alertSuccess.textContent = '✅ Bukti transfer berhasil diupload! Pesanan akan diproses dalam 1x24 jam.';
-    alertSuccess.style.display = 'block';
-
-    fileInput.value = '';
-    document.getElementById('preview-bukti').innerHTML = '';
-
-    setTimeout(() => {
-        window.location.href = 'dashboard-user.html';
-    }, 3000);
-}
-
-        // ===== UPDATE NAVBAR =====
-        function updateNavbar() {
-            const container = document.getElementById('navbarLogin');
-            if (!container) return;
-
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const isLoggedIn = localStorage.getItem('userEmail') !== null;
-
-            if (isLoggedIn) {
-                if (isAdmin) {
-                    container.innerHTML = `
-                        <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
-                } else {
-                    container.innerHTML = `
-                        <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
-                        <a href="#" onclick="logout()" class="btn-login">Logout</a>
-                    `;
-                }
+        if (isLoggedIn) {
+            if (isAdmin) {
+                container.innerHTML = `
+                    <a href="dashboard-admin.html" style="background: rgba(255,255,255,0.15);">Admin</a>
+                    <a href="#" onclick="logout()" class="btn-login">Logout</a>
+                `;
             } else {
                 container.innerHTML = `
-                    <a href="register.html" class="btn-register">Daftar</a>
-                    <a href="login.html" class="btn-login">Login</a>
+                    <a href="dashboard-user.html" style="background: rgba(255,255,255,0.15);">Dashboard</a>
+                    <a href="#" onclick="logout()" class="btn-login">Logout</a>
                 `;
             }
+        } else {
+            container.innerHTML = `
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            `;
         }
+    }
 
-        function logout() {
-            if (confirm('Yakin ingin logout?')) {
-                localStorage.removeItem('isAdmin');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userName');
-                window.location.href = 'index.html';
-            }
+    function logout() {
+        if (confirm('Yakin ingin logout?')) {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html';
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavbar();
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNavbar();
+    });
+</script>
 
 </body>
 </html>
