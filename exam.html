@@ -815,13 +815,14 @@ function renderQuestions() {
         panel.className = 'question-panel' + (index === 0 ? ' active' : '');
         panel.dataset.index = index;
 
-        // ===== OPTIONS DENGAN GAMBAR =====
         let optionsHTML = '';
         const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-        q.options.forEach((opt, oi) => {
+        
+        // Pastikan options ada, jika tidak pakai default
+        const opts = q.options || ['-', '-', '-', '-', '-'];
+        
+        opts.forEach((opt, oi) => {
             const checked = answers[index] === oi ? 'checked' : '';
-            
-            // Cek apakah opsi ini punya gambar
             let optionImageHTML = '';
             if (q.optionImages && q.optionImages[oi]) {
                 optionImageHTML = `<img src="${q.optionImages[oi]}" style="max-width:120px; display:block; margin-top:6px; border-radius:6px; border:1px solid #E0E0E0;">`;
@@ -839,13 +840,11 @@ function renderQuestions() {
             `;
         });
 
-        // ===== GAMBAR SOAL =====
         let imageHTML = '';
         if (q.image) {
             imageHTML = `<img src="${q.image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:12px 0; border:1px solid #E0E0E0;" onerror="this.style.display='none'">`;
         }
 
-        // ===== STATUS SOAL =====
         let statusText = 'Belum Dijawab';
         let statusClass = '';
         if (answers[index] !== null) {
@@ -859,7 +858,7 @@ function renderQuestions() {
 
         panel.innerHTML = `
             <div class="question-header">
-                <span class="question-number">Soal ${q.number} dari ${totalQuestions}</span>
+                <span class="question-number">Soal ${q.number || index + 1} dari ${questions.length}</span>
                 <span class="question-status ${statusClass}">${statusText}</span>
             </div>
             <div class="question-text">
@@ -876,7 +875,6 @@ function renderQuestions() {
     updateStatus();
     updateRaguButton();
 }
-
         // ===== NAVIGASI =====
         function navigateQuestion(direction) {
             const panels = document.querySelectorAll('.question-panel');
