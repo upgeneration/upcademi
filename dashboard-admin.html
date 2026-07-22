@@ -589,51 +589,39 @@
     <h3>📦 Kelola Paket Tryout</h3>
 
     <!-- Form Tambah Paket -->
-    <form id="formPaket" onsubmit="return tambahPaket(event)">
-        <div class="form-admin">
-            <div>
-                <label>Nama Paket</label>
-                <input type="text" id="namaPaket" placeholder="Contoh: CPNS 2026" required>
-            </div>
-            <div>
-                <label>Kategori</label>
-                <select id="kategoriPaket" required>
-                    <option value="">-- Pilih --</option>
-                    <option>CPNS</option>
-                    <option>UTBK</option>
-                    <option>Kedinasan</option>
-                    <option>Tryout</option>
-                </select>
-            </div>
-            <div>
-                <label>Harga (Rp)</label>
-                <input type="number" id="hargaPaket" placeholder="Contoh: 199000" required>
-            </div>
-            <div>
-                <label>Durasi Akses</label>
-                <input type="text" id="durasiPaket" placeholder="Contoh: 3 Bulan" value="3 Bulan" required>
-            </div>
-            <div class="full-width">
-                <label>Deskripsi</label>
-                <textarea id="deskripsiPaket" placeholder="Deskripsi paket..." rows="2"></textarea>
-            </div>
-            <div class="full-width">
-                <label>Fitur (pisahkan dengan koma)</label>
-                <input type="text" id="fiturPaket" placeholder="Contoh: 10 Paket Tryout, Pembahasan, Analisis">
-            </div>
-<div class="full-width">
-    <label>📷 Upload Thumbnail (Opsional)</label>
-    <div class="file-upload-wrapper" onclick="document.getElementById('thumbnailInput').click()">
-        <div>📤 Klik untuk upload gambar</div>
-        <div style="font-size:12px; color:var(--text-gray);">PNG, JPG (maks 1MB)</div>
-        <input type="file" id="thumbnailInput" accept="image/*" onchange="previewThumbnail(this)">
-    </div>
-    <div id="thumbnailPreview" style="margin-top:8px;"></div>
-</div>
-            <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap;">
-                <button type="submit" class="btn-submit">💾 Simpan Paket</button>
-
-            </div>
+    <form class="form-admin" id="formPaket" onsubmit="return tambahPaket(event)">
+        <div>
+            <label>Nama Paket</label>
+            <input type="text" id="namaPaket" placeholder="Contoh: CPNS 2026" required>
+        </div>
+        <div>
+            <label>Kategori</label>
+            <select id="kategoriPaket" required>
+                <option value="">-- Pilih --</option>
+                <option>CPNS</option>
+                <option>UTBK</option>
+                <option>Kedinasan</option>
+                <option>Tryout</option>
+            </select>
+        </div>
+        <div>
+            <label>Harga (Rp)</label>
+            <input type="number" id="hargaPaket" placeholder="Contoh: 199000" required>
+        </div>
+        <div>
+            <label>Durasi Akses</label>
+            <input type="text" id="durasiPaket" placeholder="Contoh: 3 Bulan" value="3 Bulan" required>
+        </div>
+        <div class="full-width">
+            <label>Deskripsi</label>
+            <textarea id="deskripsiPaket" placeholder="Deskripsi paket..." rows="2"></textarea>
+        </div>
+        <div class="full-width">
+            <label>Fitur (pisahkan dengan koma)</label>
+            <input type="text" id="fiturPaket" placeholder="Contoh: 10 Paket Tryout, Pembahasan, Analisis">
+        </div>
+        <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button type="submit" class="btn-submit">💾 Simpan Paket</button>
         </div>
     </form>
 
@@ -688,22 +676,21 @@
             { id: 1, name: 'CPNS Master', category: 'CPNS', price: '199.000', duration: '60 Hari' },
             { id: 2, name: 'UTBK Pro', category: 'UTBK', price: '179.000', duration: '45 Hari' }
         ];
-// =============================================
-// ===== KELOLA PAKET (localStorage) =====
-// =============================================
+// ===== KELOLA PAKET =====
 
-// Ambil data paket dari localStorage
 function getPaket() {
-    const data = localStorage.getItem('paketUpcademi');
-    return data ? JSON.parse(data) : [];
+    try {
+        const data = localStorage.getItem('paketUpcademi');
+        return data ? JSON.parse(data) : [];
+    } catch(e) {
+        return [];
+    }
 }
 
-// Simpan data paket ke localStorage
 function savePaket(paket) {
     localStorage.setItem('paketUpcademi', JSON.stringify(paket));
 }
 
-// Tampilkan semua paket
 function renderPaket() {
     const tbody = document.getElementById('paketTable');
     if (!tbody) return;
@@ -737,7 +724,6 @@ function renderPaket() {
     }).join('');
 }
 
-// Tambah paket baru
 function tambahPaket(e) {
     e.preventDefault();
 
@@ -752,6 +738,7 @@ function tambahPaket(e) {
     alert.style.display = 'none';
     alert.className = '';
 
+    // Validasi
     if (!nama.value.trim() || !kategori.value || !harga.value || !durasi.value.trim()) {
         alert.textContent = '⚠️ Semua field wajib diisi!';
         alert.style.display = 'block';
@@ -760,6 +747,7 @@ function tambahPaket(e) {
         return false;
     }
 
+    // Buat paket baru
     const paketBaru = {
         id: Date.now(),
         name: nama.value.trim(),
@@ -770,10 +758,12 @@ function tambahPaket(e) {
         features: fitur.value.trim()
     };
 
+    // Simpan
     const paket = getPaket();
     paket.push(paketBaru);
     savePaket(paket);
 
+    // Tampilkan sukses
     alert.textContent = '✅ Paket "' + nama.value + '" berhasil ditambahkan!';
     alert.style.display = 'block';
     alert.style.background = '#E8F5E9';
@@ -783,13 +773,12 @@ function tambahPaket(e) {
     document.getElementById('formPaket').reset();
     document.getElementById('durasiPaket').value = '3 Bulan';
 
-    // ===== PERBAIKAN: Panggil renderPaket ulang =====
+    // Refresh tabel
     renderPaket();
 
     return false;
 }
 
-// Hapus satu paket
 function hapusPaket(id) {
     if (!confirm('Yakin ingin menghapus paket ini?')) return;
 
@@ -799,16 +788,10 @@ function hapusPaket(id) {
     renderPaket();
 }
 
-// Hapus semua paket
-function hapusSemuaPaket() {
-    if (!confirm('Yakin ingin menghapus SEMUA paket?')) return;
-    savePaket([]);
-    renderPaket();
-}
-
 // Jalankan renderPaket saat halaman load
 document.addEventListener('DOMContentLoaded', function() {
     renderPaket();
+});
 });
 // Preview thumbnail
 function previewThumbnail(input) {
