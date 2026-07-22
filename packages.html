@@ -204,52 +204,10 @@
                 <button class="filter-btn" data-filter="utbk">UTBK</button>
                 <button class="filter-btn" data-filter="kedinasan">Kedinasan</button>
             </div>
-
-            <div class="package-grid-full" id="packageGrid">
-                <div class="package-card-full popular" data-category="cpns">
-                    <div class="badge-popular">Paling Laris</div>
-                    <span class="badge-category">CPNS</span>
-                    <div class="package-name">CPNS Master</div>
-                    <div class="package-price">Rp199.000 <small>/paket</small></div>
-                    <p class="package-desc">Persiapan lengkap untuk tes CPNS 2026</p>
-                    <ul class="package-features">
-                        <li>10 Paket Tryout CPNS</li>
-                        <li>TWK, TIU, TKP lengkap</li>
-                        <li>Pembahasan detail</li>
-                        <li>Akses 3 Bulan</li>
-                    </ul>
-                    <a href="checkout.html?paket=cpns-master" class="btn-buy">Beli Sekarang</a>
-                </div>
-
-                <div class="package-card-full" data-category="utbk">
-                    <span class="badge-category">UTBK</span>
-                    <div class="package-name">UTBK Pro</div>
-                    <div class="package-price">Rp179.000 <small>/paket</small></div>
-                    <p class="package-desc">Raih skor tertinggi di UTBK 2026</p>
-                    <ul class="package-features">
-                        <li>8 Paket Tryout UTBK</li>
-                        <li>TPS + TKA lengkap</li>
-                        <li>Analisis per materi</li>
-                        <li>Akses 3 Bulan</li>
-                    </ul>
-                    <a href="checkout.html?paket=utbk-pro" class="btn-buy">Beli Sekarang</a>
-                </div>
-
-                <div class="package-card-full" data-category="kedinasan">
-                    <span class="badge-category">Kedinasan</span>
-                    <div class="package-name">Kedinasan Plus</div>
-                    <div class="package-price">Rp249.000 <small>/paket</small></div>
-                    <p class="package-desc">Lulus sekolah kedinasan favorit</p>
-                    <ul class="package-features">
-                        <li>12 Paket Tryout Kedinasan</li>
-                        <li>Soal SKD + SKB</li>
-                        <li>Pembahasan lengkap</li>
-                        <li>Akses 3 Bulan</li>
-                    </ul>
-                    <a href="checkout.html?paket=kedinasan-plus" class="btn-buy">Beli Sekarang</a>
-                </div>
-            </div>
-        </div>
+            
+           <div class="package-grid-full" id="packageGrid">
+    <!-- Paket akan di-generate oleh JavaScript dari localStorage -->
+</div>
     </section>
 
     <!-- ===== FOOTER ===== -->
@@ -327,6 +285,68 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
         });
-    </script>
+    <script>
+// ===== AMBIL PAKET DARI LOCALSTORAGE =====
+function renderSemuaPaket() {
+    const container = document.getElementById('packageGrid');
+    if (!container) return;
+
+    const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+
+    if (paket.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align:center; padding:60px; color:var(--text-gray);">
+                📭 Belum ada paket tryout. Silakan tambahkan paket di dashboard admin.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = paket.map((item, index) => {
+        const isPopular = index === 0 ? 'popular' : '';
+        const badgePopular = index === 0 ? '<div class="badge-popular">Paling Laris</div>' : '';
+        const features = item.features ? item.features.split(',').map(f => `<li>${f.trim()}</li>`).join('') : '';
+
+        return `
+            <div class="package-card-full ${isPopular}" data-category="${item.category.toLowerCase()}">
+                ${badgePopular}
+                <span class="badge-category">${item.category}</span>
+                <div class="package-name">${item.name}</div>
+                <div class="package-price">Rp${item.price} <small>/paket</small></div>
+                <p class="package-desc">${item.description || 'Paket tryout terbaik untuk persiapan ujian'}</p>
+                <ul class="package-features">
+                    ${features}
+                    <li>Akses ${item.duration}</li>
+                </ul>
+                <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
+            </div>
+        `;
+    }).join('');
+}
+
+// Jalankan saat halaman load
+document.addEventListener('DOMContentLoaded', function() {
+    renderSemuaPaket();
+});
+
+// ===== FILTER PAKET =====
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        const cards = document.querySelectorAll('.package-card-full');
+
+        cards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
