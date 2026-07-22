@@ -425,127 +425,132 @@
             </div>
 
             <!-- TAB 3: Kelola Soal -->
-            <div class="tab-content" id="tab-soal">
-                <h3>📝 Tambah Soal Baru</h3>
-                <form class="form-admin" id="formSoal">
-                    <div class="full-width">
-                        <select id="paketSoal" required>
-    <option value="">-- Pilih Paket --</option>
-    <option value="Paket Tryout SKD CPNS Part 1">Paket Tryout SKD CPNS Part 1</option>
-    <!-- otomatis tambah sesuai paket di localStorage -->
-</select>
-                    </div>
-                    <div class="full-width">
-                        <label>Nomor Soal</label>
-                        <input type="number" placeholder="Contoh: 1" required>
-                    </div>
-                    <div class="full-width">
-                        <label>Teks Soal</label>
-                        <textarea placeholder="Tulis soal di sini..." required></textarea>
-                    </div>
-                    <div class="full-width">
-                        <label>📷 Upload Gambar untuk Soal (Opsional)</label>
-                        <div class="file-upload-wrapper" onclick="document.getElementById('fileSoal').click()">
-                            <div>📤 Klik untuk upload gambar soal</div>
-                            <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
-                            <input type="file" id="fileSoal" accept="image/*">
-                        </div>
-                        <div id="previewSoal" style="margin-top:8px;"></div>
-                    </div>
-                    <!-- ===== OPSI JAWABAN (DENGAN GAMBAR) ===== -->
-<div>
-    <label>Pilihan A</label>
-    <input type="text" id="opsiA" placeholder="Teks Opsi A (kosongkan jika pakai gambar)" required>
-    <div style="margin-top:6px;">
-        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi A (Opsional)</label>
-        <input type="file" id="gambarOpsiA" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-        <div id="previewGambarA" style="margin-top:4px;"></div>
-    </div>
-</div>
-<div>
-    <label>Pilihan B</label>
-    <input type="text" id="opsiB" placeholder="Teks Opsi B (kosongkan jika pakai gambar)" required>
-    <div style="margin-top:6px;">
-        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi B (Opsional)</label>
-        <input type="file" id="gambarOpsiB" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-        <div id="previewGambarB" style="margin-top:4px;"></div>
-    </div>
-</div>
-<div>
-    <label>Pilihan C</label>
-    <input type="text" id="opsiC" placeholder="Teks Opsi C (kosongkan jika pakai gambar)" required>
-    <div style="margin-top:6px;">
-        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi C (Opsional)</label>
-        <input type="file" id="gambarOpsiC" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-        <div id="previewGambarC" style="margin-top:4px;"></div>
-    </div>
-</div>
-<div>
-    <label>Pilihan D</label>
-    <input type="text" id="opsiD" placeholder="Teks Opsi D (kosongkan jika pakai gambar)" required>
-    <div style="margin-top:6px;">
-        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi D (Opsional)</label>
-        <input type="file" id="gambarOpsiD" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-        <div id="previewGambarD" style="margin-top:4px;"></div>
-    </div>
-</div>
-<div>
-    <label>Pilihan E</label>
-    <input type="text" id="opsiE" placeholder="Teks Opsi E (kosongkan jika pakai gambar)">
-    <div style="margin-top:6px;">
-        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi E (Opsional)</label>
-        <input type="file" id="gambarOpsiE" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-        <div id="previewGambarE" style="margin-top:4px;"></div>
-    </div>
-</div>
-                        <label>Jawaban Benar</label>
-                        <select required>
-                            <option value="">-- Pilih --</option>
-                            <option>A</option>
-                            <option>B</option>
-                            <option>C</option>
-                            <option>D</option>
-                            <option>E</option>
-                        </select>
-                    </div>
-                    <div class="full-width">
-                        <label>Pembahasan</label>
-                        <textarea placeholder="Tulis pembahasan soal..." required></textarea>
-                    </div>
-                    <div class="full-width">
-                        <label>📷 Upload Gambar untuk Pembahasan (Opsional)</label>
-                        <div class="file-upload-wrapper" onclick="document.getElementById('filePembahasan').click()">
-                            <div>📤 Klik untuk upload gambar pembahasan</div>
-                            <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
-                            <input type="file" id="filePembahasan" accept="image/*">
-                        </div>
-                        <div id="previewPembahasan" style="margin-top:8px;"></div>
-                    </div>
-                    <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap; padding-top:16px; border-top:2px solid var(--gray-bg);">
-                        <button type="submit" class="btn-submit">💾 Simpan Soal</button>
-                        <button type="button" class="btn-submit" style="background:var(--green);" onclick="document.getElementById('importExcel').click()">
-                            📤 Import Excel/CSV
-                        </button>
-                        <input type="file" id="importExcel" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleImportExcel(this)">
-                    </div>
-                </form>
-                <hr style="margin: 30px 0; border: none; border-top: 2px solid var(--gray-bg);">
-                <h3>📋 Daftar Soal yang Tersimpan</h3>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Paket</th>
-                                <th>Soal</th>
-                                <th>Gambar</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="soalTable"></tbody>
-                    </table>
-                </div>
+<div class="tab-content" id="tab-soal">
+    <h3>📝 Tambah Soal Baru</h3>
+    <form class="form-admin" id="formSoal" onsubmit="return tambahSoal(event)">
+        <div class="full-width">
+            <label>Pilih Paket</label>
+            <select id="paketSoal" required>
+                <option value="">-- Pilih Paket --</option>
+            </select>
+        </div>
+        <div class="full-width">
+            <label>Nomor Soal</label>
+            <input type="number" id="nomorSoal" placeholder="Contoh: 1" required>
+        </div>
+        <div class="full-width">
+            <label>Teks Soal</label>
+            <textarea id="teksSoal" placeholder="Tulis soal di sini..." required></textarea>
+        </div>
+        <div class="full-width">
+            <label>📷 Upload Gambar untuk Soal (Opsional)</label>
+            <div class="file-upload-wrapper" onclick="document.getElementById('fileSoal').click()">
+                <div>📤 Klik untuk upload gambar soal</div>
+                <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
+                <input type="file" id="fileSoal" accept="image/*">
             </div>
+            <div id="previewSoal" style="margin-top:8px;"></div>
+        </div>
+
+        <div>
+            <label>Pilihan A</label>
+            <input type="text" id="opsiA" placeholder="Teks Opsi A" required>
+            <div style="margin-top:6px;">
+                <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi A (Opsional)</label>
+                <input type="file" id="gambarOpsiA" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                <div id="previewGambarA" style="margin-top:4px;"></div>
+            </div>
+        </div>
+        <div>
+            <label>Pilihan B</label>
+            <input type="text" id="opsiB" placeholder="Teks Opsi B" required>
+            <div style="margin-top:6px;">
+                <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi B (Opsional)</label>
+                <input type="file" id="gambarOpsiB" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                <div id="previewGambarB" style="margin-top:4px;"></div>
+            </div>
+        </div>
+        <div>
+            <label>Pilihan C</label>
+            <input type="text" id="opsiC" placeholder="Teks Opsi C" required>
+            <div style="margin-top:6px;">
+                <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi C (Opsional)</label>
+                <input type="file" id="gambarOpsiC" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                <div id="previewGambarC" style="margin-top:4px;"></div>
+            </div>
+        </div>
+        <div>
+            <label>Pilihan D</label>
+            <input type="text" id="opsiD" placeholder="Teks Opsi D" required>
+            <div style="margin-top:6px;">
+                <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi D (Opsional)</label>
+                <input type="file" id="gambarOpsiD" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                <div id="previewGambarD" style="margin-top:4px;"></div>
+            </div>
+        </div>
+        <div>
+            <label>Pilihan E</label>
+            <input type="text" id="opsiE" placeholder="Teks Opsi E">
+            <div style="margin-top:6px;">
+                <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi E (Opsional)</label>
+                <input type="file" id="gambarOpsiE" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                <div id="previewGambarE" style="margin-top:4px;"></div>
+            </div>
+        </div>
+
+        <div>
+            <label>Jawaban Benar</label>
+            <select id="jawabanBenar" required>
+                <option value="">-- Pilih --</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+                <option>E</option>
+            </select>
+        </div>
+
+        <div class="full-width">
+            <label>Pembahasan</label>
+            <textarea id="pembahasanSoal" placeholder="Tulis pembahasan soal..." required></textarea>
+        </div>
+
+        <div class="full-width">
+            <label>📷 Upload Gambar untuk Pembahasan (Opsional)</label>
+            <div class="file-upload-wrapper" onclick="document.getElementById('filePembahasan').click()">
+                <div>📤 Klik untuk upload gambar pembahasan</div>
+                <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
+                <input type="file" id="filePembahasan" accept="image/*">
+            </div>
+            <div id="previewPembahasan" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap; padding-top:16px; border-top:2px solid var(--gray-bg);">
+            <button type="submit" class="btn-submit">💾 Simpan Soal</button>
+            <button type="button" class="btn-submit" style="background:var(--green);" onclick="document.getElementById('importExcel').click()">
+                📤 Import Excel/CSV
+            </button>
+            <input type="file" id="importExcel" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleImportExcel(this)">
+        </div>
+    </form>
+
+    <hr style="margin: 30px 0; border: none; border-top: 2px solid var(--gray-bg);">
+    <h3>📋 Daftar Soal yang Tersimpan</h3>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Paket</th>
+                    <th>Soal</th>
+                    <th>Gambar</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="soalTable"></tbody>
+        </table>
+    </div>
+</div>
 
             <!-- TAB 4: Kelola Paket -->
             <div class="tab-content" id="tab-paket">
