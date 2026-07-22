@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Tryout - UPCADEMI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .result-page {
+            padding: 40px 0;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .result-header h1 {
+            font-size: 32px;
+            color: var(--navy);
+        }
+
+        .result-header .score {
+            font-size: 72px;
+            font-weight: 800;
+            color: var(--red);
+            margin: 16px 0;
+        }
+
+        .result-header .score-label {
+            color: var(--text-gray);
+            font-size: 18px;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .stat-card .number.green { color: var(--green); }
+        .stat-card .number.red { color: var(--red); }
+        .stat-card .number.orange { color: #FF9800; }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .pembahasan-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pembahasan-section h2 {
+            text-align: center;
+            color: var(--navy);
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .soal-card {
+            background: var(--white);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--green);
+        }
+
+        .soal-card.wrong {
+            border-left-color: var(--red);
+        }
+
+        .soal-card .soal-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--navy);
+        }
+
+        .soal-card .soal-header .status {
+            font-size: 14px;
+        }
+
+        .soal-card .soal-header .status.benar { color: var(--green); }
+        .soal-card .soal-header .status.salah { color: var(--red); }
+
+        .soal-card .soal-text {
+            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .soal-card .soal-text img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 8px 0;
+        }
+
+        .soal-card .jawaban-user {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .soal-card .jawaban-benar {
+            font-size: 14px;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .soal-card .pembahasan {
+            margin-top: 12px;
+            padding: 16px;
+            background: var(--gray-bg);
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .btn-back {
+            display: block;
+            max-width: 300px;
+            margin: 30px auto 0;
+            padding: 14px;
+            background: var(--navy);
+            color: var(--white);
+            text-align: center;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .result-header .score {
+                font-size: 48px;
+            }
+
+            .result-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .soal-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+                <span>UPCADEMI</span>
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html">Beranda</a>
+                <a href="packages.html">Paket</a>
+                <a href="leaderboard.html">Peringkat</a>
+                <a href="#" style="background: rgba(255,255,255,0.15);">Hasil</a>
+                <a href="login.html" class="btn-login">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== RESULT SECTION ===== -->
+    <section class="result-page">
+        <div class="container">
+            <div class="result-header">
+                <h1>📊 Hasil Tryout</h1>
+                <div class="score" id="scoreDisplay">0</div>
+                <div class="score-label">dari <span id="totalDisplay">0</span> soal</div>
+            </div>
+
+            <div class="result-stats">
+                <div class="stat-card">
+                    <div class="number green" id="benarCount">0</div>
+                    <div class="label">✅ Benar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number red" id="salahCount">0</div>
+                    <div class="label">❌ Salah</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number orange" id="tidakDijawabCount">0</div>
+                    <div class="label">⬜ Tidak Dijawab</div>
+                </div>
+            </div>
+
+            <!-- Pembahasan -->
+            <div class="pembahasan-section">
+                <h2>📖 Pembahasan Soal</h2>
+                <div id="pembahasanContainer"></div>
+            </div>
+
+            <a href="packages.html" class="btn-back">← Kembali ke Paket Tryout</a>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+    <script>
+        // ===== DATA SOAL + JAWABAN (CONTOH) =====
+        const questionsData = [
+            {
+                id: 1,
+                number: 1,
+                text: 'Seorang pedagang membeli 20 kg beras dengan harga Rp200.000. Ia menjual kembali dengan keuntungan 20%. Berapa harga jual per kg beras tersebut?',
+                image: null,
+                options: ['Rp10.000', 'Rp12.000', 'Rp14.000', 'Rp16.000', 'Rp18.000'],
+                correct: 1, // index jawaban benar
+                pembahasan: 'Harga beli total = Rp200.000. Keuntungan 20% = Rp200.000 × 20% = Rp40.000. Harga jual total = Rp240.000. Harga jual per kg = Rp240.000 ÷ 20 kg = Rp12.000.'
+            },
+            {
+                id: 2,
+                number: 2,
+                text: 'Jika 3x + 5 = 20, maka nilai x adalah...',
+                image: null,
+                options: ['3', '5', '7', '9', '11'],
+                correct: 1,
+                pembahasan: '3x + 5 = 20 → 3x = 15 → x = 5.'
+            },
+            {
+                id: 3,
+                number: 3,
+                text: 'Perhatikan gambar berikut! (contoh soal figural)',
+                image: 'assets/images/soal-figural-1.png',
+                options: ['A', 'B', 'C', 'D', 'E'],
+                correct: 2,
+                pembahasan: 'Jawaban yang tepat adalah C karena pola gambar berputar 90° searah jarum jam.'
+            }
+        ];
+
+        // ===== AMBIL HASIL DARI localStorage =====
+        const result = JSON.parse(localStorage.getItem('examResult'));
+
+        if (!result) {
+            // Jika tidak ada hasil, redirect ke index
+            window.location.href = 'index.html';
+        }
+
+        const userAnswers = result.answers || [];
+        const total = result.totalQuestions || questionsData.length;
+        const answered = result.answered || 0;
+
+        // ===== HITUNG SKOR =====
+        let benar = 0;
+        let salah = 0;
+        let tidakDijawab = 0;
+
+        const soalData = [];
+
+        for (let i = 0; i < total; i++) {
+            const q = questionsData[i];
+            const userAns = userAnswers[i];
+
+            let status = 'tidak-dijawab';
+            let isCorrect = false;
+
+            if (userAns === null || userAns === undefined) {
+                tidakDijawab++;
+            } else if (userAns === q.correct) {
+                benar++;
+                isCorrect = true;
+                status = 'benar';
+            } else {
+                salah++;
+                status = 'salah';
+            }
+
+            soalData.push({
+                ...q,
+                userAnswer: userAns,
+                isCorrect: isCorrect,
+                status: status
+            });
+        }
+
+        // ===== TAMPILKAN SKOR =====
+        document.getElementById('scoreDisplay').textContent = benar;
+        document.getElementById('totalDisplay').textContent = total;
+        document.getElementById('benarCount').textContent = benar;
+        document.getElementById('salahCount').textContent = salah;
+        document.getElementById('tidakDijawabCount').textContent = tidakDijawab;
+
+// ===== TAMPILKAN PEMBAHASAN =====
+const container = document.getElementById('pembahasanContainer');
+const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+
+soalData.forEach((q, index) => {
+    const card = document.createElement('div');
+    card.className = 'soal-card' + (q.status === 'salah' ? ' wrong' : '');
+
+    const statusText = q.status === 'benar' ? '✅ Benar' : 
+                      q.status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
+    const statusClass = q.status === 'benar' ? 'benar' : 
+                       q.status === 'salah' ? 'salah' : '';
+
+    // Gambar soal
+    let imageHTML = q.image ? `<img src="${q.image}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
+
+    // Gambar pembahasan
+    let pembahasanImageHTML = q.pembahasanImage ? 
+        `<img src="${q.pembahasanImage}" alt="Gambar pembahasan" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
+
+    // Jawaban user
+    const userAnswerText = q.userAnswer !== null && q.userAnswer !== undefined ? 
+        optionLabels[q.userAnswer] + '. ' + q.options[q.userAnswer] : 
+        'Tidak dijawab';
+
+    // Gambar opsi jawaban user
+    let userOptionImage = '';
+    if (q.userAnswer !== null && q.userAnswer !== undefined && q.optionImages && q.optionImages[q.userAnswer]) {
+        userOptionImage = `<br><img src="${q.optionImages[q.userAnswer]}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0; margin-top:4px;">`;
+    }
+
+    card.innerHTML = `
+        <div class="soal-header">
+            <span>Soal ${q.number}</span>
+            <span class="status ${statusClass}">${statusText}</span>
+        </div>
+        <div class="soal-text">${imageHTML}${q.text}</div>
+        <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong>${userOptionImage}</div>
+        <div class="jawaban-benar">✅ Jawaban Benar: ${optionLabels[q.correct]}. ${q.options[q.correct]}</div>
+        <div class="pembahasan">
+            <strong>💡 Pembahasan:</strong> ${q.pembahasan}
+            ${pembahasanImageHTML}
+        </div>
+    `;
+
+    container.appendChild(card);
+});
+    </script>
+
+</body>
+</html>

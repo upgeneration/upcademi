@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - UPCADEMI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .checkout-page {
+            padding: 60px 0;
+            min-height: 80vh;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .checkout-summary {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .checkout-summary h3 {
+            color: var(--navy);
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid var(--gray-bg);
+            padding-bottom: 12px;
+        }
+
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .checkout-item .label {
+            color: var(--text-gray);
+        }
+
+        .checkout-item .value {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .checkout-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--red);
+            border-top: 2px solid var(--red);
+            margin-top: 8px;
+        }
+
+        .payment-section {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .payment-section h3 {
+            color: var(--navy);
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid var(--gray-bg);
+            padding-bottom: 12px;
+        }
+
+        .bank-info {
+            background: var(--gray-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .bank-info .bank-name {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--navy);
+        }
+
+        .bank-info .account-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 8px 0;
+            letter-spacing: 2px;
+        }
+
+        .bank-info .account-holder {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        .instructions {
+            margin: 20px 0;
+            padding: 16px;
+            background: #FFF3E0;
+            border-radius: 8px;
+            border-left: 4px solid #FF9800;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: var(--text-dark);
+        }
+
+        .instructions ol li {
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .upload-section {
+            margin-top: 20px;
+        }
+
+        .upload-section label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .upload-section input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #E0E0E0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--gray-bg);
+        }
+
+        .upload-section input[type="file"]:hover {
+            border-color: var(--navy);
+        }
+
+        #preview-bukti {
+            margin-top: 12px;
+        }
+
+        #preview-bukti img {
+            max-width: 200px;
+            border-radius: 8px;
+            border: 2px solid #E0E0E0;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 16px;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-checkout:hover {
+            background: var(--red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            color: var(--green);
+            border: 1px solid #C8E6C9;
+        }
+
+        .alert-error {
+            background: #FFEBEE;
+            color: var(--red-dark);
+            border: 1px solid #FFCDD2;
+        }
+
+        .whatsapp-info {
+            margin-top: 16px;
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        .whatsapp-info a {
+            color: #25D366;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .checkout-page {
+                padding: 30px 0;
+            }
+
+            .bank-info .account-number {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+                <span>UPCADEMI</span>
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html">Beranda</a>
+                <a href="packages.html">Paket</a>
+                <a href="leaderboard.html">Peringkat</a>
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== CHECKOUT SECTION ===== -->
+    <section class="checkout-page">
+        <div class="container">
+            <h1 style="text-align:center; color: var(--navy); margin-bottom: 8px;">Checkout</h1>
+            <p style="text-align:center; color: var(--text-gray); margin-bottom: 40px;">Konfirmasi pesanan dan lakukan pembayaran</p>
+
+            <div class="checkout-grid">
+                <!-- Ringkasan Pesanan -->
+                <div class="checkout-summary">
+                    <h3>📋 Ringkasan Pesanan</h3>
+                    <div class="checkout-item">
+                        <span class="label">Paket</span>
+                        <span class="value" id="packageName">CPNS Master</span>
+                    </div>
+                    <div class="checkout-item">
+                        <span class="label">Kategori</span>
+                        <span class="value" id="packageCategory">CPNS</span>
+                    </div>
+                    <div class="checkout-item">
+                        <span class="label">Durasi Akses</span>
+                        <span class="value" id="packageDuration">60 Hari</span>
+                    </div>
+                    <div class="checkout-total">
+                        <span>Total Pembayaran</span>
+                        <span id="totalPrice">Rp199.000</span>
+                    </div>
+                </div>
+
+<!-- ===== METODE PEMBAYARAN ===== -->
+<div class="payment-section">
+    <h3>💳 Pilih Metode Pembayaran</h3>
+
+    <div class="alert alert-success" id="alert-success">
+        ✅ Bukti transfer berhasil diupload! Kami akan verifikasi dalam 1x24 jam.
+    </div>
+    <div class="alert alert-error" id="alert-error">
+        ⚠️ Mohon upload bukti transfer terlebih dahulu.
+    </div>
+
+    <!-- ===== OPSI 1: QRIS ===== -->
+    <div style="background:var(--gray-bg); padding:20px; border-radius:12px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+            <span style="font-size:28px;">📱</span>
+            <h4 style="color:var(--navy); margin:0;">Bayar via QRIS</h4>
+        </div>
+        <p style="color:var(--text-gray); font-size:14px; margin-bottom:12px;">
+            Scan QR Code di bawah menggunakan aplikasi mobile banking atau e-wallet (OVO, DANA, ShopeePay, dll.)
+        </p>
+        <div style="text-align:center; padding:16px; background:white; border-radius:12px; border:2px dashed #E0E0E0;">
+            <div style="font-size:14px; color:var(--text-gray); margin-bottom:8px;">
+                ⬇️ Tempatkan gambar QRIS di sini
+            </div>
+            <div style="background:#f5f5f5; padding:30px; border-radius:8px; display:inline-block;">
+                <span style="font-size:48px;">📷</span>
+                <p style="font-size:12px; color:var(--text-gray); margin-top:8px;">
+                    (Upload file QRIS Anda di <code>assets/images/qris.png</code>)
+                </p>
+            </div>
+            <!-- Jika sudah punya file QRIS, ganti dengan:
+            <img src="assets/images/qris.png" alt="QRIS Pembayaran" style="max-width:200px; border-radius:8px;">
+            -->
+        </div>
+        <p style="color:var(--text-gray); font-size:12px; margin-top:8px; text-align:center;">
+            Total: <strong id="qrisAmount" style="color:var(--red);">Rp199.000</strong>
+        </p>
+    </div>
+
+    <!-- ===== OPSI 2: Transfer Bank ===== -->
+    <div style="background:var(--gray-bg); padding:20px; border-radius:12px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+            <span style="font-size:28px;">🏦</span>
+            <h4 style="color:var(--navy); margin:0;">Transfer Bank</h4>
+        </div>
+
+<div class="bank-info">
+    <div class="bank-name">🏦 Bank Central Asia (BCA)</div>
+    <div class="account-number">4400012208</div>
+    <div class="account-holder">a.n. Helmi Mirza Maulana</div>
+</div>
+
+        <div class="instructions">
+            <strong>📌 Instruksi Pembayaran:</strong>
+            <ol>
+                <li>Transfer sejumlah <strong id="instructionAmount">Rp199.000</strong> ke rekening di atas.</li>
+                <li>Upload bukti transfer di form bawah.</li>
+                <li>Kirim konfirmasi ke <strong>WhatsApp: 0812-3335-5227</strong></li>
+                <li>Paket akan aktif dalam 1x24 jam setelah verifikasi.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ===== UPLOAD BUKTI ===== -->
+    <div class="upload-section">
+        <label for="buktiTransfer">📤 Upload Bukti Transfer</label>
+        <input type="file" id="buktiTransfer" accept="image/*" onchange="previewBukti(this)">
+        <div id="preview-bukti"></div>
+    </div>
+
+    <button class="btn-checkout" onclick="handleCheckout()">
+        Kirim Bukti & Selesaikan Pesanan
+    </button>
+
+    <div class="whatsapp-info">
+        📱 Konfirmasi pembayaran via WhatsApp: 
+        <a href="https://wa.me/6281233555227?text=Saya%20telah%20transfer%20untuk%20paket%20tryout" target="_blank" style="color:#25D366; font-weight:700;">
+            0812-3335-5227
+        </a>
+    </div>
+</div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="tentang.html">Tentang Kami</a>
+                <a href="kontak.html">Kontak</a>
+                <a href="privasi.html">Kebijakan Privasi</a>
+                <a href="syarat.html">Syarat & Ketentuan</a>
+            </div>
+            <div class="copyright">&copy; 2026 UPCADEMI. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Ambil parameter dari URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Data paket (nanti dari database)
+        const packageData = {
+            'cpns-master': { name: 'CPNS Master', category: 'CPNS', duration: '60 Hari', price: 199000 },
+            'utbk-pro': { name: 'UTBK Pro', category: 'UTBK', duration: '45 Hari', price: 179000 },
+            'kedinasan-plus': { name: 'Kedinasan Plus', category: 'Kedinasan', duration: '90 Hari', price: 249000 },
+            'cpns-basic': { name: 'CPNS Basic', category: 'CPNS', duration: '30 Hari', price: 99000 },
+            'utbk-premium': { name: 'UTBK Premium', category: 'UTBK', duration: '120 Hari', price: 299000 },
+            'kedinasan-basic': { name: 'Kedinasan Basic', category: 'Kedinasan', duration: '30 Hari', price: 129000 },
+            'starter': { name: 'Starter', category: 'Tryout', duration: '7 Hari', price: 49000 },
+            'pro': { name: 'Pro', category: 'Tryout', duration: '30 Hari', price: 149000 },
+            'ultimate': { name: 'Ultimate', category: 'Tryout', duration: '90 Hari', price: 299000 }
+        };
+
+        // Load data paket
+        const paket = getQueryParam('paket') || 'starter';
+        const data = packageData[paket] || packageData['starter'];
+
+        document.getElementById('packageName').textContent = data.name;
+        document.getElementById('packageCategory').textContent = data.category;
+        document.getElementById('packageDuration').textContent = data.duration;
+        document.getElementById('totalPrice').textContent = 'Rp' + data.price.toLocaleString('id-ID');
+        document.getElementById('instructionAmount').textContent = 'Rp' + data.price.toLocaleString('id-ID');
+
+        // Function handle checkout
+        function handleCheckout() {
+            const fileInput = document.getElementById('buktiTransfer');
+            const alertSuccess = document.getElementById('alert-success');
+            const alertError = document.getElementById('alert-error');
+
+            alertSuccess.style.display = 'none';
+            alertError.style.display = 'none';
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alertError.textContent = '⚠️ Mohon upload bukti transfer terlebih dahulu!';
+                alertError.style.display = 'block';
+                return;
+            }
+
+            // Simulasi sukses
+            alertSuccess.textContent = '✅ Bukti transfer berhasil diupload! Pesanan akan diproses dalam 1x24 jam.';
+            alertSuccess.style.display = 'block';
+
+            // Reset file input
+            fileInput.value = '';
+
+            // Redirect ke dashboard setelah 3 detik
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 3000);
+        }
+
+        // Preview bukti
+        function previewBukti(input) {
+            const preview = document.getElementById('preview-bukti');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Bukti Transfer">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+</body>
+</html>
