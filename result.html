@@ -225,7 +225,8 @@
         </div>
     </section>
 
-   <script>
+  <script src="js/script.js"></script>
+<script>
     // =============================================
     // ===== AMBIL HASIL DARI LOCALSTORAGE =====
     // =============================================
@@ -233,68 +234,99 @@
     const result = JSON.parse(localStorage.getItem('examResult'));
 
     if (!result) {
-        alert('Tidak ada data hasil tryout. Silakan kerjakan tryout terlebih dahulu.');
-        window.location.href = 'index.html';
+        alert('⚠️ Tidak ada hasil tryout. Silakan kerjakan tryout terlebih dahulu.');
+        window.location.href = 'packages.html';
     }
 
     // =============================================
     // ===== AMBIL SOAL DARI LOCALSTORAGE =====
     // =============================================
 
-    // Ambil parameter paket dari URL
     const urlParams = new URLSearchParams(window.location.search);
     const paketId = urlParams.get('paket');
 
-    // Ambil semua soal dari localStorage
     const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
+    const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
     // Cari nama paket dari ID
     let paketName = '';
-    const paket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]').find(p => p.id == paketId);
+    const paket = semuaPaket.find(p => String(p.id) === String(paketId));
     if (paket) {
         paketName = paket.name;
     }
 
     // Filter soal berdasarkan paket
-    const questions = semuaSoal.filter(s => s.paket === paketName);
+    let soalData = [];
+    if (paketName) {
+        soalData = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
+    }
+
+    // Jika tidak ada soal untuk paket tersebut, ambil semua soal
+    if (soalData.length === 0) {
+        soalData = semuaSoal;
+    }
+
+    // Jika masih kosong, beri pesan default
+    if (soalData.length === 0) {
+        soalData = [
+            { id: 1, number: 1, soal: 'Belum ada soal untuk paket ini.', opsiA: '-', opsiB: '-', opsiC: '-', opsiD: '-', opsiE: '-', jawaban: 'A', pembahasan: 'Tidak ada pembahasan.' }
+        ];
+    }
 
     // =============================================
     // ===== HITUNG SKOR =====
     // =============================================
 
+    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
     const userAnswers = result.answers || [];
-    const total = questions.length;
+    const total = result.totalQuestions || soalData.length;
+
     let benar = 0;
     let salah = 0;
     let tidakDijawab = 0;
 
-    // Jika tidak ada soal, tampilkan pesan
-    if (total === 0) {
-        document.getElementById('scoreDisplay').textContent = '0';
-        document.getElementById('totalDisplay').textContent = '0';
-        document.getElementById('benarCount').textContent = '0';
-        document.getElementById('salahCount').textContent = '0';
-        document.getElementById('tidakDijawabCount').textContent = '0';
-        document.getElementById('pembahasanContainer').innerHTML = `
-            <div style="text-align:center; padding:40px; color:var(--text-gray);">
-                📭 Tidak ada soal untuk paket ini.
-            </div>
-        `;
-        return;
-    }
+    // Buat array soal dengan jawaban user
+    const soalDenganJawaban = soalData.map((q, index) => {
+        // Cari indeks jawaban benar (A=0, B=1, dst)
+        const correctIndex = optionLabels.indexOf(q.jawaban);
+        const correctAnswer = correctIndex !== -1 ? correctIndex : 0;
 
-    // Hitung benar, salah, tidak dijawab
-    questions.forEach((q, index) => {
-        const userAns = userAnswers[index];
-        const correctAns = q.jawaban || q.correct;
+        // Ambil jawaban user
+        const userAns = userAnswers[index] !== undefined ? userAnswers[index] : null;
+
+        // Tentukan status
+        let status = 'tidak-dijawab';
+        let isCorrect = false;
 
         if (userAns === null || userAns === undefined) {
+            status = 'tidak-dijawab';
             tidakDijawab++;
-        } else if (userAns == correctAns || userAns === correctAns) {
+        } else if (String(userAns) === String(correctAnswer)) {
+            status = 'benar';
+            isCorrect = true;
             benar++;
         } else {
+            status = 'salah';
             salah++;
         }
+
+        // Susun options dari opsiA-E
+        const options = [
+            q.opsiA || '-',
+            q.opsiB || '-',
+            q.opsiC || '-',
+            q.opsiD || '-',
+            q.opsiE || '-'
+        ];
+
+        return {
+            ...q,
+            options: options,
+            correct: correctAnswer,
+            userAnswer: userAns,
+            isCorrect: isCorrect,
+            status: status
+        };
     });
 
     // =============================================
@@ -312,57 +344,58 @@
     // =============================================
 
     const container = document.getElementById('pembahasanContainer');
-    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
 
-    questions.forEach((q, index) => {
-        const userAns = userAnswers[index];
-        const correctAns = q.jawaban || q.correct;
-
-        let status = 'tidak-dijawab';
-        let isCorrect = false;
-
-        if (userAns === null || userAns === undefined) {
-            status = 'tidak-dijawab';
-        } else if (userAns == correctAns || userAns === correctAns) {
-            isCorrect = true;
-            status = 'benar';
-        } else {
-            status = 'salah';
-        }
-
+    soalDenganJawaban.forEach((q, index) => {
         const card = document.createElement('div');
-        card.className = 'soal-card' + (status === 'salah' ? ' wrong' : '');
+        card.className = 'soal-card' + (q.status === 'salah' ? ' wrong' : '');
 
-        const statusText = status === 'benar' ? '✅ Benar' : 
-                          status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
-        const statusClass = status === 'benar' ? 'benar' : 
-                           status === 'salah' ? 'salah' : '';
+        const statusText = q.status === 'benar' ? '✅ Benar' : 
+                          q.status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
+        const statusClass = q.status === 'benar' ? 'benar' : 
+                           q.status === 'salah' ? 'salah' : '';
 
         const imageHTML = q.gambar ? `<img src="${q.gambar}" alt="Gambar soal" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
 
-        const userAnswerText = (userAns !== null && userAns !== undefined && q.options && q.options[userAns]) ? 
-            optionLabels[userAns] + '. ' + q.options[userAns] : 
-            'Tidak dijawab';
+        const userAns = q.userAnswer;
+        const correctAns = q.correct;
 
-        const correctAnswerText = (q.options && q.options[correctAns]) ? 
+        let userAnswerText = 'Tidak dijawab';
+        if (userAns !== null && userAns !== undefined && q.options[userAns]) {
+            userAnswerText = optionLabels[userAns] + '. ' + q.options[userAns];
+        }
+
+        const correctAnswerText = q.options[correctAns] ? 
             optionLabels[correctAns] + '. ' + q.options[correctAns] : 
             'Tidak tersedia';
 
         card.innerHTML = `
             <div class="soal-header">
-                <span>Soal ${q.nomor || index + 1}</span>
+                <span>Soal ${q.number || index + 1}</span>
                 <span class="status ${statusClass}">${statusText}</span>
             </div>
-            <div class="soal-text">${imageHTML}${q.soal}</div>
+            <div class="soal-text">${imageHTML}${q.soal || 'Soal tidak tersedia'}</div>
             <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong></div>
             <div class="jawaban-benar">✅ Jawaban Benar: ${correctAnswerText}</div>
             <div class="pembahasan">
-                <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Belum ada pembahasan.'}
-                ${q.pembahasanGambar ? `<br><img src="${q.pembahasanGambar}" style="max-width:100%; border-radius:8px; margin-top:8px; border:1px solid #E0E0E0;">` : ''}
+                <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Tidak ada pembahasan.'}
             </div>
         `;
 
         container.appendChild(card);
+    });
+
+    // =============================================
+    // ===== NAVBAR =====
+    // =============================================
+
+    document.querySelector('.btn-login')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Yakin ingin logout?')) {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            window.location.href = 'index.html';
+        }
     });
 </script>
 </body>
