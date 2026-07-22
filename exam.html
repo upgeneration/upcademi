@@ -762,11 +762,10 @@
 const urlParams = new URLSearchParams(window.location.search);
 const paketId = urlParams.get('paket');
 
-// Ambil semua soal dari localStorage
+// Ambil semua data dari localStorage
 const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
 const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
-// ===== DEBUG: CEK DATA =====
 console.log('🔍 paketId dari URL:', paketId);
 console.log('📦 Semua paket:', semuaPaket);
 console.log('📝 Semua soal:', semuaSoal);
@@ -776,22 +775,29 @@ let questions = [];
 let paketName = '';
 
 if (paketId) {
-    // Cari nama paket dari ID
-    const paket = semuaPaket.find(p => p.id == paketId);
-    console.log('🎯 Paket ditemukan:', paket);
+    // Cari paket berdasarkan ID (bisa string atau number)
+    const paket = semuaPaket.find(p => String(p.id) === String(paketId));
     
     if (paket) {
         paketName = paket.name;
-        questions = semuaSoal.filter(s => s.paket === paketName);
-        console.log('📚 Soal untuk paket "' + paketName + '":', questions.length, 'soal');
+        // Filter soal berdasarkan nama paket (case insensitive)
+        questions = semuaSoal.filter(s => s.paket && s.paket.toLowerCase() === paketName.toLowerCase());
+        console.log('📚 Soal ditemukan untuk paket "' + paketName + '":', questions.length);
     } else {
         console.warn('⚠️ Paket dengan ID', paketId, 'tidak ditemukan!');
+        // Coba cari berdasarkan nama paket di URL
+        const paketByName = semuaPaket.find(p => p.name && p.name.toLowerCase() === paketId.toLowerCase());
+        if (paketByName) {
+            paketName = paketByName.name;
+            questions = semuaSoal.filter(s => s.paket && s.paket.toLowerCase() === paketName.toLowerCase());
+            console.log('📚 Soal ditemukan berdasarkan nama paket "' + paketName + '":', questions.length);
+        }
     }
 }
 
-// Jika tidak ada soal untuk paket tersebut, tampilkan pesan
+// Jika tidak ada soal, tampilkan pesan
 if (questions.length === 0) {
-    console.warn('⚠️ Tidak ada soal untuk paket ini, gunakan soal contoh.');
+    console.warn('⚠️ Tidak ada soal untuk paket ini.');
     questions = [
         {
             id: 0,
