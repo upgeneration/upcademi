@@ -490,13 +490,63 @@
 
         function closeSubmitModal() { document.getElementById('submitModal').classList.remove('show'); }
 
-        function confirmSubmit() {
-            closeSubmitModal();
-            clearInterval(timerInterval);
-            const result = { answers: answers, ragu: ragu, totalQuestions: totalQuestions, timestamp: new Date().toISOString() };
-            localStorage.setItem('examResult', JSON.stringify(result));
-            window.location.href = 'result.html';
+       function confirmSubmit() {
+    closeSubmitModal();
+    clearInterval(timerInterval);
+
+    // Hitung skor
+    let benar = 0;
+    let salah = 0;
+    let tidakDijawab = 0;
+
+    questions.forEach((q, index) => {
+        const userAnswer = answers[index];
+        if (userAnswer === null || userAnswer === undefined) {
+            tidakDijawab++;
+        } else if (userAnswer == q.jawaban || userAnswer == q.correct) {
+            benar++;
+        } else {
+            salah++;
         }
+    });
+
+    // ===== SIMPAN HASIL TRYOUT =====
+    const userEmail = localStorage.getItem('userEmail') || 'anonymous';
+    const userName = localStorage.getItem('userName') || 'User';
+    const paketName = document.getElementById('paketName').textContent || 'Tryout';
+
+    const hasil = {
+        id: Date.now(),
+        userEmail: userEmail,
+        userName: userName,
+        paket: paketName,
+        skor: benar,
+        total: questions.length,
+        benar: benar,
+        salah: salah,
+        tidakDijawab: tidakDijawab,
+        tanggal: new Date().toISOString(),
+        answers: answers
+    };
+
+    // Ambil data hasil yang sudah ada
+    let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
+    hasilList.push(hasil);
+    localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
+
+    // Simpan juga untuk riwayat user
+    let riwayatUser = JSON.parse(localStorage.getItem('riwayatUser_' + userEmail) || '[]');
+    riwayatUser.push({
+        paket: paketName,
+        skor: benar,
+        total: questions.length,
+        tanggal: new Date().toLocaleDateString('id-ID')
+    });
+    localStorage.setItem('riwayatUser_' + userEmail, JSON.stringify(riwayatUser));
+
+    // Redirect ke halaman hasil
+    window.location.href = 'result.html';
+}
 
         function submitExam(e) { e.preventDefault(); showSubmitModal(); return false; }
 
