@@ -276,6 +276,11 @@
     const total = result.totalQuestions || soalData.length;
 
     const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+    const gambarOpsiUser = q['gambarOpsi' + optionLabels[q.userAnswer]] || null;
+let gambarHTMLUser = '';
+if (gambarOpsiUser) {
+    gambarHTMLUser = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsiUser}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;"></div>`;
+}
 
     // Gabungkan soal dengan jawaban user
     const soalDenganJawaban = soalData.map((q, index) => {
