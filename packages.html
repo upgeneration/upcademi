@@ -271,27 +271,85 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script>
-        // Filter Paket
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Hapus active dari semua
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
+   <script src="js/script.js"></script>
+<script>
+    // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
+    function getPaket() {
+        try {
+            const data = localStorage.getItem('paketUpcademi');
+            return data ? JSON.parse(data) : [];
+        } catch(e) {
+            return [];
+        }
+    }
 
-                const filter = this.dataset.filter;
-                const cards = document.querySelectorAll('.package-card-full');
+    // ===== RENDER SEMUA PAKET =====
+    function renderPackages() {
+        const grid = document.getElementById('packageGrid');
+        if (!grid) return;
 
-                cards.forEach(card => {
-                    if (filter === 'all' || card.dataset.category === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+        const paket = getPaket();
+
+        if (paket.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align:center; padding:60px 20px; color:var(--text-gray);">
+                    <div style="font-size:48px; margin-bottom:16px;">📦</div>
+                    <h3>Belum ada paket tryout</h3>
+                    <p>Silakan tambahkan paket melalui dashboard admin.</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Generate kartu paket
+        let html = '';
+        paket.forEach((item, index) => {
+            const isPopular = index === 0 ? 'popular' : '';
+            const features = item.features ? item.features.split(',').map(f => f.trim()) : [];
+            
+            html += `
+                <div class="package-card-full ${isPopular}" data-category="${item.category.toLowerCase()}">
+                    ${index === 0 ? `<div class="badge-popular">Paling Laris</div>` : ''}
+                    <span class="badge-category">${item.category}</span>
+                    <div class="package-name">${item.name}</div>
+                    <div class="package-price">Rp${parseInt(item.price).toLocaleString('id-ID')} <small>/paket</small></div>
+                    <p class="package-desc">${item.description || 'Persiapan tryout terbaik'}</p>
+                    <ul class="package-features">
+                        ${features.map(f => `<li>${f}</li>`).join('')}
+                        <li>Akses ${item.duration}</li>
+                    </ul>
+                    <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
+                </div>
+            `;
+        });
+
+        grid.innerHTML = html;
+    }
+
+    // ===== FILTER PAKET =====
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.dataset.filter;
+            const cards = document.querySelectorAll('.package-card-full');
+
+            cards.forEach(card => {
+                if (filter === 'all' || card.dataset.category === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         });
+    });
+
+    // ===== JALANKAN SAAT HALAMAN LOAD =====
+    document.addEventListener('DOMContentLoaded', function() {
+        renderPackages();
+    });
+</script>
     </script>
 
 </body>
