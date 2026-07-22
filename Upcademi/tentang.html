@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - UPCADEMI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .about-page {
+            padding: 60px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .about-page h1 {
+            color: var(--navy);
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .about-page .subtitle {
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .about-page h3 {
+            color: var(--navy);
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+        .about-page p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .about-page .timeline {
+            background: var(--gray-bg);
+            padding: 20px 24px;
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 32px;
+            background: var(--navy);
+            color: var(--white);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-back:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+                <span>UPCADEMI</span>
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html">Beranda</a>
+                <a href="packages.html">Paket</a>
+                <a href="leaderboard.html">Peringkat</a>
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== KONTEN TENTANG KAMI ===== -->
+    <section class="about-page">
+        <div class="container">
+            <h1>📖 Tentang UPCADEMI</h1>
+            <p class="subtitle">Platform tryout online untuk persiapan ujian masuk CPNS, perguruan tinggi, dan sekolah kedinasan.</p>
+
+            <p>
+                <strong>UPCADEMI</strong> didirikan dengan semangat untuk membantu siswa dan mahasiswa di Indonesia dalam mempersiapkan ujian-ujian penting. Kami percaya bahwa setiap orang berhak mendapatkan akses ke latihan soal berkualitas dan pembahasan yang mudah dipahami.
+            </p>
+
+            <h3>🎯 Visi</h3>
+            <p>
+                Menjadi platform edukasi dan tryout online terpercaya di Indonesia yang membantu setiap siswa mencapai potensi terbaiknya.
+            </p>
+
+            <h3>🚀 Misi</h3>
+            <p>
+                1. Menyediakan soal-soal tryout berkualitas yang sesuai dengan standar ujian resmi.<br>
+                2. Memberikan pembahasan yang jelas, lengkap, dan mudah dipahami.<br>
+                3. Membantu siswa mengidentifikasi kelemahan dan kekuatan melalui analisis hasil tryout.
+            </p>
+
+<div class="timeline">
+ <h3 style="margin-top:0;">📅 Perjalanan Kami</h3>
+<p><strong>2026</strong> — UPCADEMI resmi diluncurkan sebagai platform edukasi dan tryout online.</p>
+            </div>
+
+            <h3>👨‍💼 Pendiri</h3>
+            <p>
+                UPCADEMI didirikan oleh <strong>@Upcademi</strong>, akun Tiktok yang berisi konten edukasi online.
+            </p>
+
+            <a href="index.html" class="btn-back">← Kembali ke Beranda</a>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="tentang.html">Tentang Kami</a>
+                <a href="kontak.html">Kontak</a>
+                <a href="privasi.html">Kebijakan Privasi</a>
+                <a href="syarat.html">Syarat & Ketentuan</a>
+            </div>
+            <div class="copyright">&copy; 2026 UPCADEMI. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

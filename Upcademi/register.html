@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - UPCADEMI</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Sama seperti login.html, copy style auth */
+        .auth-page {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: var(--gray-bg);
+        }
+
+        .auth-box {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .auth-box h2 {
+            text-align: center;
+            color: var(--navy);
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .auth-box .subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+            background: var(--white);
+        }
+
+        .form-group input:focus {
+            border-color: var(--navy);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 14px;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-auth:hover {
+            background: var(--red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(211, 47, 47, 0.3);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        .auth-footer a {
+            color: var(--red);
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert-error {
+            background: #FFEBEE;
+            color: var(--red-dark);
+            border: 1px solid #FFCDD2;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            color: var(--green);
+            border: 1px solid #C8E6C9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.png" alt="UPCADEMI" style="height: 40px;">
+                <span>UPCADEMI</span>
+            </a>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html">Beranda</a>
+                <a href="packages.html">Paket</a>
+                <a href="leaderboard.html">Peringkat</a>
+                <a href="register.html" class="btn-register">Daftar</a>
+                <a href="login.html" class="btn-login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== REGISTER SECTION ===== -->
+    <section class="auth-page">
+        <div class="auth-box">
+            <h2>Daftar Akun</h2>
+            <p class="subtitle">Isi data diri untuk mulai tryout</p>
+
+            <div class="alert alert-error" id="alert-error">Error message</div>
+            <div class="alert alert-success" id="alert-success">Pendaftaran berhasil! Silakan login.</div>
+
+            <form id="registerForm" onsubmit="return handleRegister(event)">
+                <div class="form-group">
+                    <label for="fullname">Nama Lengkap</label>
+                    <input type="text" id="fullname" placeholder="Masukkan nama lengkap" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Masukkan email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="tel" id="phone" placeholder="Contoh: 08123456789" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Minimal 6 karakter" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Konfirmasi Password</label>
+                    <input type="password" id="confirm-password" placeholder="Ulangi password" required minlength="6">
+                </div>
+
+                <button type="submit" class="btn-auth">Daftar Sekarang</button>
+            </form>
+
+            <div class="auth-footer">
+                Sudah punya akun? <a href="login.html">Login</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="tentang.html">Tentang Kami</a>
+                <a href="kontak.html">Kontak</a>
+                <a href="privasi.html">Kebijakan Privasi</a>
+                <a href="syarat.html">Syarat & Ketentuan</a>
+            </div>
+            <div class="copyright">&copy; 2026 UPCADEMI. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        function handleRegister(e) {
+            e.preventDefault();
+
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
+
+            const alertError = document.getElementById('alert-error');
+            const alertSuccess = document.getElementById('alert-success');
+
+            // Sembunyikan alert
+            alertError.style.display = 'none';
+            alertSuccess.style.display = 'none';
+
+            // Validasi
+            if (!fullname || !email || !phone || !password || !confirm) {
+                alertError.textContent = 'Semua field wajib diisi!';
+                alertError.style.display = 'block';
+                return false;
+            }
+
+            if (password !== confirm) {
+                alertError.textContent = 'Password dan konfirmasi password tidak sama!';
+                alertError.style.display = 'block';
+                return false;
+            }
+
+            if (password.length < 6) {
+                alertError.textContent = 'Password minimal 6 karakter!';
+                alertError.style.display = 'block';
+                return false;
+            }
+// Simpan data user ke localStorage
+localStorage.setItem('userEmail', email.value);
+localStorage.setItem('userName', fullname.value);
+localStorage.setItem('isAdmin', 'false');
+            // Simulasi sukses (nanti diganti dengan backend)
+            alertSuccess.textContent = 'Pendaftaran berhasil! Silakan login.';
+            alertSuccess.style.display = 'block';
+
+            // Reset form
+            document.getElementById('registerForm').reset();
+
+            // Redirect ke login setelah 2 detik
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+
+            return false;
+        }
+    </script>
+
+</body>
+</html>
