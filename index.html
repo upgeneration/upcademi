@@ -160,5 +160,65 @@
     </footer>
 
     <script src="js/script.js"></script>
+<script>
+    // ===== AMBIL DATA PAKET DARI LOCALSTORAGE =====
+    function getPaket() {
+        try {
+            const data = localStorage.getItem('paketUpcademi');
+            return data ? JSON.parse(data) : [];
+        } catch(e) {
+            return [];
+        }
+    }
+
+    // ===== RENDER PAKET DI BERANDA =====
+    function renderHomePackages() {
+        const grid = document.querySelector('.package-grid');
+        if (!grid) return;
+
+        const paket = getPaket();
+
+        // Ambil maksimal 3 paket untuk ditampilkan di beranda
+        const tampil = paket.slice(0, 3);
+
+        if (tampil.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align:center; padding:40px 20px; color:var(--text-gray);">
+                    <div style="font-size:48px; margin-bottom:16px;">📦</div>
+                    <h3>Belum ada paket tryout</h3>
+                    <p>Silakan tambahkan paket melalui dashboard admin.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        tampil.forEach((item, index) => {
+            const isPopular = index === 0 ? 'popular' : '';
+            const features = item.features ? item.features.split(',').map(f => f.trim()) : [];
+            
+            html += `
+                <div class="package-card ${isPopular}">
+                    ${index === 0 ? `<div class="badge-popular">Paling Laris</div>` : ''}
+                    <div class="package-name">${item.name}</div>
+                    <div class="package-price">Rp${parseInt(item.price).toLocaleString('id-ID')} <small>/paket</small></div>
+                    <p class="package-desc">${item.description || 'Persiapan tryout terbaik'}</p>
+                    <ul class="package-features">
+                        ${features.map(f => `<li>${f}</li>`).join('')}
+                        <li>Akses ${item.duration}</li>
+                    </ul>
+                    <a href="checkout.html?paket=${item.id}" class="btn-buy">Beli Sekarang</a>
+                </div>
+            `;
+        });
+
+        grid.innerHTML = html;
+    }
+
+    // ===== JALANKAN SAAT HALAMAN LOAD =====
+    document.addEventListener('DOMContentLoaded', function() {
+        renderHomePackages();
+    });
+</script>
 </body>
 </html>
