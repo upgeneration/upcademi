@@ -610,13 +610,12 @@
         </div>
     </section>
 
-    <script src="js/script.js"></script>
+   <script src="js/script.js"></script>
 <script>
     // =============================================
     // ===== AMBIL DATA DARI LOCALSTORAGE =====
     // =============================================
 
-    // ===== PESANAN =====
     function getPesanan() {
         return JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
     }
@@ -625,17 +624,18 @@
         localStorage.setItem('pesananUpcademi', JSON.stringify(pesanan));
     }
 
-    // ===== USERS =====
     function getUsers() {
         return JSON.parse(localStorage.getItem('usersUpcademi') || '[]');
     }
 
-    // ===== SOAL =====
     function getSoal() {
         return JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
     }
 
-    // ===== PAKET =====
+    function saveSoal(soal) {
+        localStorage.setItem('soalUpcademi', JSON.stringify(soal));
+    }
+
     function getPaket() {
         try {
             const data = localStorage.getItem('paketUpcademi');
@@ -650,7 +650,7 @@
     }
 
     // =============================================
-    // ===== RENDER ORDERS (PESANAN) =====
+    // ===== RENDER ORDERS =====
     // =============================================
 
     function renderOrders() {
@@ -694,9 +694,8 @@
         }).join('');
     }
 
-    // ===== VERIFIKASI PESANAN =====
     function verifikasiPesanan(id) {
-        if (!confirm('Yakin ingin memverifikasi pesanan ini? User akan mendapat akses tryout.')) return;
+        if (!confirm('Yakin ingin memverifikasi pesanan ini?')) return;
 
         let pesanan = getPesanan();
         const index = pesanan.findIndex(p => p.id === id);
@@ -706,11 +705,10 @@
             savePesanan(pesanan);
             renderOrders();
             updateStats();
-            alert('✅ Pesanan berhasil diverifikasi! User sekarang bisa mengerjakan tryout.');
+            alert('✅ Pesanan berhasil diverifikasi!');
         }
     }
 
-    // ===== HAPUS PESANAN =====
     function hapusPesanan(id) {
         if (!confirm('Yakin ingin menghapus pesanan ini?')) return;
 
@@ -795,7 +793,7 @@
                     <td>${index + 1}</td>
                     <td>${item.paket || '-'}</td>
                     <td>${item.soal ? item.soal.substring(0, 30) + (item.soal.length > 30 ? '...' : '') : '-'}</td>
-                    <td>${item.gambar || 'Tidak'}</td>
+                    <td>${item.gambar ? '✅' : '-'}</td>
                     <td>
                         <button class="btn-action delete" onclick="deleteSoal(${index})">🗑️</button>
                     </td>
@@ -809,8 +807,133 @@
 
         let soal = getSoal();
         soal.splice(index, 1);
-        localStorage.setItem('soalUpcademi', JSON.stringify(soal));
+        saveSoal(soal);
         renderSoal();
+    }
+
+    // =============================================
+    // ===== TAMBAH SOAL MANUAL =====
+    // =============================================
+
+    function tambahSoal(e) {
+        e.preventDefault();
+
+        const paket = document.getElementById('paketSoal');
+        const nomor = document.getElementById('nomorSoal');
+        const teks = document.getElementById('teksSoal');
+        const opsiA = document.getElementById('opsiA');
+        const opsiB = document.getElementById('opsiB');
+        const opsiC = document.getElementById('opsiC');
+        const opsiD = document.getElementById('opsiD');
+        const opsiE = document.getElementById('opsiE');
+        const jawaban = document.getElementById('jawabanBenar');
+        const pembahasan = document.getElementById('pembahasanSoal');
+
+        // Validasi
+        if (!paket.value || !nomor.value || !teks.value || !opsiA.value || !opsiB.value || !opsiC.value || !opsiD.value || !jawaban.value) {
+            alert('⚠️ Semua field wajib diisi! (Opsi E opsional)');
+            return false;
+        }
+
+        const soalBaru = {
+            id: Date.now(),
+            paket: paket.value,
+            nomor: nomor.value,
+            soal: teks.value,
+            gambar: '',
+            opsiA: opsiA.value,
+            opsiB: opsiB.value,
+            opsiC: opsiC.value,
+            opsiD: opsiD.value,
+            opsiE: opsiE.value || '',
+            jawaban: jawaban.value,
+            pembahasan: pembahasan.value
+        };
+
+        let soal = getSoal();
+        soal.push(soalBaru);
+        saveSoal(soal);
+
+        alert('✅ Soal berhasil ditambahkan!');
+        document.getElementById('formSoal').reset();
+        renderSoal();
+
+        return false;
+    }
+
+    // =============================================
+    // ===== IMPORT EXCEL/CSV =====
+    // =============================================
+
+    function handleImportExcel(input) {
+        if (!input.files || input.files.length === 0) {
+            alert('⚠️ Silakan pilih file terlebih dahulu!');
+            return;
+        }
+
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            try {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                
+                if (lines.length < 2) {
+                    alert('❌ File kosong atau tidak ada data!');
+                    return;
+                }
+
+                let soal = getSoal();
+                let jumlahTambah = 0;
+
+                // Proses setiap baris (mulai dari baris ke-2)
+                for (let i = 1; i < lines.length; i++) {
+                    const row = lines[i].split(',').map(cell => cell.trim());
+                    
+                    if (row.length < 10) {
+                        console.warn(`⚠️ Baris ${i+1} diabaikan (kurang kolom)`);
+                        continue;
+                    }
+
+                    const soalBaru = {
+                        id: Date.now() + i,
+                        paket: row[0] || 'Paket Tryout',
+                        soal: row[1] || 'Soal',
+                        gambar: row[2] || '',
+                        opsiA: row[3] || '',
+                        opsiB: row[4] || '',
+                        opsiC: row[5] || '',
+                        opsiD: row[6] || '',
+                        opsiE: row[7] || '',
+                        jawaban: row[8] || '',
+                        pembahasan: row[9] || '',
+                        pembahasanGambar: row[10] || ''
+                    };
+
+                    if (soalBaru.soal && soalBaru.opsiA && soalBaru.jawaban) {
+                        soal.push(soalBaru);
+                        jumlahTambah++;
+                    }
+                }
+
+                if (jumlahTambah === 0) {
+                    alert('❌ Tidak ada data yang valid untuk di-import. Pastikan format CSV benar!');
+                    return;
+                }
+
+                saveSoal(soal);
+                renderSoal();
+                alert('✅ ' + jumlahTambah + ' soal berhasil di-import!');
+                
+            } catch(err) {
+                alert('❌ Gagal import file: ' + err.message);
+                console.error(err);
+            }
+        };
+
+        reader.readAsText(file);
+        input.value = '';
     }
 
     // =============================================
@@ -848,6 +971,17 @@
                 </tr>
             `;
         }).join('');
+
+        // Update dropdown paket di form soal
+        const selectPaket = document.getElementById('paketSoal');
+        if (selectPaket) {
+            const currentValue = selectPaket.value;
+            selectPaket.innerHTML = '<option value="">-- Pilih Paket --</option>';
+            paket.forEach(p => {
+                selectPaket.innerHTML += `<option value="${p.name}">${p.name}</option>`;
+            });
+            if (currentValue) selectPaket.value = currentValue;
+        }
     }
 
     function tambahPaket(e) {
@@ -964,88 +1098,19 @@
     });
 
     function handleImportExcel(input) {
-    if (!input.files || input.files.length === 0) {
-        alert('⚠️ Silakan pilih file terlebih dahulu!');
-        return;
-    }
-
-    const file = input.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-        try {
-            const text = e.target.result;
-            const lines = text.split('\n').filter(line => line.trim() !== '');
-            
-            if (lines.length < 2) {
-                alert('❌ File kosong atau tidak ada data!');
-                return;
-            }
-
-            // Ambil header (baris pertama)
-            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-            
-            // Cek apakah header sesuai
-            const expectedHeaders = ['no', 'paket', 'teks soal', 'gambar soal', 'opsi a', 'opsi b', 'opsi c', 'opsi d', 'opsi e', 'jawaban', 'pembahasan', 'gambar pembahasan'];
-            
-            // Ambil data soal yang sudah ada
-            let soal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
-            let jumlahTambah = 0;
-
-            // Proses setiap baris data (mulai dari baris ke-2)
-            for (let i = 1; i < lines.length; i++) {
-                const row = lines[i].split(',').map(cell => cell.trim());
-                
-                // Minimal harus ada 11 kolom
-                if (row.length < 11) {
-                    console.warn(`⚠️ Baris ${i+1} diabaikan (kurang kolom)`);
-                    continue;
-                }
-
-                const soalBaru = {
-                    id: Date.now() + i,
-                    paket: row[1] || 'Paket Tryout',
-                    soal: row[2] || 'Soal',
-                    gambar: row[3] || '',
-                    opsiA: row[4] || '',
-                    opsiB: row[5] || '',
-                    opsiC: row[6] || '',
-                    opsiD: row[7] || '',
-                    opsiE: row[8] || '',
-                    jawaban: row[9] || '',
-                    pembahasan: row[10] || '',
-                    pembahasanGambar: row[11] || ''
-                };
-
-                // Validasi minimal: teks soal dan opsi harus ada
-                if (soalBaru.soal && soalBaru.opsiA && soalBaru.jawaban) {
-                    soal.push(soalBaru);
-                    jumlahTambah++;
-                }
-            }
-
-            if (jumlahTambah === 0) {
-                alert('❌ Tidak ada data yang valid untuk di-import. Pastikan format CSV benar!');
-                return;
-            }
-
-            // Simpan ke localStorage
-            localStorage.setItem('soalUpcademi', JSON.stringify(soal));
-            
-            // Refresh tampilan tabel soal
-            renderSoal();
-            
-            alert('✅ ' + jumlahTambah + ' soal berhasil di-import!');
-            
-        } catch(err) {
-            alert('❌ Gagal import file: ' + err.message);
-            console.error(err);
+        if (input.files && input.files[0]) {
+            alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
+                  'Format yang didukung:\n' +
+                  '- Kolom A: Nomor Soal\n' +
+                  '- Kolom B: Teks Soal\n' +
+                  '- Kolom C: Gambar Soal (URL)\n' +
+                  '- Kolom D-H: Opsi A-E\n' +
+                  '- Kolom I: Jawaban Benar\n' +
+                  '- Kolom J: Pembahasan\n' +
+                  '- Kolom K: Gambar Pembahasan (URL)');
+            input.value = '';
         }
-    };
-
-    reader.readAsText(file);
-    input.value = '';
-}
+    }
 
     // =============================================
     // ===== FORM SUBMIT SOAL =====
