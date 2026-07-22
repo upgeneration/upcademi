@@ -418,37 +418,55 @@
 
         // ===== HANDLE CHECKOUT (DENGAN CEK LOGIN) =====
         function handleCheckout() {
-            // 1. CEK LOGIN
-            const isLoggedIn = localStorage.getItem('userEmail') !== null;
-            if (!isLoggedIn) {
-                alert('⚠️ Anda harus login terlebih dahulu untuk membeli paket tryout!');
-                window.location.href = 'login.html';
-                return;
-            }
+    // Cek login
+    if (!cekLoginSebelumCheckout()) {
+        return;
+    }
 
-            // 2. CEK UPLOAD BUKTI
-            const fileInput = document.getElementById('buktiTransfer');
-            const alertSuccess = document.getElementById('alert-success');
-            const alertError = document.getElementById('alert-error');
+    const fileInput = document.getElementById('buktiTransfer');
+    const alertSuccess = document.getElementById('alert-success');
+    const alertError = document.getElementById('alert-error');
 
-            alertSuccess.style.display = 'none';
-            alertError.style.display = 'none';
+    alertSuccess.style.display = 'none';
+    alertError.style.display = 'none';
 
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alertError.textContent = '⚠️ Mohon upload bukti transfer terlebih dahulu!';
-                alertError.style.display = 'block';
-                return;
-            }
+    if (!fileInput.files || fileInput.files.length === 0) {
+        alertError.textContent = '⚠️ Mohon upload bukti transfer terlebih dahulu!';
+        alertError.style.display = 'block';
+        return;
+    }
 
-            // 3. SIMULASI SUKSES
-            alertSuccess.textContent = '✅ Bukti transfer berhasil diupload! Pesanan akan diproses dalam 1x24 jam.';
-            alertSuccess.style.display = 'block';
-            fileInput.value = '';
+    // ===== SIMPAN DATA PESANAN =====
+    const userEmail = localStorage.getItem('userEmail');
+    const userName = localStorage.getItem('userName') || 'User';
+    
+    const pesanan = {
+        id: Date.now(),
+        userEmail: userEmail,
+        userName: userName,
+        paketId: paketId,
+        paketName: data.name,
+        harga: data.price,
+        tanggal: new Date().toLocaleDateString('id-ID'),
+        bukti: 'uploaded', // Simpan status bukti
+        status: 'pending' // pending | aktif | kadaluarsa
+    };
 
-            setTimeout(() => {
-                window.location.href = 'dashboard-user.html';
-            }, 3000);
-        }
+    // Ambil data pesanan yang sudah ada
+    let pesananList = JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
+    pesananList.push(pesanan);
+    localStorage.setItem('pesananUpcademi', JSON.stringify(pesananList));
+
+    alertSuccess.textContent = '✅ Bukti transfer berhasil diupload! Pesanan akan diproses dalam 1x24 jam.';
+    alertSuccess.style.display = 'block';
+
+    fileInput.value = '';
+    document.getElementById('preview-bukti').innerHTML = '';
+
+    setTimeout(() => {
+        window.location.href = 'dashboard-user.html';
+    }, 3000);
+}
 
         // ===== UPDATE NAVBAR =====
         function updateNavbar() {
