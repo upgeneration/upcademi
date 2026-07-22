@@ -452,47 +452,52 @@
                         </div>
                         <div id="previewSoal" style="margin-top:8px;"></div>
                     </div>
-                    <div>
-                        <label>Pilihan A</label>
-                        <input type="text" placeholder="Opsi A" required>
-                        <div style="margin-top:6px;">
-                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi A (Opsional)</label>
-                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-                        </div>
-                    </div>
-                    <div>
-                        <label>Pilihan B</label>
-                        <input type="text" placeholder="Opsi B" required>
-                        <div style="margin-top:6px;">
-                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi B (Opsional)</label>
-                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-                        </div>
-                    </div>
-                    <div>
-                        <label>Pilihan C</label>
-                        <input type="text" placeholder="Opsi C" required>
-                        <div style="margin-top:6px;">
-                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi C (Opsional)</label>
-                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-                        </div>
-                    </div>
-                    <div>
-                        <label>Pilihan D</label>
-                        <input type="text" placeholder="Opsi D" required>
-                        <div style="margin-top:6px;">
-                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi D (Opsional)</label>
-                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-                        </div>
-                    </div>
-                    <div>
-                        <label>Pilihan E</label>
-                        <input type="text" placeholder="Opsi E">
-                        <div style="margin-top:6px;">
-                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi E (Opsional)</label>
-                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-                        </div>
-                    </div>
-                    <div>
+                    <!-- ===== OPSI JAWABAN (DENGAN GAMBAR) ===== -->
+<div>
+    <label>Pilihan A</label>
+    <input type="text" id="opsiA" placeholder="Teks Opsi A (kosongkan jika pakai gambar)" required>
+    <div style="margin-top:6px;">
+        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi A (Opsional)</label>
+        <input type="file" id="gambarOpsiA" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+        <div id="previewGambarA" style="margin-top:4px;"></div>
+    </div>
+</div>
+<div>
+    <label>Pilihan B</label>
+    <input type="text" id="opsiB" placeholder="Teks Opsi B (kosongkan jika pakai gambar)" required>
+    <div style="margin-top:6px;">
+        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi B (Opsional)</label>
+        <input type="file" id="gambarOpsiB" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+        <div id="previewGambarB" style="margin-top:4px;"></div>
+    </div>
+</div>
+<div>
+    <label>Pilihan C</label>
+    <input type="text" id="opsiC" placeholder="Teks Opsi C (kosongkan jika pakai gambar)" required>
+    <div style="margin-top:6px;">
+        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi C (Opsional)</label>
+        <input type="file" id="gambarOpsiC" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+        <div id="previewGambarC" style="margin-top:4px;"></div>
+    </div>
+</div>
+<div>
+    <label>Pilihan D</label>
+    <input type="text" id="opsiD" placeholder="Teks Opsi D (kosongkan jika pakai gambar)" required>
+    <div style="margin-top:6px;">
+        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi D (Opsional)</label>
+        <input type="file" id="gambarOpsiD" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+        <div id="previewGambarD" style="margin-top:4px;"></div>
+    </div>
+</div>
+<div>
+    <label>Pilihan E</label>
+    <input type="text" id="opsiE" placeholder="Teks Opsi E (kosongkan jika pakai gambar)">
+    <div style="margin-top:6px;">
+        <label style="font-weight:400; font-size:12px;">📷 Upload Gambar Opsi E (Opsional)</label>
+        <input type="file" id="gambarOpsiE" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+        <div id="previewGambarE" style="margin-top:4px;"></div>
+    </div>
+</div>
                         <label>Jawaban Benar</label>
                         <select required>
                             <option value="">-- Pilih --</option>
