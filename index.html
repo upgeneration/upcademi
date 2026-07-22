@@ -145,7 +145,10 @@
 
     <script src="js/script.js"></script>
     <script>
-        // ===== UPDATE NAVBAR =====
+        // ============================================================
+        // ===== UPDATE NAVBAR (BERDASARKAN STATUS LOGIN) =====
+        // ============================================================
+
         function updateNavbar() {
             const container = document.getElementById('navbarLogin');
             if (!container) return;
@@ -173,17 +176,40 @@
             }
         }
 
+        // ============================================================
+        // ===== LOGOUT =====
+        // ============================================================
+
         function logout() {
             if (confirm('Yakin ingin logout?')) {
                 localStorage.removeItem('isAdmin');
                 localStorage.removeItem('userEmail');
                 localStorage.removeItem('userName');
+                localStorage.setItem('logoutEvent', Date.now());
                 window.location.href = 'index.html';
             }
         }
 
+        // ============================================================
+        // ===== DENGARKAN PERUBAHAN LOGOUT DARI HALAMAN LAIN =====
+        // ============================================================
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'logoutEvent' || e.key === 'userEmail' || e.key === 'isAdmin') {
+                console.log('🔄 Terdeteksi perubahan login, update navbar...');
+                updateNavbar();
+            }
+        });
+
+        // ============================================================
+        // ===== JALANKAN SAAT HALAMAN LOAD =====
+        // ============================================================
+
         document.addEventListener('DOMContentLoaded', function() {
             updateNavbar();
+            if (localStorage.getItem('logoutEvent')) {
+                localStorage.removeItem('logoutEvent');
+            }
         });
     </script>
 
