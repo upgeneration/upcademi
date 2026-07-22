@@ -48,7 +48,6 @@
             font-weight: 700;
         }
 
-        /* ===== STATS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -80,7 +79,6 @@
             opacity: 0.5;
         }
 
-        /* ===== TABS ===== */
         .admin-tabs {
             display: flex;
             gap: 8px;
@@ -113,7 +111,6 @@
             color: var(--white);
         }
 
-        /* ===== TAB CONTENT ===== */
         .tab-content {
             display: none;
             background: var(--white);
@@ -132,7 +129,6 @@
             font-size: 20px;
         }
 
-        /* ===== TABEL ===== */
         .table-responsive {
             overflow-x: auto;
         }
@@ -210,7 +206,6 @@
             background: var(--red-dark);
         }
 
-        /* ===== FORM ===== */
         .form-admin {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -287,7 +282,6 @@
             display: none;
         }
 
-        /* ===== RESPONSIF ===== */
         @media (max-width: 992px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -298,24 +292,19 @@
             .admin-header h1 {
                 font-size: 22px;
             }
-
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
             }
-
             .form-admin {
                 grid-template-columns: 1fr;
             }
-
             .form-admin .full-width {
                 grid-column: 1;
             }
-
             .admin-tabs button {
                 padding: 8px 16px;
                 font-size: 13px;
             }
-
             .admin-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -331,7 +320,6 @@
 </head>
 <body>
 
-    <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
         <div class="container">
             <a href="index.html" class="logo">
@@ -353,11 +341,9 @@
         </div>
     </nav>
 
-    <!-- ===== ADMIN DASHBOARD ===== -->
     <section class="admin-page">
         <div class="container">
 
-            <!-- Header -->
             <div class="admin-header">
                 <h1>📊 Dashboard Admin</h1>
                 <div class="admin-user">
@@ -366,7 +352,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card-admin">
                     <span class="icon">👥</span>
@@ -390,7 +375,6 @@
                 </div>
             </div>
 
-            <!-- Tabs -->
             <div class="admin-tabs">
                 <button class="active" onclick="switchTab('orders')">📋 Pesanan</button>
                 <button onclick="switchTab('users')">👥 Pengguna</button>
@@ -413,9 +397,7 @@
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="ordersTable">
-                            <!-- JS akan generate -->
-                        </tbody>
+                        <tbody id="ordersTable"></tbody>
                     </table>
                 </div>
             </div>
@@ -435,224 +417,204 @@
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="usersTable">
-                            <!-- JS akan generate -->
-                        </tbody>
+                        <tbody id="usersTable"></tbody>
                     </table>
                 </div>
             </div>
 
-<!-- TAB 3: Kelola Soal -->
-<div class="tab-content" id="tab-soal">
-    <h3>📝 Tambah Soal Baru</h3>
-    <form class="form-admin" id="formSoal">
-        <div class="full-width">
-            <label>Pilih Paket</label>
-            <select required>
-                <option value="">-- Pilih Paket --</option>
-                <option>CPNS Master</option>
-                <option>CPNS Basic</option>
-                <option>UTBK Pro</option>
-                <option>UTBK Premium</option>
-                <option>Kedinasan Plus</option>
-                <option>Kedinasan Basic</option>
-                <option>Starter</option>
-                <option>Pro</option>
-                <option>Ultimate</option>
-            </select>
-        </div>
-
-        <div class="full-width">
-            <label>Nomor Soal</label>
-            <input type="number" placeholder="Contoh: 1" required>
-        </div>
-
-        <div class="full-width">
-            <label>Teks Soal</label>
-            <textarea placeholder="Tulis soal di sini..." required></textarea>
-        </div>
-
-        <!-- ===== UPLOAD GAMBAR SOAL ===== -->
-        <div class="full-width">
-            <label>📷 Upload Gambar untuk Soal (Opsional)</label>
-            <div class="file-upload-wrapper" onclick="document.getElementById('fileSoal').click()">
-                <div>📤 Klik untuk upload gambar soal</div>
-                <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
-                <input type="file" id="fileSoal" accept="image/*">
+            <!-- TAB 3: Kelola Soal -->
+            <div class="tab-content" id="tab-soal">
+                <h3>📝 Tambah Soal Baru</h3>
+                <form class="form-admin" id="formSoal">
+                    <div class="full-width">
+                        <label>Pilih Paket</label>
+                        <select required>
+                            <option value="">-- Pilih Paket --</option>
+                            <option>CPNS Master</option>
+                            <option>CPNS Basic</option>
+                            <option>UTBK Pro</option>
+                            <option>UTBK Premium</option>
+                            <option>Kedinasan Plus</option>
+                            <option>Kedinasan Basic</option>
+                            <option>Starter</option>
+                            <option>Pro</option>
+                            <option>Ultimate</option>
+                        </select>
+                    </div>
+                    <div class="full-width">
+                        <label>Nomor Soal</label>
+                        <input type="number" placeholder="Contoh: 1" required>
+                    </div>
+                    <div class="full-width">
+                        <label>Teks Soal</label>
+                        <textarea placeholder="Tulis soal di sini..." required></textarea>
+                    </div>
+                    <div class="full-width">
+                        <label>📷 Upload Gambar untuk Soal (Opsional)</label>
+                        <div class="file-upload-wrapper" onclick="document.getElementById('fileSoal').click()">
+                            <div>📤 Klik untuk upload gambar soal</div>
+                            <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
+                            <input type="file" id="fileSoal" accept="image/*">
+                        </div>
+                        <div id="previewSoal" style="margin-top:8px;"></div>
+                    </div>
+                    <div>
+                        <label>Pilihan A</label>
+                        <input type="text" placeholder="Opsi A" required>
+                        <div style="margin-top:6px;">
+                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi A (Opsional)</label>
+                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Pilihan B</label>
+                        <input type="text" placeholder="Opsi B" required>
+                        <div style="margin-top:6px;">
+                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi B (Opsional)</label>
+                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Pilihan C</label>
+                        <input type="text" placeholder="Opsi C" required>
+                        <div style="margin-top:6px;">
+                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi C (Opsional)</label>
+                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Pilihan D</label>
+                        <input type="text" placeholder="Opsi D" required>
+                        <div style="margin-top:6px;">
+                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi D (Opsional)</label>
+                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Pilihan E</label>
+                        <input type="text" placeholder="Opsi E">
+                        <div style="margin-top:6px;">
+                            <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi E (Opsional)</label>
+                            <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Jawaban Benar</label>
+                        <select required>
+                            <option value="">-- Pilih --</option>
+                            <option>A</option>
+                            <option>B</option>
+                            <option>C</option>
+                            <option>D</option>
+                            <option>E</option>
+                        </select>
+                    </div>
+                    <div class="full-width">
+                        <label>Pembahasan</label>
+                        <textarea placeholder="Tulis pembahasan soal..." required></textarea>
+                    </div>
+                    <div class="full-width">
+                        <label>📷 Upload Gambar untuk Pembahasan (Opsional)</label>
+                        <div class="file-upload-wrapper" onclick="document.getElementById('filePembahasan').click()">
+                            <div>📤 Klik untuk upload gambar pembahasan</div>
+                            <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
+                            <input type="file" id="filePembahasan" accept="image/*">
+                        </div>
+                        <div id="previewPembahasan" style="margin-top:8px;"></div>
+                    </div>
+                    <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap; padding-top:16px; border-top:2px solid var(--gray-bg);">
+                        <button type="submit" class="btn-submit">💾 Simpan Soal</button>
+                        <button type="button" class="btn-submit" style="background:var(--green);" onclick="document.getElementById('importExcel').click()">
+                            📤 Import Excel/CSV
+                        </button>
+                        <input type="file" id="importExcel" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleImportExcel(this)">
+                    </div>
+                </form>
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid var(--gray-bg);">
+                <h3>📋 Daftar Soal yang Tersimpan</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Paket</th>
+                                <th>Soal</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="soalTable"></tbody>
+                    </table>
+                </div>
             </div>
-            <div id="previewSoal" style="margin-top:8px;"></div>
-        </div>
 
-        <!-- ===== PILIHAN JAWABAN ===== -->
-        <div>
-            <label>Pilihan A</label>
-            <input type="text" placeholder="Opsi A" required>
-            <div style="margin-top:6px;">
-                <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi A (Opsional)</label>
-                <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
+            <!-- TAB 4: Kelola Paket -->
+            <div class="tab-content" id="tab-paket">
+                <h3>📦 Kelola Paket Tryout</h3>
+                <form class="form-admin" id="formPaket" onsubmit="return tambahPaket(event)">
+                    <div>
+                        <label>Nama Paket</label>
+                        <input type="text" id="namaPaket" placeholder="Contoh: CPNS 2026" required>
+                    </div>
+                    <div>
+                        <label>Kategori</label>
+                        <select id="kategoriPaket" required>
+                            <option value="">-- Pilih --</option>
+                            <option>CPNS</option>
+                            <option>UTBK</option>
+                            <option>Kedinasan</option>
+                            <option>Tryout</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Harga (Rp)</label>
+                        <input type="number" id="hargaPaket" placeholder="Contoh: 199000" required>
+                    </div>
+                    <div>
+                        <label>Durasi Akses</label>
+                        <input type="text" id="durasiPaket" placeholder="Contoh: 3 Bulan" value="3 Bulan" required>
+                    </div>
+                    <div class="full-width">
+                        <label>Deskripsi</label>
+                        <textarea id="deskripsiPaket" placeholder="Deskripsi paket..." rows="2"></textarea>
+                    </div>
+                    <div class="full-width">
+                        <label>Fitur (pisahkan dengan koma)</label>
+                        <input type="text" id="fiturPaket" placeholder="Contoh: 10 Paket Tryout, Pembahasan, Analisis">
+                    </div>
+                    <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap;">
+                        <button type="submit" class="btn-submit">💾 Simpan Paket</button>
+                    </div>
+                </form>
+                <div id="paketAlert" style="margin-top:12px; display:none; padding:10px 16px; border-radius:8px;"></div>
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid var(--gray-bg);">
+                <h3>📋 Daftar Paket</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Paket</th>
+                                <th>Kategori</th>
+                                <th>Harga</th>
+                                <th>Durasi</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paketTable"></tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div>
-            <label>Pilihan B</label>
-            <input type="text" placeholder="Opsi B" required>
-            <div style="margin-top:6px;">
-                <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi B (Opsional)</label>
-                <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-            </div>
-        </div>
-        <div>
-            <label>Pilihan C</label>
-            <input type="text" placeholder="Opsi C" required>
-            <div style="margin-top:6px;">
-                <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi C (Opsional)</label>
-                <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-            </div>
-        </div>
-        <div>
-            <label>Pilihan D</label>
-            <input type="text" placeholder="Opsi D" required>
-            <div style="margin-top:6px;">
-                <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi D (Opsional)</label>
-                <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-            </div>
-        </div>
-        <div>
-            <label>Pilihan E</label>
-            <input type="text" placeholder="Opsi E">
-            <div style="margin-top:6px;">
-                <label style="font-weight:400; font-size:12px;">📷 Gambar Opsi E (Opsional)</label>
-                <input type="file" accept="image/*" style="display:block; margin-top:4px; padding:4px;">
-            </div>
-        </div>
 
-        <div>
-            <label>Jawaban Benar</label>
-            <select required>
-                <option value="">-- Pilih --</option>
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
-                <option>D</option>
-                <option>E</option>
-            </select>
         </div>
-
-        <!-- ===== PEMBAHASAN ===== -->
-        <div class="full-width">
-            <label>Pembahasan</label>
-            <textarea placeholder="Tulis pembahasan soal..." required></textarea>
-        </div>
-
-        <div class="full-width">
-            <label>📷 Upload Gambar untuk Pembahasan (Opsional)</label>
-            <div class="file-upload-wrapper" onclick="document.getElementById('filePembahasan').click()">
-                <div>📤 Klik untuk upload gambar pembahasan</div>
-                <div style="font-size:12px; color:var(--text-gray);">PNG, JPG, SVG (maks 2MB)</div>
-                <input type="file" id="filePembahasan" accept="image/*">
-            </div>
-            <div id="previewPembahasan" style="margin-top:8px;"></div>
-        </div>
-
-        <!-- ===== IMPORT EXCEL ===== -->
-        <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap; padding-top:16px; border-top:2px solid var(--gray-bg);">
-            <button type="submit" class="btn-submit">💾 Simpan Soal</button>
-            <button type="button" class="btn-submit" style="background:var(--green);" onclick="document.getElementById('importExcel').click()">
-                📤 Import Excel/CSV
-            </button>
-            <input type="file" id="importExcel" accept=".xlsx,.xls,.csv" style="display:none;" onchange="handleImportExcel(this)">
-        </div>
-    </form>
-
-    <hr style="margin: 30px 0; border: none; border-top: 2px solid var(--gray-bg);">
-
-    <h3>📋 Daftar Soal yang Tersimpan</h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Paket</th>
-                    <th>Soal</th>
-                    <th>Gambar</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="soalTable">
-                <!-- JS akan generate -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- TAB 4: Kelola Paket -->
-<div class="tab-content" id="tab-paket">
-    <h3>📦 Kelola Paket Tryout</h3>
-
-    <!-- Form Tambah Paket -->
-    <form class="form-admin" id="formPaket" onsubmit="return tambahPaket(event)">
-        <div>
-            <label>Nama Paket</label>
-            <input type="text" id="namaPaket" placeholder="Contoh: CPNS 2026" required>
-        </div>
-        <div>
-            <label>Kategori</label>
-            <select id="kategoriPaket" required>
-                <option value="">-- Pilih --</option>
-                <option>CPNS</option>
-                <option>UTBK</option>
-                <option>Kedinasan</option>
-                <option>Tryout</option>
-            </select>
-        </div>
-        <div>
-            <label>Harga (Rp)</label>
-            <input type="number" id="hargaPaket" placeholder="Contoh: 199000" required>
-        </div>
-        <div>
-            <label>Durasi Akses</label>
-            <input type="text" id="durasiPaket" placeholder="Contoh: 3 Bulan" value="3 Bulan" required>
-        </div>
-        <div class="full-width">
-            <label>Deskripsi</label>
-            <textarea id="deskripsiPaket" placeholder="Deskripsi paket..." rows="2"></textarea>
-        </div>
-        <div class="full-width">
-            <label>Fitur (pisahkan dengan koma)</label>
-            <input type="text" id="fiturPaket" placeholder="Contoh: 10 Paket Tryout, Pembahasan, Analisis">
-        </div>
-        <div class="full-width" style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button type="submit" class="btn-submit">💾 Simpan Paket</button>
-        </div>
-    </form>
-
-    <div id="paketAlert" style="margin-top:12px; display:none; padding:10px 16px; border-radius:8px;"></div>
-
-    <hr style="margin: 30px 0; border: none; border-top: 2px solid var(--gray-bg);">
-
-    <h3>📋 Daftar Paket</h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama Paket</th>
-                    <th>Kategori</th>
-                    <th>Harga</th>
-                    <th>Durasi</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="paketTable">
-                <!-- JS akan generate -->
-            </tbody>
-        </table>
-    </div>
-</div>
     </section>
 
     <script src="js/script.js"></script>
     <script>
-        // ===== SAMPLE DATA =====
+        // =============================================
+        // ===== SAMPLE DATA (ORDERS, USERS, SOAL) =====
+        // =============================================
+
         const ordersData = [
             { id: 1, name: 'Budi Santoso', paket: 'CPNS Master', date: '2026-07-20', status: 'active' },
             { id: 2, name: 'Siti Rahayu', paket: 'UTBK Pro', date: '2026-07-19', status: 'pending' },
@@ -672,139 +634,117 @@
             { id: 2, paket: 'UTBK Pro', soal: 'Jika 3x + 5 = 20, maka nilai x adalah...', gambar: 'Tidak' }
         ];
 
-        const paketData = [
-            { id: 1, name: 'CPNS Master', category: 'CPNS', price: '199.000', duration: '60 Hari' },
-            { id: 2, name: 'UTBK Pro', category: 'UTBK', price: '179.000', duration: '45 Hari' }
-        ];
-// ===== KELOLA PAKET =====
+        // =============================================
+        // ===== KELOLA PAKET (localStorage) =====
+        // =============================================
 
-function getPaket() {
-    try {
-        const data = localStorage.getItem('paketUpcademi');
-        return data ? JSON.parse(data) : [];
-    } catch(e) {
-        return [];
-    }
-}
+        function getPaket() {
+            try {
+                const data = localStorage.getItem('paketUpcademi');
+                return data ? JSON.parse(data) : [];
+            } catch(e) {
+                return [];
+            }
+        }
 
-function savePaket(paket) {
-    localStorage.setItem('paketUpcademi', JSON.stringify(paket));
-}
+        function savePaket(paket) {
+            localStorage.setItem('paketUpcademi', JSON.stringify(paket));
+        }
 
-function renderPaket() {
-    const tbody = document.getElementById('paketTable');
-    if (!tbody) return;
+        function renderPaket() {
+            const tbody = document.getElementById('paketTable');
+            if (!tbody) return;
 
-    const paket = getPaket();
+            const paket = getPaket();
 
-    if (paket.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
-                    📭 Belum ada paket. Silakan tambahkan paket baru!
-                </td>
-            </tr>
-        `;
-        return;
-    }
+            if (paket.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:30px; color:var(--text-gray);">
+                            📭 Belum ada paket. Silakan tambahkan paket baru!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
 
-    tbody.innerHTML = paket.map((item, index) => {
-        return `
-            <tr>
-                <td>${index + 1}</td>
-                <td><strong>${item.name}</strong></td>
-                <td>${item.category}</td>
-                <td>Rp${item.price}</td>
-                <td>${item.duration}</td>
-                <td>
-                    <button class="btn-action delete" onclick="hapusPaket(${item.id})">🗑️</button>
-                </td>
-            </tr>
-        `;
-    }).join('');
-}
+            tbody.innerHTML = paket.map((item, index) => {
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${item.name}</strong></td>
+                        <td>${item.category}</td>
+                        <td>Rp${item.price}</td>
+                        <td>${item.duration}</td>
+                        <td>
+                            <button class="btn-action delete" onclick="hapusPaket(${item.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
 
-function tambahPaket(e) {
-    e.preventDefault();
+        function tambahPaket(e) {
+            e.preventDefault();
 
-    const nama = document.getElementById('namaPaket');
-    const kategori = document.getElementById('kategoriPaket');
-    const harga = document.getElementById('hargaPaket');
-    const durasi = document.getElementById('durasiPaket');
-    const deskripsi = document.getElementById('deskripsiPaket');
-    const fitur = document.getElementById('fiturPaket');
-    const alert = document.getElementById('paketAlert');
+            const nama = document.getElementById('namaPaket');
+            const kategori = document.getElementById('kategoriPaket');
+            const harga = document.getElementById('hargaPaket');
+            const durasi = document.getElementById('durasiPaket');
+            const deskripsi = document.getElementById('deskripsiPaket');
+            const fitur = document.getElementById('fiturPaket');
+            const alert = document.getElementById('paketAlert');
 
-    alert.style.display = 'none';
-    alert.className = '';
+            alert.style.display = 'none';
+            alert.className = '';
 
-    // Validasi
-    if (!nama.value.trim() || !kategori.value || !harga.value || !durasi.value.trim()) {
-        alert.textContent = '⚠️ Semua field wajib diisi!';
-        alert.style.display = 'block';
-        alert.style.background = '#FFEBEE';
-        alert.style.color = '#B71C1C';
-        return false;
-    }
+            if (!nama.value.trim() || !kategori.value || !harga.value || !durasi.value.trim()) {
+                alert.textContent = '⚠️ Semua field wajib diisi!';
+                alert.style.display = 'block';
+                alert.style.background = '#FFEBEE';
+                alert.style.color = '#B71C1C';
+                return false;
+            }
 
-    // Buat paket baru
-    const paketBaru = {
-        id: Date.now(),
-        name: nama.value.trim(),
-        category: kategori.value,
-        price: harga.value,
-        duration: durasi.value.trim(),
-        description: deskripsi.value.trim(),
-        features: fitur.value.trim()
-    };
+            const paketBaru = {
+                id: Date.now(),
+                name: nama.value.trim(),
+                category: kategori.value,
+                price: harga.value,
+                duration: durasi.value.trim(),
+                description: deskripsi.value.trim(),
+                features: fitur.value.trim()
+            };
 
-    // Simpan
-    const paket = getPaket();
-    paket.push(paketBaru);
-    savePaket(paket);
+            const paket = getPaket();
+            paket.push(paketBaru);
+            savePaket(paket);
 
-    // Tampilkan sukses
-    alert.textContent = '✅ Paket "' + nama.value + '" berhasil ditambahkan!';
-    alert.style.display = 'block';
-    alert.style.background = '#E8F5E9';
-    alert.style.color = '#2E7D32';
+            alert.textContent = '✅ Paket "' + nama.value + '" berhasil ditambahkan!';
+            alert.style.display = 'block';
+            alert.style.background = '#E8F5E9';
+            alert.style.color = '#2E7D32';
 
-    // Reset form
-    document.getElementById('formPaket').reset();
-    document.getElementById('durasiPaket').value = '3 Bulan';
+            document.getElementById('formPaket').reset();
+            document.getElementById('durasiPaket').value = '3 Bulan';
+            renderPaket();
 
-    // Refresh tabel
-    renderPaket();
+            return false;
+        }
 
-    return false;
-}
+        function hapusPaket(id) {
+            if (!confirm('Yakin ingin menghapus paket ini?')) return;
 
-function hapusPaket(id) {
-    if (!confirm('Yakin ingin menghapus paket ini?')) return;
+            let paket = getPaket();
+            paket = paket.filter(item => item.id !== id);
+            savePaket(paket);
+            renderPaket();
+        }
 
-    let paket = getPaket();
-    paket = paket.filter(item => item.id !== id);
-    savePaket(paket);
-    renderPaket();
-}
-
-// Jalankan renderPaket saat halaman load
-document.addEventListener('DOMContentLoaded', function() {
-    renderPaket();
-});
-});
-// Preview thumbnail
-function previewThumbnail(input) {
-    const preview = document.getElementById('thumbnailPreview');
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = `<img src="${e.target.result}" style="max-width:150px; border-radius:8px; border:2px solid #E0E0E0;">`;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
+        // =============================================
         // ===== RENDER ORDERS =====
+        // =============================================
+
         function renderOrders() {
             const tbody = document.getElementById('ordersTable');
             tbody.innerHTML = ordersData.map((item, index) => {
@@ -828,71 +768,6 @@ function previewThumbnail(input) {
             }).join('');
         }
 
-        // ===== RENDER USERS =====
-        function renderUsers() {
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = usersData.map((item, index) => {
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.name}</td>
-                        <td>${item.email}</td>
-                        <td>${item.phone}</td>
-                        <td>${item.paket}</td>
-                        <td>
-                            <button class="btn-action delete" onclick="deleteUser(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // ===== RENDER SOAL =====
-        function renderSoal() {
-            const tbody = document.getElementById('soalTable');
-            tbody.innerHTML = soalData.map((item, index) => {
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.paket}</td>
-                        <td>${item.soal.substring(0, 30)}${item.soal.length > 30 ? '...' : ''}</td>
-                        <td>${item.gambar}</td>
-                        <td>
-                            <button class="btn-action delete" onclick="deleteSoal(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // ===== RENDER PAKET =====
-        function renderPaket() {
-            const tbody = document.getElementById('paketTable');
-            tbody.innerHTML = paketData.map((item, index) => {
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${item.name}</td>
-                        <td>${item.category}</td>
-                        <td>Rp${item.price}</td>
-                        <td>${item.duration}</td>
-                        <td>
-                            <button class="btn-action delete" onclick="deletePaket(${item.id})">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // ===== UPDATE STATS =====
-        function updateStats() {
-            document.getElementById('totalUsers').textContent = usersData.length;
-            document.getElementById('totalOrders').textContent = ordersData.length;
-            document.getElementById('pendingOrders').textContent = ordersData.filter(o => o.status === 'pending').length;
-            document.getElementById('totalRevenue').textContent = 'Rp' + (199000 + 179000 + 249000).toLocaleString('id-ID');
-        }
-
-        // ===== FUNGSI AKSI =====
         function verifyOrder(id) {
             const order = ordersData.find(o => o.id === id);
             if (order && order.status === 'pending') {
@@ -914,6 +789,28 @@ function previewThumbnail(input) {
             }
         }
 
+        // =============================================
+        // ===== RENDER USERS =====
+        // =============================================
+
+        function renderUsers() {
+            const tbody = document.getElementById('usersTable');
+            tbody.innerHTML = usersData.map((item, index) => {
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.name}</td>
+                        <td>${item.email}</td>
+                        <td>${item.phone}</td>
+                        <td>${item.paket}</td>
+                        <td>
+                            <button class="btn-action delete" onclick="deleteUser(${item.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
         function deleteUser(id) {
             if (confirm('Yakin ingin menghapus pengguna ini?')) {
                 const index = usersData.findIndex(u => u.id === id);
@@ -923,6 +820,27 @@ function previewThumbnail(input) {
                     updateStats();
                 }
             }
+        }
+
+        // =============================================
+        // ===== RENDER SOAL =====
+        // =============================================
+
+        function renderSoal() {
+            const tbody = document.getElementById('soalTable');
+            tbody.innerHTML = soalData.map((item, index) => {
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.paket}</td>
+                        <td>${item.soal.substring(0, 30)}${item.soal.length > 30 ? '...' : ''}</td>
+                        <td>${item.gambar}</td>
+                        <td>
+                            <button class="btn-action delete" onclick="deleteSoal(${item.id})">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function deleteSoal(id) {
@@ -935,17 +853,21 @@ function previewThumbnail(input) {
             }
         }
 
-        function deletePaket(id) {
-            if (confirm('Yakin ingin menghapus paket ini?')) {
-                const index = paketData.findIndex(p => p.id === id);
-                if (index !== -1) {
-                    paketData.splice(index, 1);
-                    renderPaket();
-                }
-            }
+        // =============================================
+        // ===== UPDATE STATS =====
+        // =============================================
+
+        function updateStats() {
+            document.getElementById('totalUsers').textContent = usersData.length;
+            document.getElementById('totalOrders').textContent = ordersData.length;
+            document.getElementById('pendingOrders').textContent = ordersData.filter(o => o.status === 'pending').length;
+            document.getElementById('totalRevenue').textContent = 'Rp' + (199000 + 179000 + 249000).toLocaleString('id-ID');
         }
 
+        // =============================================
         // ===== SWITCH TAB =====
+        // =============================================
+
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.admin-tabs button').forEach(el => el.classList.remove('active'));
@@ -954,9 +876,12 @@ function previewThumbnail(input) {
             document.querySelector(`.admin-tabs button[onclick="switchTab('${tabName}')"]`).classList.add('active');
         }
 
+        // =============================================
         // ===== PREVIEW FILE =====
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const preview = document.getElementById('filePreview');
+        // =============================================
+
+        document.getElementById('fileSoal').addEventListener('change', function(e) {
+            const preview = document.getElementById('previewSoal');
             if (this.files && this.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
@@ -966,8 +891,8 @@ function previewThumbnail(input) {
             }
         });
 
-        document.getElementById('thumbnailInput').addEventListener('change', function(e) {
-            const preview = document.getElementById('thumbnailPreview');
+        document.getElementById('filePembahasan').addEventListener('change', function(e) {
+            const preview = document.getElementById('previewPembahasan');
             if (this.files && this.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(ev) {
@@ -977,7 +902,25 @@ function previewThumbnail(input) {
             }
         });
 
-        // ===== FORM SUBMIT =====
+        function handleImportExcel(input) {
+            if (input.files && input.files[0]) {
+                alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
+                      'Format yang didukung:\n' +
+                      '- Kolom A: Nomor Soal\n' +
+                      '- Kolom B: Teks Soal\n' +
+                      '- Kolom C: Gambar Soal (URL)\n' +
+                      '- Kolom D-H: Opsi A-E\n' +
+                      '- Kolom I: Jawaban Benar\n' +
+                      '- Kolom J: Pembahasan\n' +
+                      '- Kolom K: Gambar Pembahasan (URL)');
+                input.value = '';
+            }
+        }
+
+        // =============================================
+        // ===== FORM SUBMIT SOAL =====
+        // =============================================
+
         document.getElementById('formSoal').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('✅ Soal berhasil disimpan! (Data akan tersimpan di database)');
@@ -985,58 +928,17 @@ function previewThumbnail(input) {
             document.getElementById('filePreview').innerHTML = '';
         });
 
-        document.getElementById('formPaket').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('✅ Paket berhasil disimpan! (Data akan tersimpan di database)');
-            this.reset();
-            document.getElementById('thumbnailPreview').innerHTML = '';
-        });
-
+        // =============================================
         // ===== INIT =====
-        renderOrders();
-        renderUsers();
-        renderSoal();
-        renderPaket();
-        updateStats();
-// ===== PREVIEW GAMBAR SOAL =====
-document.getElementById('fileSoal').addEventListener('change', function(e) {
-    const preview = document.getElementById('previewSoal');
-    if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-            preview.innerHTML = `<img src="${ev.target.result}" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
-        };
-        reader.readAsDataURL(this.files[0]);
-    }
-});
+        // =============================================
 
-// ===== PREVIEW GAMBAR PEMBAHASAN =====
-document.getElementById('filePembahasan').addEventListener('change', function(e) {
-    const preview = document.getElementById('previewPembahasan');
-    if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-            preview.innerHTML = `<img src="${ev.target.result}" style="max-width:200px; border-radius:8px; border:2px solid #E0E0E0;">`;
-        };
-        reader.readAsDataURL(this.files[0]);
-    }
-});
-
-// ===== IMPORT EXCEL =====
-function handleImportExcel(input) {
-    if (input.files && input.files[0]) {
-        alert('✅ File "' + input.files[0].name + '" berhasil di-import!\n\n' +
-              'Format yang didukung:\n' +
-              '- Kolom A: Nomor Soal\n' +
-              '- Kolom B: Teks Soal\n' +
-              '- Kolom C: Gambar Soal (URL)\n' +
-              '- Kolom D-H: Opsi A-E\n' +
-              '- Kolom I: Jawaban Benar\n' +
-              '- Kolom J: Pembahasan\n' +
-              '- Kolom K: Gambar Pembahasan (URL)');
-        input.value = '';
-    }
-}
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrders();
+            renderUsers();
+            renderSoal();
+            renderPaket();
+            updateStats();
+        });
     </script>
 
 </body>
