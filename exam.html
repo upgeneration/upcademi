@@ -309,18 +309,29 @@
         let optionsHTML = '';
         const optionLabels = ['A', 'B', 'C', 'D', 'E'];
 
-        options.forEach((opt, oi) => {
-            const checked = answers[index] === oi ? 'checked' : '';
-            optionsHTML += `
-                <label class="${checked ? 'selected' : ''}">
-                    <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
-                    <span>
-                        <span class="option-label">${optionLabels[oi]}.</span> 
-                        ${opt || '-'}
-                    </span>
-                </label>
-            `;
-        });
+        // Di dalam renderQuestions()
+options.forEach((opt, oi) => {
+    const checked = answers[index] === oi ? 'checked' : '';
+    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+    const gambarOpsi = q['gambarOpsi' + optionLabels[oi]] || null;
+    
+    let gambarHTML = '';
+    if (gambarOpsi) {
+        // Jika gambar opsi ada, tampilkan
+        gambarHTML = `<div style="margin-top:4px;"><img src="assets/images/${gambarOpsi}" style="max-width:100px; border-radius:6px; border:1px solid #E0E0E0;" onerror="this.style.display='none'"></div>`;
+    }
+    
+    optionsHTML += `
+        <label class="${checked ? 'selected' : ''}">
+            <input type="radio" name="q${index}" value="${oi}" ${checked} onchange="selectOption(${index}, ${oi})">
+            <span>
+                <span class="option-label">${optionLabels[oi]}.</span> 
+                ${opt || '(Gambar)'}
+                ${gambarHTML}
+            </span>
+        </label>
+    `;
+});
 
         let imageHTML = '';
         if (image) {
