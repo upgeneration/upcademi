@@ -328,40 +328,47 @@
             { date: '2026-07-15', paket: 'CPNS Master', score: 90, status: 'Lulus' }
         ];
 
-        // ===== RENDER PAKET AKTIF =====
-        function renderPaketAktif() {
-            const container = document.getElementById('paketAktifContainer');
+        // ===== AMBIL PAKET AKTIF USER =====
+function getPaketAktif() {
+    const userEmail = localStorage.getItem('userEmail');
+    const pesanan = JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
+    return pesanan.filter(p => p.userEmail === userEmail && p.status === 'aktif');
+}
 
-            if (paketAktif.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">📦</div>
-                        <p>Anda belum memiliki paket tryout aktif.</p>
-                        <a href="packages.html" style="color:var(--red); font-weight:600;">Beli paket sekarang →</a>
-                    </div>
-                `;
-                return;
-            }
+function renderPaketAktif() {
+    const container = document.getElementById('paketAktifContainer');
+    if (!container) return;
 
-            container.innerHTML = paketAktif.map(item => {
-                const statusClass = item.status === 'active' ? 'active' : 'expired';
-                const statusText = item.status === 'active' ? '✅ Aktif' : '❌ Kadaluarsa';
-                return `
-                    <div class="paket-item">
-                        <div>
-                            <div class="paket-name">${item.name}</div>
-                            <div style="font-size:12px; color:var(--text-gray);">
-                                ⏳ Berlaku hingga: ${item.expired}
-                            </div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                            <span class="paket-status ${statusClass}">${statusText}</span>
-                            ${item.status === 'active' ? `<button class="btn-tryout" onclick="window.location.href='exam.html?paket=${item.name}'">🚀 Kerjakan Tryout</button>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+    const paketAktif = getPaketAktif();
+
+    if (paketAktif.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">📦</div>
+                <p>Anda belum memiliki paket tryout aktif.</p>
+                <a href="packages.html" style="color:var(--red); font-weight:600;">Beli paket sekarang →</a>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = paketAktif.map(item => `
+        <div class="paket-item">
+            <div>
+                <div class="paket-name">${item.paketName}</div>
+                <div style="font-size:12px; color:var(--text-gray);">
+                    ✅ Aktif sejak ${item.tanggal}
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span class="paket-status active">✅ Aktif</span>
+                <button class="btn-tryout" onclick="window.location.href='exam.html?paket=${item.paketId}'">
+                    🚀 Kerjakan Tryout
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
 
         // ===== RENDER RIWAYAT =====
         function renderRiwayat() {
