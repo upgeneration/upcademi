@@ -306,139 +306,155 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script>
-        // ===== AMBIL DATA USER DARI localStorage =====
-        const userEmail = localStorage.getItem('userEmail') || 'user@email.com';
-        const userName = localStorage.getItem('userName') || 'User';
+   <script src="js/script.js"></script>
+<script>
+    // =============================================
+    // ===== AMBIL DATA USER DARI localStorage =====
+    // =============================================
 
-        document.getElementById('userName').textContent = userName;
-        document.getElementById('userEmail').textContent = userEmail;
-        document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+    const userEmail = localStorage.getItem('userEmail') || 'user@email.com';
+    const userName = localStorage.getItem('userName') || 'User';
 
-        // ===== DATA CONTOH =====
-        const paketAktif = [
-            { name: 'CPNS Master', status: 'active', expired: '2026-08-20' },
-            { name: 'UTBK Pro', status: 'active', expired: '2026-08-15' }
-        ];
+    document.getElementById('userName').textContent = userName;
+    document.getElementById('userEmail').textContent = userEmail;
+    document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
 
-        const riwayatTryout = [
-            { date: '2026-07-20', paket: 'CPNS Master', score: 85, status: 'Lulus' },
-            { date: '2026-07-18', paket: 'UTBK Pro', score: 72, status: 'Perlu Belajar' },
-            { date: '2026-07-15', paket: 'CPNS Master', score: 90, status: 'Lulus' }
-        ];
+    // =============================================
+    // ===== AMBIL PAKET AKTIF DARI PESANAN =====
+    // =============================================
 
-        // ===== AMBIL PAKET AKTIF USER =====
-function getPaketAktif() {
-    const userEmail = localStorage.getItem('userEmail');
-    const pesanan = JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
-    return pesanan.filter(p => p.userEmail === userEmail && p.status === 'aktif');
-}
-
-function renderPaketAktif() {
-    const container = document.getElementById('paketAktifContainer');
-    if (!container) return;
-
-    const paketAktif = getPaketAktif();
-
-    if (paketAktif.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="icon">📦</div>
-                <p>Anda belum memiliki paket tryout aktif.</p>
-                <a href="packages.html" style="color:var(--red); font-weight:600;">Beli paket sekarang →</a>
-            </div>
-        `;
-        return;
+    function getPesananUser() {
+        const allPesanan = JSON.parse(localStorage.getItem('pesananUpcademi') || '[]');
+        return allPesanan.filter(p => p.userEmail === userEmail && p.status === 'aktif');
     }
 
-    container.innerHTML = paketAktif.map(item => `
-        <div class="paket-item">
-            <div>
-                <div class="paket-name">${item.paketName}</div>
-                <div style="font-size:12px; color:var(--text-gray);">
-                    ✅ Aktif sejak ${item.tanggal}
+    function renderPaketAktif() {
+        const container = document.getElementById('paketAktifContainer');
+        if (!container) return;
+
+        const paketAktif = getPesananUser();
+
+        if (paketAktif.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📦</div>
+                    <p>Anda belum memiliki paket tryout aktif.</p>
+                    <a href="packages.html" style="color:var(--red); font-weight:600;">Beli paket sekarang →</a>
                 </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                <span class="paket-status active">✅ Aktif</span>
-                <button class="btn-tryout" onclick="window.location.href='exam.html?paket=${item.paketId}'">
-                    🚀 Kerjakan Tryout
-                </button>
-            </div>
-        </div>
-    `).join('');
-}
-
-        // ===== RENDER RIWAYAT =====
-        function renderRiwayat() {
-            const container = document.getElementById('riwayatContainer');
-
-            if (riwayatTryout.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">📋</div>
-                        <p>Belum ada riwayat tryout.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Paket</th>
-                            <th>Skor</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
             `;
+            return;
+        }
 
-            riwayatTryout.forEach(item => {
-                const scoreClass = item.score >= 80 ? 'high' : item.score >= 60 ? 'medium' : 'low';
-                html += `
+        container.innerHTML = paketAktif.map(item => {
+            return `
+                <div class="paket-item">
+                    <div>
+                        <div class="paket-name">${item.paketName || 'Paket Tryout'}</div>
+                        <div style="font-size:12px; color:var(--text-gray);">
+                            ✅ Aktif sejak ${item.tanggal || 'hari ini'}
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span class="paket-status active">✅ Aktif</span>
+                        <button class="btn-tryout" onclick="window.location.href='exam.html?paket=${item.paketId}'">
+                            🚀 Kerjakan Tryout
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // =============================================
+    // ===== RIWAYAT TRYOUT (SEMENTARA) =====
+    // =============================================
+
+    // Data riwayat tryout (nanti dari localStorage hasil tryout)
+    const riwayatTryout = [];
+
+    function renderRiwayat() {
+        const container = document.getElementById('riwayatContainer');
+        if (!container) return;
+
+        if (riwayatTryout.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📋</div>
+                    <p>Belum ada riwayat tryout.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = `
+            <table>
+                <thead>
                     <tr>
-                        <td>${item.date}</td>
-                        <td>${item.paket}</td>
-                        <td><strong>${item.score}</strong></td>
-                        <td><span class="badge-score ${scoreClass}">${item.status}</span></td>
+                        <th>Tanggal</th>
+                        <th>Paket</th>
+                        <th>Skor</th>
+                        <th>Status</th>
                     </tr>
-                `;
-            });
+                </thead>
+                <tbody>
+        `;
 
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
+        riwayatTryout.forEach(item => {
+            const scoreClass = item.score >= 80 ? 'high' : item.score >= 60 ? 'medium' : 'low';
+            html += `
+                <tr>
+                    <td>${item.date}</td>
+                    <td>${item.paket}</td>
+                    <td><strong>${item.score}</strong></td>
+                    <td><span class="badge-score ${scoreClass}">${item.status}</span></td>
+                </tr>
+            `;
+        });
 
-        // ===== UPDATE STATS =====
-        function updateStats() {
-            const total = riwayatTryout.length;
-            const totalScore = riwayatTryout.reduce((sum, item) => sum + item.score, 0);
-            const avg = total > 0 ? Math.round(totalScore / total) : 0;
-            const best = total > 0 ? Math.max(...riwayatTryout.map(item => item.score)) : 0;
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+    }
 
-            document.getElementById('totalTryout').textContent = total;
-            document.getElementById('avgScore').textContent = avg;
-            document.getElementById('bestScore').textContent = best;
-        }
+    // =============================================
+    // ===== UPDATE STATS =====
+    // =============================================
 
-        // ===== LOGOUT =====
-        document.querySelector('.btn-login')?.addEventListener('click', function(e) {
-            e.preventDefault();
+    function updateStats() {
+        const total = riwayatTryout.length;
+        const totalScore = riwayatTryout.reduce((sum, item) => sum + item.score, 0);
+        const avg = total > 0 ? Math.round(totalScore / total) : 0;
+        const best = total > 0 ? Math.max(...riwayatTryout.map(item => item.score)) : 0;
+
+        document.getElementById('totalTryout').textContent = total;
+        document.getElementById('avgScore').textContent = avg;
+        document.getElementById('bestScore').textContent = best;
+    }
+
+    // =============================================
+    // ===== NAVBAR (LOGOUT) =====
+    // =============================================
+
+    // Override logout di navbar
+    document.querySelector('.btn-login')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (confirm('Yakin ingin logout?')) {
             localStorage.removeItem('isAdmin');
             localStorage.removeItem('userEmail');
             localStorage.removeItem('userName');
-            window.location.href = 'login.html';
-        });
+            window.location.href = 'index.html';
+        }
+    });
 
-        // ===== INIT =====
+    // =============================================
+    // ===== INIT =====
+    // =============================================
+
+    document.addEventListener('DOMContentLoaded', function() {
         renderPaketAktif();
         renderRiwayat();
         updateStats();
-    </script>
+    });
+</script>
 
 </body>
 </html>
