@@ -515,7 +515,7 @@
     closeSubmitModal();
     clearInterval(timerInterval);
 
-    // ===== 1. KUMPULKAN JAWABAN =====
+    // ===== KUMPULKAN JAWABAN =====
     const jawabanUser = [];
     for (let i = 0; i < questions.length; i++) {
         const jawaban = answers[i];
@@ -526,9 +526,7 @@
         }
     }
 
-    console.log('📝 Jawaban User:', jawabanUser);
-
-    // ===== 2. HITUNG SKOR =====
+    // ===== HITUNG SKOR =====
     let benar = 0;
     let salah = 0;
     let tidakDijawab = 0;
@@ -546,23 +544,47 @@
         }
     });
 
-    console.log('📊 Skor:', benar, 'Benar,', salah, 'Salah,', tidakDijawab, 'Tidak dijawab');
+    // ===== AMBIL DATA USER =====
+    const userEmail = localStorage.getItem('userEmail') || 'anonymous';
+    const userName = localStorage.getItem('userName') || 'User';
+    const paketName = document.getElementById('paketName').textContent || 'Tryout';
+    const paketId = new URLSearchParams(window.location.search).get('paket');
 
-    // ===== 3. SIMPAN KE LOCALSTORAGE =====
-    const data = {
-        jawaban: jawabanUser,
+    // ===== BUAT DATA HASIL =====
+    const hasil = {
+        id: Date.now(),
+        userEmail: userEmail,
+        userName: userName,
+        paket: paketName,
+        paketId: paketId,
         skor: benar,
         total: questions.length,
         benar: benar,
         salah: salah,
         tidakDijawab: tidakDijawab,
-        timestamp: new Date().toISOString()
+        jawaban: jawabanUser,
+        tanggal: new Date().toISOString()
     };
 
-    localStorage.setItem('hasilTryoutUser', JSON.stringify(data));
-    console.log('✅ Data tersimpan di localStorage:', data);
+    // ===== SIMPAN KE LOCALSTORAGE =====
+    // 1. Untuk riwayat & leaderboard
+    let hasilList = JSON.parse(localStorage.getItem('hasilTryout') || '[]');
+    hasilList.push(hasil);
+    localStorage.setItem('hasilTryout', JSON.stringify(hasilList));
 
-    // ===== 4. REDIRECT =====
+    // 2. Untuk result.html
+    localStorage.setItem('examResult', JSON.stringify({
+        jawaban: jawabanUser,
+        skor: benar,
+        total: questions.length,
+        benar: benar,
+        salah: salah,
+        tidakDijawab: tidakDijawab
+    }));
+
+    console.log('✅ Data tersimpan:', hasil);
+
+    // ===== REDIRECT =====
     window.location.href = 'result.html?paket=' + paketId;
 }
         function submitExam(e) {
