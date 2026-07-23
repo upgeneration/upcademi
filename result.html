@@ -6,165 +6,34 @@
     <title>Hasil Tryout - UPCADEMI</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .result-page {
-            padding: 40px 0;
-        }
-
-        .result-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .result-header h1 {
-            font-size: 32px;
-            color: var(--navy);
-        }
-
-        .result-header .score {
-            font-size: 72px;
-            font-weight: 800;
-            color: var(--red);
-            margin: 16px 0;
-        }
-
-        .result-header .score-label {
-            color: var(--text-gray);
-            font-size: 18px;
-        }
-
-        .result-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        }
-
-        .stat-card .number {
-            font-size: 32px;
-            font-weight: 700;
-        }
-
+        .result-page { padding: 40px 0; }
+        .result-header { text-align: center; margin-bottom: 40px; }
+        .result-header h1 { font-size: 32px; color: var(--navy); }
+        .result-header .score { font-size: 72px; font-weight: 800; color: var(--red); margin: 16px 0; }
+        .result-header .score-label { color: var(--text-gray); font-size: 18px; }
+        .result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 600px; margin: 0 auto 40px; }
+        .stat-card { background: var(--white); padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .stat-card .number { font-size: 32px; font-weight: 700; }
         .stat-card .number.green { color: var(--green); }
         .stat-card .number.red { color: var(--red); }
         .stat-card .number.orange { color: #FF9800; }
-
-        .stat-card .label {
-            font-size: 14px;
-            color: var(--text-gray);
-        }
-
-        .pembahasan-section {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .pembahasan-section h2 {
-            text-align: center;
-            color: var(--navy);
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-
-        .soal-card {
-            background: var(--white);
-            padding: 24px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            border-left: 4px solid var(--green);
-        }
-
-        .soal-card.wrong {
-            border-left-color: var(--red);
-        }
-
-        .soal-card .soal-header {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--navy);
-        }
-
-        .soal-card .soal-header .status {
-            font-size: 14px;
-        }
-
+        .stat-card .label { font-size: 14px; color: var(--text-gray); }
+        .pembahasan-section { max-width: 800px; margin: 0 auto; }
+        .pembahasan-section h2 { text-align: center; color: var(--navy); margin-bottom: 30px; font-size: 28px; }
+        .soal-card { background: var(--white); padding: 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border-left: 4px solid var(--green); }
+        .soal-card.wrong { border-left-color: var(--red); }
+        .soal-card .soal-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; color: var(--navy); }
+        .soal-card .soal-header .status { font-size: 14px; }
         .soal-card .soal-header .status.benar { color: var(--green); }
         .soal-card .soal-header .status.salah { color: var(--red); }
-
-        .soal-card .soal-text {
-            margin-bottom: 12px;
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-        .soal-card .soal-text img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin: 8px 0;
-        }
-
-        .soal-card .jawaban-user {
-            font-size: 14px;
-            color: var(--text-gray);
-        }
-
-        .soal-card .jawaban-benar {
-            font-size: 14px;
-            color: var(--green);
-            font-weight: 600;
-        }
-
-        .soal-card .pembahasan {
-            margin-top: 12px;
-            padding: 16px;
-            background: var(--gray-bg);
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-
-        .btn-back {
-            display: block;
-            max-width: 300px;
-            margin: 30px auto 0;
-            padding: 14px;
-            background: var(--navy);
-            color: var(--white);
-            text-align: center;
-            border-radius: 8px;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        .btn-back:hover {
-            background: var(--navy-light);
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            .result-header .score {
-                font-size: 48px;
-            }
-
-            .result-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .soal-card {
-                padding: 16px;
-            }
-        }
+        .soal-card .soal-text { margin-bottom: 12px; font-size: 15px; line-height: 1.8; }
+        .soal-card .soal-text img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
+        .soal-card .jawaban-user { font-size: 14px; color: var(--text-gray); }
+        .soal-card .jawaban-benar { font-size: 14px; color: var(--green); font-weight: 600; }
+        .soal-card .pembahasan { margin-top: 12px; padding: 16px; background: var(--gray-bg); border-radius: 8px; font-size: 14px; line-height: 1.8; }
+        .btn-back { display: block; max-width: 300px; margin: 30px auto 0; padding: 14px; background: var(--navy); color: var(--white); text-align: center; border-radius: 8px; font-weight: 700; transition: 0.3s; }
+        .btn-back:hover { background: var(--navy-light); transform: translateY(-2px); }
+        @media (max-width: 768px) { .result-header .score { font-size: 48px; } .result-stats { grid-template-columns: 1fr 1fr; } .soal-card { padding: 16px; } }
     </style>
 </head>
 <body>
@@ -215,7 +84,6 @@
                 </div>
             </div>
 
-            <!-- Pembahasan -->
             <div class="pembahasan-section">
                 <h2>📖 Pembahasan Soal</h2>
                 <div id="pembahasanContainer"></div>
@@ -225,119 +93,140 @@
         </div>
     </section>
 
-<script src="js/script.js"></script>
-<script>
-    // =============================================
-    // ===== AMBIL DATA DARI LOCALSTORAGE =====
-    // =============================================
+    <script src="js/script.js"></script>
+    <script>
+        // ============================================================
+        // 1. PASTIKAN ADA DATA
+        // ============================================================
 
-    const data = JSON.parse(localStorage.getItem('examResult'));
+        console.log('🚀 RESULT.HTML DIMUAT');
 
-    if (!data) {
-        alert('⚠️ Tidak ada hasil tryout. Silakan kerjakan tryout terlebih dahulu.');
-        window.location.href = 'packages.html';
-        return;
-    }
+        // Ambil data dari localStorage
+        let data = JSON.parse(localStorage.getItem('examResult'));
 
-    // =============================================
-    // ===== TAMPILKAN SKOR =====
-    // =============================================
+        console.log('📦 Data dari localStorage:', data);
 
-    document.getElementById('scoreDisplay').textContent = data.skor || 0;
-    document.getElementById('totalDisplay').textContent = data.total || 0;
-    document.getElementById('benarCount').textContent = data.benar || 0;
-    document.getElementById('salahCount').textContent = data.salah || 0;
-    document.getElementById('tidakDijawabCount').textContent = data.tidakDijawab || 0;
+        // Kalau tidak ada, buat data dummy biar gak error
+        if (!data) {
+            console.warn('⚠️ Data tidak ditemukan, pakai data dummy');
+            data = {
+                skor: 0,
+                total: 0,
+                benar: 0,
+                salah: 0,
+                tidakDijawab: 0,
+                jawaban: []
+            };
+        }
 
-    // =============================================
-    // ===== AMBIL SOAL DARI LOCALSTORAGE =====
-    // =============================================
+        // ============================================================
+        // 2. TAMPILKAN SKOR
+        // ============================================================
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const paketId = urlParams.get('paket');
+        document.getElementById('scoreDisplay').textContent = data.skor || 0;
+        document.getElementById('totalDisplay').textContent = data.total || 0;
+        document.getElementById('benarCount').textContent = data.benar || 0;
+        document.getElementById('salahCount').textContent = data.salah || 0;
+        document.getElementById('tidakDijawabCount').textContent = data.tidakDijawab || 0;
 
-    const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
-    const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
+        // ============================================================
+        // 3. AMBIL SOAL DARI LOCALSTORAGE
+        // ============================================================
 
-    let paketName = '';
-    const paket = semuaPaket.find(p => String(p.id) === String(paketId));
-    if (paket) paketName = paket.name;
+        const urlParams = new URLSearchParams(window.location.search);
+        const paketId = urlParams.get('paket');
 
-    let soalData = [];
-    if (paketName) {
-        soalData = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
-    }
-    if (soalData.length === 0) soalData = semuaSoal;
+        const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
+        const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
-    // =============================================
-    // ===== TAMPILKAN PEMBAHASAN =====
-    // =============================================
+        let paketName = '';
+        const paket = semuaPaket.find(p => String(p.id) === String(paketId));
+        if (paket) paketName = paket.name;
 
-    const container = document.getElementById('pembahasanContainer');
-    container.innerHTML = '';
+        let soalData = [];
+        if (paketName) {
+            soalData = semuaSoal.filter(s => s.paket && s.paket.toLowerCase().trim() === paketName.toLowerCase().trim());
+        }
+        if (soalData.length === 0) soalData = semuaSoal;
 
-    const optionLabels = ['A', 'B', 'C', 'D', 'E'];
-    const jawabanUser = data.jawaban || [];
+        console.log('📚 Jumlah soal:', soalData.length);
 
-    soalData.forEach((q, index) => {
-        const userAns = (jawabanUser[index] !== undefined && jawabanUser[index] !== null) ? jawabanUser[index] : null;
-        const correctIndex = optionLabels.indexOf(q.jawaban);
-        const correctAns = correctIndex !== -1 ? correctIndex : 0;
+        // ============================================================
+        // 4. TAMPILKAN PEMBAHASAN
+        // ============================================================
 
-        let status = 'tidak-dijawab';
-        if (userAns === null) {
-            status = 'tidak-dijawab';
-        } else if (userAns === correctAns) {
-            status = 'benar';
+        const container = document.getElementById('pembahasanContainer');
+        container.innerHTML = '';
+
+        const optionLabels = ['A', 'B', 'C', 'D', 'E'];
+        const jawabanUser = data.jawaban || [];
+
+        if (soalData.length === 0) {
+            container.innerHTML = `
+                <div style="text-align:center; padding:40px; color:var(--text-gray);">
+                    📭 Belum ada soal untuk paket ini.
+                </div>
+            `;
         } else {
-            status = 'salah';
+            soalData.forEach((q, index) => {
+                const userAns = (jawabanUser[index] !== undefined && jawabanUser[index] !== null) ? jawabanUser[index] : null;
+                const correctIndex = optionLabels.indexOf(q.jawaban);
+                const correctAns = correctIndex !== -1 ? correctIndex : 0;
+
+                let status = 'tidak-dijawab';
+                if (userAns === null) {
+                    status = 'tidak-dijawab';
+                } else if (userAns === correctAns) {
+                    status = 'benar';
+                } else {
+                    status = 'salah';
+                }
+
+                const card = document.createElement('div');
+                card.className = 'soal-card' + (status === 'salah' ? ' wrong' : '');
+
+                const statusText = status === 'benar' ? '✅ Benar' : 
+                                  status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
+                const statusClass = status === 'benar' ? 'benar' : 
+                                   status === 'salah' ? 'salah' : '';
+
+                const options = [
+                    q.opsiA || '-',
+                    q.opsiB || '-',
+                    q.opsiC || '-',
+                    q.opsiD || '-',
+                    q.opsiE || '-'
+                ];
+
+                let userAnswerText = 'Tidak dijawab';
+                if (userAns !== null && options[userAns]) {
+                    userAnswerText = optionLabels[userAns] + '. ' + options[userAns];
+                }
+
+                const correctAnswerText = options[correctAns] ? 
+                    optionLabels[correctAns] + '. ' + options[correctAns] : 
+                    'Tidak tersedia';
+
+                const imageHTML = q.gambar ? `<img src="${q.gambar}" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
+
+                card.innerHTML = `
+                    <div class="soal-header">
+                        <span>Soal ${q.number || index + 1}</span>
+                        <span class="status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="soal-text">${imageHTML}${q.soal || 'Soal tidak tersedia'}</div>
+                    <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong></div>
+                    <div class="jawaban-benar">✅ Jawaban Benar: ${correctAnswerText}</div>
+                    <div class="pembahasan">
+                        <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Tidak ada pembahasan.'}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
         }
 
-        const card = document.createElement('div');
-        card.className = 'soal-card' + (status === 'salah' ? ' wrong' : '');
-
-        const statusText = status === 'benar' ? '✅ Benar' : 
-                          status === 'salah' ? '❌ Salah' : '⬜ Tidak Dijawab';
-        const statusClass = status === 'benar' ? 'benar' : 
-                           status === 'salah' ? 'salah' : '';
-
-        const options = [
-            q.opsiA || '-',
-            q.opsiB || '-',
-            q.opsiC || '-',
-            q.opsiD || '-',
-            q.opsiE || '-'
-        ];
-
-        let userAnswerText = 'Tidak dijawab';
-        if (userAns !== null && options[userAns]) {
-            userAnswerText = optionLabels[userAns] + '. ' + options[userAns];
-        }
-
-        const correctAnswerText = options[correctAns] ? 
-            optionLabels[correctAns] + '. ' + options[correctAns] : 
-            'Tidak tersedia';
-
-        const imageHTML = q.gambar ? `<img src="${q.gambar}" style="max-width:100%; border-radius:8px; margin:8px 0; border:1px solid #E0E0E0;">` : '';
-
-        card.innerHTML = `
-            <div class="soal-header">
-                <span>Soal ${q.number || index + 1}</span>
-                <span class="status ${statusClass}">${statusText}</span>
-            </div>
-            <div class="soal-text">${imageHTML}${q.soal || 'Soal tidak tersedia'}</div>
-            <div class="jawaban-user">Jawaban Anda: <strong>${userAnswerText}</strong></div>
-            <div class="jawaban-benar">✅ Jawaban Benar: ${correctAnswerText}</div>
-            <div class="pembahasan">
-                <strong>💡 Pembahasan:</strong> ${q.pembahasan || 'Tidak ada pembahasan.'}
-            </div>
-        `;
-
-        container.appendChild(card);
-    });
-
-    console.log('✅ Result selesai ditampilkan');
-</script>
-
+        console.log('✅ Result selesai ditampilkan');
+    </script>
 </body>
 </html>
