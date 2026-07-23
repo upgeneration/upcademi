@@ -228,12 +228,10 @@
 <script src="js/script.js"></script>
 <script>
     // =============================================
-    // ===== 1. AMBIL DATA DARI LOCALSTORAGE =====
+    // ===== AMBIL DATA DARI LOCALSTORAGE =====
     // =============================================
 
-    const data = JSON.parse(localStorage.getItem('hasilTryoutUser'));
-
-    console.log('🔍 Data dari localStorage:', data);
+    const data = JSON.parse(localStorage.getItem('examResult'));
 
     if (!data) {
         alert('⚠️ Tidak ada hasil tryout. Silakan kerjakan tryout terlebih dahulu.');
@@ -242,7 +240,7 @@
     }
 
     // =============================================
-    // ===== 2. TAMPILKAN SKOR =====
+    // ===== TAMPILKAN SKOR =====
     // =============================================
 
     document.getElementById('scoreDisplay').textContent = data.skor || 0;
@@ -252,18 +250,14 @@
     document.getElementById('tidakDijawabCount').textContent = data.tidakDijawab || 0;
 
     // =============================================
-    // ===== 3. TAMPILKAN PEMBAHASAN =====
+    // ===== AMBIL SOAL DARI LOCALSTORAGE =====
     // =============================================
-
-    const container = document.getElementById('pembahasanContainer');
-    container.innerHTML = '';
-
-    // Ambil soal dari localStorage
-    const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
-    const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
     const urlParams = new URLSearchParams(window.location.search);
     const paketId = urlParams.get('paket');
+
+    const semuaSoal = JSON.parse(localStorage.getItem('soalUpcademi') || '[]');
+    const semuaPaket = JSON.parse(localStorage.getItem('paketUpcademi') || '[]');
 
     let paketName = '';
     const paket = semuaPaket.find(p => String(p.id) === String(paketId));
@@ -275,11 +269,15 @@
     }
     if (soalData.length === 0) soalData = semuaSoal;
 
+    // =============================================
+    // ===== TAMPILKAN PEMBAHASAN =====
+    // =============================================
+
+    const container = document.getElementById('pembahasanContainer');
+    container.innerHTML = '';
+
     const optionLabels = ['A', 'B', 'C', 'D', 'E'];
     const jawabanUser = data.jawaban || [];
-
-    console.log('📚 Jumlah soal:', soalData.length);
-    console.log('📝 Jawaban user:', jawabanUser);
 
     soalData.forEach((q, index) => {
         const userAns = (jawabanUser[index] !== undefined && jawabanUser[index] !== null) ? jawabanUser[index] : null;
@@ -338,11 +336,7 @@
         container.appendChild(card);
     });
 
-    // =============================================
-    // ===== 4. HAPUS DATA (OPSIONAL) =====
-    // =============================================
-
-    // localStorage.removeItem('hasilTryoutUser');
+    console.log('✅ Result selesai ditampilkan');
 </script>
 
 </body>
